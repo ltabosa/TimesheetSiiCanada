@@ -1,11 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package dslVersion="1.0.0.0" 
-        Id="21b13b50-1941-4af1-81d7-b0f764ca004a" 
-        solutionId="21b13b50-1941-4af1-81d7-b0f764ca004a" 
-        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
-        name="Timesheet"
-        sharePointProductVersion="16.0">
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="21b13b50-1941-4af1-81d7-b0f764ca004a" solutionId="21b13b50-1941-4af1-81d7-b0f764ca004a" resetWebServer="false" sharePointProductVersion="16.0" name="Timesheet" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
   <features>
-        <featureReference itemId="9f4b3fec-5ec9-4f02-bdf6-4ca846202225" />
+    <featureReference itemId="9f4b3fec-5ec9-4f02-bdf6-4ca846202225" />
+    <featureReference itemId="89a7f29b-e799-4786-9b82-531e74a0e322" />
   </features>
 </package>

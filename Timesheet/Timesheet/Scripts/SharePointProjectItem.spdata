@@ -11,5 +11,9 @@
     <ProjectItemFile Source="jquery-3.1.1.js" Target="Scripts\" Type="ElementFile" />
     <ProjectItemFile Source="jquery-3.1.1.intellisense.js" Target="Scripts\" Type="ElementFile" />
     <ProjectItemFile Source="bootstrap.min.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="jquery-ui-1.12.1.min.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="jquery-ui-1.12.1.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="NewTimesheet.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="bootstrap.js" Target="Scripts\" Type="ElementFile" />
   </Files>
 </ProjectItem>

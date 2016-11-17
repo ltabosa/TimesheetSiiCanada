@@ -1,1 +1,11 @@
 ﻿/* Placer les styles personnalisés ci-dessous */
+.ui-datepicker-calendar { 
+    display: none; 
+}
+#myclass{
+    overflow:auto;
+    width: 1600px;
+}
+.projectTotal{
+    width:40px;
+}

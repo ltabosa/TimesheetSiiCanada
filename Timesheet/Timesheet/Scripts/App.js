@@ -15,6 +15,10 @@ function retrieve() {
     context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
     Function.createDelegate(this, window.onQueryFailed));
 }
+function onQueryFailed(sender, args) {
+    SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
+    args.get_stackTrace(), true);
+}
 /**
  * On the query succeeded. Lists all the projects
  * @param {type} sender - The sender.
