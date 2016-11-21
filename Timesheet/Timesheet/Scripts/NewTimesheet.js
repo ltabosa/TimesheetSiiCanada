@@ -14,6 +14,10 @@
     $("#otherProject").click(function () {
         newLineOfProject();
     });
+    //Delete Selected Lines
+    $("#deleteLine").click(function () {
+        deleteLineOfProject();
+    });
 });
 
 function monthYearFieldFill() {
@@ -92,7 +96,7 @@ function onQuerySucceeded(sender, args) {
             listInfo += "<option>" + oListItem.get_item('ActiveTitle') + "</option>";
         }
     }
-    listInfo += "</table>";
+    //listInfo += "</table>";
     $(".results").html(listInfo);
 }
 
@@ -115,14 +119,33 @@ function numberOfDaysInMonth() {
         $(".month28Days").show();
         $(".month29Days").show();
         $(".month30Days").hide();
+        //Delete day 31 from array
+        for (var i = 0; i < count; i++) {
+            $('#col' + i + '34').val(0);
+            console.log("numero de dias= " + numberOfDays);
+        }
     } else if (numberOfDays == 29) {
         $(".month28Days").show();
         $(".month29Days").hide();
         $(".month30Days").hide();
+        //Delete day 31 and 30 from array
+        for (var i = 0; i < count; i++) {
+            $('#col' + i + '33').val(0);
+            $('#col' + i + '34').val(0);
+            console.log("numero de dias= " + numberOfDays);
+        }
     } else if (numberOfDays == 28) {
         $(".month28Days").hide();
         $(".month29Days").hide();
         $(".month30Days").hide();
+        //Delete day 31, 30 and 29 from array
+        for (var i = 0; i < count; i++) {
+            $('#col' + i + '32').val(0);
+            $('#col' + i + '33').val(0);
+            $('#col' + i + '34').val(0);
+            console.log("numero de dias= " + numberOfDays);
+        }
+
     } else {
         $(".month28Days").show();
         $(".month29Days").show();
@@ -133,14 +156,14 @@ function numberOfDaysInMonth() {
 function newLineOfProject() {
     var newLine="";
     for (var i = 0; i < count; i++) {
-        newLine += '<tr>' +
+        newLine += '<tr id="row'+i+'">' +
                     '<td><input type="checkbox" id="col' + i + '0"></td>' +
                     '<td><select class="form-control results" id="col' + i + '1"></select></td>' +
                     '<td><select class="form-control" id="col' + i + '2">' +
-                            '<option value="N" selected>Normal Hour</option>' +
-                            '<option value="S">Supplemental Hour</option>' +
-                            '<option value="O">Overtime Hour</option>' +
-                            '<option value="G">Gratuity Hour</option>' +
+                            '<option value="N" label="Normal Hour" selected="selected">N</option>' +
+                            '<option value="S" label="Supplemental Hour">S</option>' +
+                            '<option value="O" label="Overtime Hour">O</option>' +
+                            '<option value="G" label="Gratuity Hour">G</option>' +
                         '</select>' +
                     '</td>' +
                     '<td><input type="text" value="" id="col' + i + '3" class="form-control" readonly/></td>' +
@@ -175,54 +198,13 @@ function newLineOfProject() {
                     '<td class="month28Days"><input type="text"  id="col' + i + '32" class="form-control"/></td>' +
                     '<td class="month29Days"><input type="text"  id="col' + i + '33" class="form-control"/></td>' +
                     '<td class="month30Days"><input type="text"  id="col' + i + '34" class="form-control"/></td>' +
+                    '<td><input type="hidden" id="col' + i + '35"></td>' +
                   '</tr>';
-       /* newLine += '<tr>' +
-                    '<td><input type="checkbox" id="col' + count + '0"></td>' +
-                    '<td><select class="form-control results" id="col' + count + '1"></select></td>' +
-                    '<td><select class="form-control" id="col' + count + '2">' +
-                            '<option selected value="N">Normal Hour</option>' +
-                            '<option value="S">Supplemental Hour</option>' +
-                            '<option value="O">Overtime Hour</option>' +
-                            '<option value="G">Gratuity Hour</option>' +
-                        '</select>' +
-                    '</td>' +
-                    '<td><input type="text" value="" id="col' + count + '3" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '4" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '5" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '6" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '7" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '8" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '9" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '10" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '11" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '12" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '13" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '14" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '15" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '16" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '17" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '18" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '19" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '20" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '21" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '22" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '23" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '24" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '25" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '26" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '27" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '28" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '29" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '30" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + count + '31" class="form-control"/></td>' +
-                    '<td class="month28Days"><input type="text"  id="col' + count + '32" class="form-control"/></td>' +
-                    '<td class="month29Days"><input type="text"  id="col' + count + '33" class="form-control"/></td>' +
-                    '<td class="month30Days"><input type="text"  id="col' + count + '34" class="form-control"/></td>' +
-                  '</tr>';*/
     }
     fillArray();
     count++;
     $("#newLine").html(newLine);
+    
     
     //Update the total
     $(".form-control").focusout(function () {
@@ -232,6 +214,17 @@ function newLineOfProject() {
     updateProjects();
     numberOfDaysInMonth();
     lookupProject();
+}
+
+function deleteLineOfProject() {
+    for (var i = 0; i < count; i++) {
+        if ($('#col' + i + '0').is(':checked')) {
+            $("#row" + i).hide();
+            array[i][35] = "Deleted";
+            updateLineTotal();
+            console.log("delete the line: " + i);
+        }
+    }
 }
 
 function fillArray() {
@@ -254,17 +247,23 @@ function updateProjects() {
         console.log("temp: " + temp);
         for (var i = 0; i < (count - 1); i++) {
             console.log("Count - 1: " + (count - 1));
-            for (var j = 0; j < 35; j++) {
+            for (var j = 0; j < 36; j++) {
                 $('#col' + i + '' + j).val(array[i][j]);
             }
         }
-        //HOUR TYPE DEFAULT 
-        for (var i = 0; i < count; i++) {
+        //HOUR TYPE AND PROJECT DEFAULT 
+        for (var i = 0; i < (count-1); i++) {
             if (!$('#col' + i + '2').val()) {
-                $('#col' + i + '2').val("Normal Hour");
+               $('#col' + i + '2').val("N");
             }
+            if (array[i][35] == "Deleted") {
+                $('#row' + i).hide();
+            }
+            document.getElementById('col' + i + '1').value = array[i][1];
+            console.log("Nome do Projeto: " + array[i][1]);
+            
         }
-        // $('#col' + i + '' + j).val(array[i][j]);
+        
     }
 }
 
@@ -274,22 +273,30 @@ function updateLineTotal() {
         var sumCol = 0;
         for (var i = 0; i < (count - 1) ; i++) {
             var sumLine = 0;
-            for (var j = 4; j < 35; j++) {
+            var error="";
+            for (var j = 4; j < 36; j++) {
                 var temp = Number($('#col' + i + ''+j).val());
                 //console.log("Valor cada coluna: " + $('#col' + i + ''+j).val());
-                //console.log("Temp= "+ temp);
-                if (temp>0) {
+                console.log("Temp= "+ temp);
+                if (temp >= 0 && temp < 25) {
+                    //error = "";
                     //alert($('#col' + i + '3').val());
                     sumLine += temp;
                     $('#col' + i + '3').val(sumLine);
                     //console.log("Soma= " + sumLine);
-                } else $('#col' + i + ''+j).val(0);
+                } else if (!$('#col' + i + ''+j).val()==""){
+                    $('#col' + i + '' + j).val(0);
+                    error = '<tr ><td colspan="35" class="bg-danger"><span id="errorMsg">Please fill field with a number between 0 and 24</span></td></tr>';
+                }
             }
-            sumCol += sumLine;
+            if(array[i][35]!="Deleted"){
+                sumCol += sumLine;
+            }
         }
     }
     //totalHour $("#newLine").html(newLine);
     $('#totalHour').html(sumCol);
+    $('#msg').html(error);
     //console.log("Total= " + sumCol);
 }
 

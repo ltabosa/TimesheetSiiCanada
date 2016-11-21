@@ -6,6 +6,13 @@
     overflow:auto;
     width: 1600px;
 }
+#errorMsg{
+    padding:14px;
+    line-height:2;
+}
 .projectTotal{
     width:50px;
+}
+.notShow{
+    display:none;
 }

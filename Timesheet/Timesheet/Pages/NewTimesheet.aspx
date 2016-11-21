@@ -37,7 +37,7 @@
     <br />
     
 
-    <form>
+    <form autocomplete="off">
          
          
         <div class="form-group row">
@@ -62,7 +62,7 @@
          
         <div class="container" id="myclass">
          
-          <table class="table-bordered table-reflow">
+          <table class="form-group table-bordered table-reflow">
             <thead>
               <tr>
                 <th></th>
@@ -100,6 +100,7 @@
                 <th class="month28Days">29</th>
                 <th class="month29Days">30</th>
                 <th class="month30Days">31</th>
+                <th class="notShow"></th>
               </tr>
             </thead>
             <!--
@@ -151,9 +152,10 @@
                 
             </tbody>-->
             
-            <tbody id="newLine"></tbody> 
+            <tbody id="newLine"></tbody>
+            <tbody id="msg"></tbody> 
           </table>
-            
+                
                 <p class=".col-md-8">New: <a href="#" id="otherProject"><span class="glyphicon glyphicon-plus-sign"></span></a> / Delete Selected Lines: <a href="#" id="deleteLine"><span class="glyphicon glyphicon glyphicon-minus-sign"></span></a> </p>
                 
             
@@ -166,6 +168,9 @@
         <p><strong>Total: <span id="totalHour">0</span></strong></p>
         <button type="submit" class="btn btn-default">Submit</button>
 
+        
+            
+        
 
         
     </form>
