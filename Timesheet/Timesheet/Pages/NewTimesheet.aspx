@@ -7,6 +7,17 @@
 <asp:Content ContentPlaceHolderID="PlaceHolderAdditionalPageHead" runat="server">
     <script type="text/javascript" src="../Scripts/jquery-3.1.1.min.js"></script>
     <SharePoint:ScriptLink Name="sp.js" runat="server" OnDemand="true" LoadAfterUI="true" Localizable="false" />
+
+     <!-- JS used to make the SPService works with people picker -->
+    <SharePoint:ScriptLink name="clienttemplates.js" runat="server" LoadAfterUI="true" Localizable="false" />
+    <SharePoint:ScriptLink name="clientforms.js" runat="server" LoadAfterUI="true" Localizable="false" />
+    <SharePoint:ScriptLink name="clientpeoplepicker.js" runat="server" LoadAfterUI="true" Localizable="false" />
+    <SharePoint:ScriptLink name="autofill.js" runat="server" LoadAfterUI="true" Localizable="false" />
+    <SharePoint:ScriptLink name="sp.runtime.js" runat="server" LoadAfterUI="true" Localizable="false" />
+    <SharePoint:ScriptLink name="sp.core.js" runat="server" LoadAfterUI="true" Localizable="false" />
+    
+
+
     <meta name="WebPartPageExpansion" content="full" />
 
     <!-- Ajoutez vos styles CSS au fichier suivant -->
@@ -18,6 +29,7 @@
     <script type="text/javascript" src="../Scripts/NewTimesheet.js"></script>
     <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
     <script type="text/javascript" src="../Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script type="text/javascript" src="../Scripts/jquery.SPServices-2014.02.min.js"></script>
 
 </asp:Content>
 
@@ -50,6 +62,14 @@
             <div class="col-xs-2">
                 <label for="txtYear">Year</label>
                 <input type="text" name="txtFromYear" id="txtYear" class="date-picker-year form-control changeDate" />
+            </div>
+        </div>
+
+        
+         <div class="form-group row">
+            <div class="col-xs-2">
+                <label for="SdfPeoplePicker">User</label>
+                <div id="peoplePickerDivLinMan" title="User_"></div>
             </div>
         </div>
 
@@ -166,7 +186,7 @@
 
         <br />
         <p><strong>Total: <span id="totalHour">0</span></strong></p>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <input name="Submit" id="Submit" type="button" value="Submit" class="btn btn-default btn-lg" />
 
         
             

@@ -14,5 +14,6 @@
     <File Path="Scripts\jquery-ui-1.12.1.js" Url="Scripts/jquery-ui-1.12.1.js" ReplaceContent="TRUE" />
     <File Path="Scripts\NewTimesheet.js" Url="Scripts/NewTimesheet.js" ReplaceContent="TRUE" />
     <File Path="Scripts\bootstrap.js" Url="Scripts/bootstrap.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\jquery.SPServices-2014.02.min.js" Url="Scripts/jquery.SPServices-2014.02.min.js" ReplaceContent="TRUE" />
   </Module>
 </Elements>

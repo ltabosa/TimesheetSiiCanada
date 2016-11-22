@@ -15,5 +15,6 @@
     <ProjectItemFile Source="jquery-ui-1.12.1.js" Target="Scripts\" Type="ElementFile" />
     <ProjectItemFile Source="NewTimesheet.js" Target="Scripts\" Type="ElementFile" />
     <ProjectItemFile Source="bootstrap.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="jquery.SPServices-2014.02.min.js" Target="Scripts\" Type="ElementFile" />
   </Files>
 </ProjectItem>

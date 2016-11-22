@@ -2,6 +2,7 @@
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', monthYearFieldFill);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', lookupProject);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', numberOfDaysInMonth);
+    SP.SOD.executeFunc('sp.js', 'SP.ClientContext', setLoggedInUser);
     count = 1;
     //newLine = "";
     array = new Array();
@@ -17,6 +18,9 @@
     //Delete Selected Lines
     $("#deleteLine").click(function () {
         deleteLineOfProject();
+    });
+    $("#Submit").click(function () {
+        updateTimesheetList();
     });
 });
 
@@ -298,6 +302,77 @@ function updateLineTotal() {
     $('#totalHour').html(sumCol);
     $('#msg').html(error);
     //console.log("Total= " + sumCol);
+}
+
+function updateTimesheetList() {
+    /*
+    documentType = $("#DocumentType option:selected").text();
+    description = $('#Description').val();
+    dateCreated = document.getElementById('DateCreated').value;
+    */
+    var month = $('#txtMonth').val();
+    var year = $('#txtYear').val();
+    //var html = $('#ctl00_PlaceHolderMain_SdfPeoplePicker_upLevelDiv');
+    //var user = $("#divEntityData", html).attr("displaytext");
+    var peoplePicker = this.SPClientPeoplePicker.SPClientPeoplePickerDict.peoplePickerDiv_TopSpan;
+    
+    console.log(peoplePicker);
+    var users = peoplePicker.GetAllUserInfo();
+    console.log(users);
+
+    //var user = document.getElementById('SdfPeoplePicker').value;
+    console.log("Month: " + month);
+    console.log("Year: " + year);
+    console.log("User: " + user);
+    fillArray();
+
+}
+
+function setLoggedInUser() {
+    var userid = _spPageContextInfo.userId;
+    var requestUri = _spPageContextInfo.webAbsoluteUrl + "/_api/web/getuserbyid(" + userid + ")";
+    var requestHeaders = { "accept": "application/json;odata=verbose" };
+    $.ajax({
+        url: requestUri,
+        contentType: "application/json;odata=verbose",
+        headers: requestHeaders,
+        success: onSuccess,
+        error: onError
+    });
+
+    function onSuccess(data, request) {
+        var loginName = data.d.Title;
+        var userAccountName = data.d.LoginName;
+
+        var schema = {};
+        schema['PrincipalAccountType'] = 'User,DL,SecGroup,SPGroup';
+        schema['SearchPrincipalSource'] = 15;
+        schema['ResolvePrincipalSource'] = 15;
+        schema['AllowMultipleValues'] = false;
+        schema['MaximumEntitySuggestions'] = 50;
+        schema['Width'] = '280px';
+
+        var users = new Array(1);
+        var defaultUser = new Object();
+        defaultUser.AutoFillDisplayText = data.d.Title;
+        defaultUser.AutoFillKey = data.d.LoginName;
+        defaultUser.Description = data.d.Email;
+        defaultUser.DisplayText = data.d.Title;
+        defaultUser.EntityType = "User";
+        defaultUser.IsResolved = true;
+        defaultUser.Key = data.d.LoginName;
+        defaultUser.Resolved = true;
+        users[0] = defaultUser;
+        console.log(users);
+        SPClientPeoplePicker.ShowUserPresence = false;
+        SPClientPeoplePicker_InitStandaloneControlWrapper('peoplePickerDivLinMan', users, schema);
+        
+        //alert(loginName);
+    }
+
+    function onError(error) {
+        alert("error");
+    }
 }
 
 

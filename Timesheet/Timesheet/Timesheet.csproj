@@ -151,6 +151,7 @@
     <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="Scripts\jquery.SPServices-2014.02.min.js" />
     <Content Include="Scripts\NewTimesheet.js" />
     <Content Include="Scripts\_references.js" />
   </ItemGroup>
