@@ -4,6 +4,7 @@
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', numberOfDaysInMonth);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', setLoggedInUser);
     count = 1;
+    colCreated = 0;
     //newLine = "";
     array = new Array();
 
@@ -275,9 +276,10 @@ function updateLineTotal() {
     console.log(count);
     if (count > 1) {
         var sumCol = 0;
+        var error = "";
         for (var i = 0; i < (count - 1) ; i++) {
             var sumLine = 0;
-            var error="";
+           
             for (var j = 4; j < 36; j++) {
                 var temp = Number($('#col' + i + ''+j).val());
                 //console.log("Valor cada coluna: " + $('#col' + i + ''+j).val());
@@ -307,25 +309,77 @@ function updateLineTotal() {
 function updateTimesheetList() {
     /*
     documentType = $("#DocumentType option:selected").text();
-    description = $('#Description').val();
+    description = $('#peoplePickerDivLinMan').val();
     dateCreated = document.getElementById('DateCreated').value;
     */
     var month = $('#txtMonth').val();
     var year = $('#txtYear').val();
     //var html = $('#ctl00_PlaceHolderMain_SdfPeoplePicker_upLevelDiv');
     //var user = $("#divEntityData", html).attr("displaytext");
-    var peoplePicker = this.SPClientPeoplePicker.SPClientPeoplePickerDict.peoplePickerDiv_TopSpan;
     
-    console.log(peoplePicker);
-    var users = peoplePicker.GetAllUserInfo();
-    console.log(users);
+    var users = $('#peoplePickerDivLinMan_TopSpan_HiddenInput').val();
+    users = users.substring(1, users.length - 1);
+    //var peoplePicker = this.SPClientPeoplePicker.SPClientPeoplePickerDict.peoplePickerDiv_TopSpan;
+    var obj = JSON.parse(users);
+    console.log(obj.DisplayText);
+    // var users = peoplePicker.GetAllUserInfo();
+    //console.log(users);
 
     //var user = document.getElementById('SdfPeoplePicker').value;
     console.log("Month: " + month);
     console.log("Year: " + year);
-    console.log("User: " + user);
+    //console.log("User: " + user);
+
+    //Update Array With the Most Recent Data
     fillArray();
 
+    //
+
+    while (colCreated < (count - 1)) {
+        if (array[colCreated][35] != "Deleted") {
+            console.log("Linha nao deletada: " + colCreated);
+            
+            var clientContext = new SP.ClientContext.get_current();
+            var oList = clientContext.get_web().get_lists().getByTitle('Timesheet');
+
+            var itemCreateInfo = new SP.ListItemCreationInformation();
+            this.oListItem = oList.addItem(itemCreateInfo);
+
+            oListItem.set_item('Project', array[colCreated][1]);
+            oListItem.set_item('Month', month);
+            oListItem.set_item('Year', year);
+            oListItem.set_item('Total', array[colCreated][3]);
+            
+            for (var i = 0; i < 31; i++) {
+                var x = i + 1;
+                oListItem.set_item('_x00'+x+'_', array[colCreated][i+4]);
+            }
+
+            oListItem.update();
+
+            clientContext.load(oListItem);
+
+            colCreated++;
+
+            clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryCreateSucceeded), Function.createDelegate(this, this.onQueryCreateFailed));
+
+            
+        } else {
+            console.log("Linha deletada: " + colCreated);
+            colCreated++;
+            onQueryCreateSucceeded();
+        }
+    }
+    //
+
+}
+
+function onQueryCreateSucceeded() {
+    if (colCreated == (count - 1)) {
+
+        //return to MyTimesheet
+        //window.location.href = '../Pages/File.aspx?ID=' + projectId + '&Title=' + projectTitle;
+    }
 }
 
 function setLoggedInUser() {
