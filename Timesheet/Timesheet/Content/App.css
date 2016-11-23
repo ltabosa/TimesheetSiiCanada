@@ -5,6 +5,10 @@
 #myclass{
     overflow:auto;
     width: 1600px;
+    padding-right: 0; 
+    padding-left: 0; 
+    margin-left:0;
+    margin-right:0;
 }
 #errorMsg{
     padding:14px;

@@ -2,52 +2,95 @@
 <List xmlns:ows="Microsoft SharePoint" Title="MyTimesheet" FolderCreation="FALSE" Direction="$Resources:Direction;" Url="Lists/MyTimesheet" BaseType="0" xmlns="http://schemas.microsoft.com/sharepoint/">
   <MetaData>
     <ContentTypes>
-      
-      
-    <ContentType ID="0x010040dc78757bf4489aaa170902ac497912" Name="ListFieldsContentType"><FieldRefs><FieldRef ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Name="Title" /><FieldRef ID="{deb3848f-678a-4ef0-bd21-3fdf33624771}" Name="Year" /><FieldRef ID="{13bd4b28-875f-40a6-bd4d-60c460307e17}" Name="Total" /><FieldRef ID="{186eea4b-5675-4c63-a583-0ff0f5596c0b}" Name="Status" /></FieldRefs></ContentType><ContentTypeRef ID="0x01">
+
+
+
+
+
+      <ContentType ID="0x010040dc78757bf4489aaa170902ac497912" Name="ListFieldsContentType">
+        <FieldRefs>
+
+
+
+
+          <FieldRef ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Name="Title" />
+          <FieldRef ID="{deb3848f-678a-4ef0-bd21-3fdf33624771}" Name="Year" />
+          <FieldRef ID="{13bd4b28-875f-40a6-bd4d-60c460307e17}" Name="Total" />
+          <FieldRef ID="{186eea4b-5675-4c63-a583-0ff0f5596c0b}" Name="Status" />
+        </FieldRefs>
+      </ContentType>
+      <ContentTypeRef ID="0x01">
         <Folder TargetName="Item" />
-      </ContentTypeRef><ContentTypeRef ID="0x0120" /></ContentTypes>
+      </ContentTypeRef>
+      <ContentTypeRef ID="0x0120" />
+    </ContentTypes>
     <Fields>
-      
-    <Field ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Type="Text" Name="Title" DisplayName="Month" Required="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Title" MaxLength="255" /><Field Name="Year" ID="{deb3848f-678a-4ef0-bd21-3fdf33624771}" DisplayName="Year" Type="Text" /><Field Name="Total" ID="{13bd4b28-875f-40a6-bd4d-60c460307e17}" DisplayName="Total" Type="Number" /><Field Name="Status" ID="{186eea4b-5675-4c63-a583-0ff0f5596c0b}" DisplayName="Status" Type="MultiChoice" /></Fields>
+
+
+
+
+
+      <Field ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Type="Text" Name="Title" DisplayName="Month" Required="FALSE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Title" MaxLength="255" />
+      <Field Name="Year" ID="{deb3848f-678a-4ef0-bd21-3fdf33624771}" DisplayName="Year" Type="Text" />
+      <Field Name="Total" ID="{13bd4b28-875f-40a6-bd4d-60c460307e17}" DisplayName="Total" Type="Number" />
+      <Field Name="Status" ID="{186eea4b-5675-4c63-a583-0ff0f5596c0b}" DisplayName="Status" Type="MultiChoice" />
+    </Fields>
     <Views>
-      
-      
-    <View BaseViewID="0" Type="HTML" MobileView="TRUE" TabularView="FALSE">
+
+
+
+
+      <View BaseViewID="0" Type="HTML" MobileView="TRUE" TabularView="FALSE">
         <Toolbar Type="Standard" />
         <XslLink Default="TRUE">main.xsl</XslLink>
         <RowLimit Paged="TRUE">30</RowLimit>
         <ViewFields>
-          
-        <FieldRef Name="LinkTitleNoMenu"></FieldRef></ViewFields>
+
+
+          <FieldRef Name="LinkTitleNoMenu"></FieldRef>
+        </ViewFields>
         <Query>
           <OrderBy>
-            
-          <FieldRef Name="Modified" Ascending="FALSE"></FieldRef></OrderBy>
+
+
+            <FieldRef Name="Modified" Ascending="FALSE"></FieldRef>
+          </OrderBy>
         </Query>
         <ParameterBindings>
           <ParameterBinding Name="AddNewAnnouncement" Location="Resource(wss,addnewitem)" />
           <ParameterBinding Name="NoAnnouncements" Location="Resource(wss,noXinviewofY_LIST)" />
           <ParameterBinding Name="NoAnnouncementsHowTo" Location="Resource(wss,noXinviewofY_ONET_HOME)" />
         </ParameterBindings>
-      </View><View BaseViewID="1" Type="HTML" WebPartZoneID="Main" DisplayName="$Resources:core,objectiv_schema_mwsidcamlidC24;" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" SetupPath="pages\viewpage.aspx" ImageUrl="/_layouts/15/images/generic.png?rev=23" Url="AllItems.aspx">
+      </View>
+      <View BaseViewID="1" Type="HTML" WebPartZoneID="Main" DisplayName="$Resources:core,objectiv_schema_mwsidcamlidC24;" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" SetupPath="pages\viewpage.aspx" ImageUrl="/_layouts/15/images/generic.png?rev=23" Url="AllItems.aspx">
         <Toolbar Type="Standard" />
         <XslLink Default="TRUE">main.xsl</XslLink>
         <JSLink>clienttemplates.js</JSLink>
         <RowLimit Paged="TRUE">30</RowLimit>
         <ViewFields>
-          
-        <FieldRef Name="LinkTitle"></FieldRef><FieldRef Name="Year" /><FieldRef Name="Total" /><FieldRef Name="Status" /></ViewFields>
+
+
+
+
+
+          <FieldRef Name="LinkTitle"></FieldRef>
+          <FieldRef Name="Year" />
+          <FieldRef Name="Total" />
+          <FieldRef Name="Status" />
+        </ViewFields>
         <Query>
           <OrderBy>
-            
-          <FieldRef Name="ID"></FieldRef></OrderBy>
+
+
+            <FieldRef Name="ID"></FieldRef>
+          </OrderBy>
         </Query>
         <ParameterBindings>
           <ParameterBinding Name="NoAnnouncements" Location="Resource(wss,noXinviewofY_LIST)" />
           <ParameterBinding Name="NoAnnouncementsHowTo" Location="Resource(wss,noXinviewofY_DEFAULT)" />
         </ParameterBindings>
-      </View></Views>
+      </View>
+    </Views>
     <Forms>
       <Form Type="DisplayForm" Url="DispForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
       <Form Type="EditForm" Url="EditForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />

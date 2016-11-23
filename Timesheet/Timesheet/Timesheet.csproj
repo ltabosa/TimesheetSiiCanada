@@ -121,6 +121,13 @@
       <DependentUpon>Feature2.feature</DependentUpon>
     </Content>
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Images\CopyIcon.png" />
+    <Content Include="Images\CreateIcon.png" />
+    <Content Include="Images\EditIcon.png" />
+    <Content Include="Images\AppIcon.png">
+      <OpcRelationship>manifest-icon</OpcRelationship>
+    </Content>
+    <Content Include="Images\ViewIcon.png" />
     <Content Include="Lists\MyTimesheet\Elements.xml" />
     <Content Include="Lists\MyTimesheet\MyTimesheetInstance\Elements.xml" />
     <Content Include="Lists\MyTimesheet\Schema.xml" />
@@ -163,9 +170,7 @@
     <Content Include="Content\App.css" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\AppIcon.png">
-      <OpcRelationship>manifest-icon</OpcRelationship>
-    </Content>
+    <Content Include="Images\AppIcon1.png" />
     <Content Include="Images\Elements.xml" />
     <None Include="Images\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{47320df7-8c29-45ec-a6d5-a8e0aa28748e}</SharePointProjectItemId>

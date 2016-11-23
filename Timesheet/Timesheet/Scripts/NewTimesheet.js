@@ -103,6 +103,7 @@ function onQuerySucceeded(sender, args) {
     }
     //listInfo += "</table>";
     $(".results").html(listInfo);
+    updateProjects();
 }
 
 function numberOfDaysInMonth() {
@@ -216,9 +217,9 @@ function newLineOfProject() {
         updateLineTotal();
 
     });
-    updateProjects();
-    numberOfDaysInMonth();
     lookupProject();
+    numberOfDaysInMonth();
+    
 }
 
 function deleteLineOfProject() {
@@ -275,7 +276,7 @@ function updateProjects() {
 function updateLineTotal() {
     console.log(count);
     if (count > 1) {
-        var sumCol = 0;
+        sumCol = 0;
         var error = "";
         for (var i = 0; i < (count - 1) ; i++) {
             var sumLine = 0;
@@ -292,7 +293,7 @@ function updateLineTotal() {
                     //console.log("Soma= " + sumLine);
                 } else if (!$('#col' + i + ''+j).val()==""){
                     $('#col' + i + '' + j).val(0);
-                    error = '<tr ><td colspan="35" class="bg-danger"><span id="errorMsg">Please fill field with a number between 0 and 24</span></td></tr>';
+                    //error = '<tr ><td colspan="35" class="bg-danger"><span id="errorMsg">Please fill field with a number between 0 and 24</span></td></tr>';
                 }
             }
             if(array[i][35]!="Deleted"){
@@ -312,8 +313,8 @@ function updateTimesheetList() {
     description = $('#peoplePickerDivLinMan').val();
     dateCreated = document.getElementById('DateCreated').value;
     */
-    var month = $('#txtMonth').val();
-    var year = $('#txtYear').val();
+    monthSubmit = $('#txtMonth').val();
+    yearSubmit = $('#txtYear').val();
     //var html = $('#ctl00_PlaceHolderMain_SdfPeoplePicker_upLevelDiv');
     //var user = $("#divEntityData", html).attr("displaytext");
     
@@ -326,13 +327,13 @@ function updateTimesheetList() {
     //console.log(users);
 
     //var user = document.getElementById('SdfPeoplePicker').value;
-    console.log("Month: " + month);
-    console.log("Year: " + year);
+    console.log("Month: " + monthSubmit);
+    console.log("Year: " + yearSubmit);
     //console.log("User: " + user);
 
     //Update Array With the Most Recent Data
     fillArray();
-
+    updateListMyTimesheet();
     //
 
     while (colCreated < (count - 1)) {
@@ -340,14 +341,16 @@ function updateTimesheetList() {
             console.log("Linha nao deletada: " + colCreated);
             
             var clientContext = new SP.ClientContext.get_current();
+
+            //update Timesheet List
             var oList = clientContext.get_web().get_lists().getByTitle('Timesheet');
 
             var itemCreateInfo = new SP.ListItemCreationInformation();
             this.oListItem = oList.addItem(itemCreateInfo);
 
             oListItem.set_item('Project', array[colCreated][1]);
-            oListItem.set_item('Month', month);
-            oListItem.set_item('Year', year);
+            oListItem.set_item('Month', monthSubmit);
+            oListItem.set_item('Year', yearSubmit);
             oListItem.set_item('Total', array[colCreated][3]);
             
             for (var i = 0; i < 31; i++) {
@@ -358,11 +361,12 @@ function updateTimesheetList() {
             oListItem.update();
 
             clientContext.load(oListItem);
-
-            colCreated++;
-
+            console.log("colCreated antes:" + colCreated);
+            
+            
             clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryCreateSucceeded), Function.createDelegate(this, this.onQueryCreateFailed));
-
+            colCreated++;
+            console.log("colCreated depois:" + colCreated);
             
         } else {
             console.log("Linha deletada: " + colCreated);
@@ -375,11 +379,46 @@ function updateTimesheetList() {
 }
 
 function onQueryCreateSucceeded() {
+    console.log("colCreated: " + colCreated);
+    console.log("count: " + count);
+    console.log("tamanho no array= " + array.length);
+    //window.location.href = '../Pages/Default.aspx?ID=' + projectId + '&Title=' + projectTitle;
     if (colCreated == (count - 1)) {
-
-        //return to MyTimesheet
-        //window.location.href = '../Pages/File.aspx?ID=' + projectId + '&Title=' + projectTitle;
+        window.location.href = '../Pages/Default.aspx';
     }
+
+}
+
+function updateListMyTimesheet(){
+    //if (colCreated == (count - 1)) {
+
+        //update My Timesheet list
+        var clientContext = new SP.ClientContext.get_current(); 
+
+        var oList = clientContext.get_web().get_lists().getByTitle('MyTimesheet');
+
+        var itemCreateInfo = new SP.ListItemCreationInformation();
+        this.oListItem = oList.addItem(itemCreateInfo);
+
+        oListItem.set_item('Title', monthSubmit);
+        oListItem.set_item('Year', yearSubmit);
+        oListItem.set_item('Total', sumCol);
+        oListItem.set_item('Status', "In Progress");
+
+        oListItem.update();
+
+        clientContext.load(oListItem);
+
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryCreateMyTimesheet), Function.createDelegate(this, this.onQueryCreateFailed));
+
+
+        //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        //window.location.href = '../Pages/File.aspx?ID=' + projectId + '&Title=' + projectTitle;
+   // }
+}
+
+function onQueryCreateMyTimesheet() {
+    // return to MyTimesheet
 }
 
 function setLoggedInUser() {

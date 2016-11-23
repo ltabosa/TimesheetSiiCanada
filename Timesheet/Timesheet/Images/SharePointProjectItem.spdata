@@ -2,6 +2,11 @@
 <ProjectItem Type="Microsoft.VisualStudio.SharePoint.Module" DefaultFile="Elements.xml" SupportedTrustLevels="All" SupportedDeploymentScopes="Web, Site" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
   <Files>
     <ProjectItemFile Source="Elements.xml" Target="Images\" Type="ElementManifest" />
+    <ProjectItemFile Source="AppIcon1.png" Target="Images\" Type="ElementFile" />
+    <ProjectItemFile Source="CopyIcon.png" Target="Images\" Type="ElementFile" />
+    <ProjectItemFile Source="CreateIcon.png" Target="Images\" Type="ElementFile" />
+    <ProjectItemFile Source="EditIcon.png" Target="Images\" Type="ElementFile" />
+    <ProjectItemFile Source="ViewIcon.png" Target="Images\" Type="ElementFile" />
     <ProjectItemFile Source="AppIcon.png" Target="Images\" Type="ElementFile" />
   </Files>
 </ProjectItem>

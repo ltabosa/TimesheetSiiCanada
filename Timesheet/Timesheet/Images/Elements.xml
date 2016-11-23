@@ -1,6 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/">
   <Module Name="Images">
+    <File Path="Images\AppIcon1.png" Url="Images/AppIcon1.png" ReplaceContent="TRUE" />
+    <File Path="Images\CopyIcon.png" Url="Images/CopyIcon.png" ReplaceContent="TRUE" />
+    <File Path="Images\CreateIcon.png" Url="Images/CreateIcon.png" ReplaceContent="TRUE" />
+    <File Path="Images\EditIcon.png" Url="Images/EditIcon.png" ReplaceContent="TRUE" />
+    <File Path="Images\ViewIcon.png" Url="Images/ViewIcon.png" ReplaceContent="TRUE" />
     <File Path="Images\AppIcon.png" Url="Images/AppIcon.png" ReplaceContent="TRUE" />
   </Module>
 </Elements>
