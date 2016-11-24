@@ -19,7 +19,7 @@ function retrieve() {
                             '<Query>' +
                                 '<Where>' +
                                         '<Eq>' +
-                                            '<FieldRef Name=\'ReportOwner\'/>' +
+                                            '<FieldRef Name=\'ReportOwner\' LookupId=\'TRUE\'/>' +
                                             '<Value Type=\'User\'>' + userId + '</Value>' +
                                         '</Eq>' +
                                 '</Where>' +
