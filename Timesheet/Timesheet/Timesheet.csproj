@@ -132,8 +132,11 @@
     <Content Include="Lists\MyTimesheet\MyTimesheetInstance\Elements.xml" />
     <Content Include="Lists\MyTimesheet\Schema.xml" />
     <Content Include="Lists\Timesheet\Elements.xml" />
-    <Content Include="Lists\Timesheet\Schema.xml" />
+    <Content Include="Lists\Timesheet\Schema.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Lists\Timesheet\TimesheetInstance\Elements.xml" />
+    <Content Include="Pages\EditTimesheet.aspx" />
     <Content Include="Pages\Elements.xml" />
     <Content Include="Pages\Default.aspx" />
     <None Include="SharePointProjectItem.spdata">
@@ -149,6 +152,7 @@
     <Content Include="Pages\NewTimesheet.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\EditTimesheet.js" />
     <Content Include="Scripts\Elements.xml" />
     <Content Include="Scripts\App.js" />
     <Content Include="Scripts\jquery-3.1.1.intellisense.js" />

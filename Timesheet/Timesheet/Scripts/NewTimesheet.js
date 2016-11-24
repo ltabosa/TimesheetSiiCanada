@@ -71,7 +71,7 @@ function lookupProject() {
     camlQuery.set_viewXml('<View><Query><OrderBy><FieldRef Name=\'Title\' Ascending=\'TRUE\' /></OrderBy></Query><ViewFields><FieldRef Name=\'Id\' /><FieldRef Name=\'Title\' /><FieldRef Name=\'ActiveTitle\' /></ViewFields></View>');
     window.collListItem = oList.getItems(camlQuery);
     ctx.load(collListItem, 'Include(Id, Title, ActiveTitle)');
-    ctx.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
+    ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryLookupSucceeded),
     Function.createDelegate(this, window.onQueryFailed));
     
 }
@@ -84,7 +84,7 @@ function onQueryFailed(sender, args) {
  * @param {type} sender - The sender.
  * @param {type} args - The arguments.
  */
-function onQuerySucceeded(sender, args) {
+function onQueryLookupSucceeded(sender, args) {
     var listEnumerator = collListItem.getEnumerator();
     var listInfo = "";
     /*"<table class='table table-striped'>" +

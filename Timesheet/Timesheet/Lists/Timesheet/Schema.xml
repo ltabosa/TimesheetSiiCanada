@@ -7,8 +7,48 @@
 
 
 
+
+
+
       <ContentType ID="0x0100fa5d561830074bacb2080fe7dcedb7d4" Name="ListFieldsContentType">
         <FieldRefs>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -83,6 +123,7 @@
           <FieldRef ID="{0efa37ab-bf0d-4233-905b-6c1f7dc871d4}" Name="_x0030_" />
           <FieldRef ID="{3e55bd19-2707-4672-8841-a81897542e44}" Name="_x0031_" />
           <FieldRef ID="{c2d09f94-56d9-4c76-a405-44ba02dc24cd}" Name="Total" />
+          <FieldRef ID="{ac12f68e-d8ec-400c-92d1-9d5767dcbac7}" Name="HourType" />
         </FieldRefs>
       </ContentType>
       <ContentTypeRef ID="0x01">
@@ -91,6 +132,43 @@
       <ContentTypeRef ID="0x0120" />
     </ContentTypes>
     <Fields>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -166,8 +244,11 @@
       <Field Name="_x0030_" ID="{0efa37ab-bf0d-4233-905b-6c1f7dc871d4}" DisplayName="30" Type="Number" />
       <Field Name="_x0031_" ID="{3e55bd19-2707-4672-8841-a81897542e44}" DisplayName="31" Type="Number" />
       <Field Name="Total" ID="{c2d09f94-56d9-4c76-a405-44ba02dc24cd}" DisplayName="Total" Type="Number" />
+      <Field Name="HourType" ID="{ac12f68e-d8ec-400c-92d1-9d5767dcbac7}" DisplayName="HourType" Type="Text" />
     </Fields>
     <Views>
+
+
 
 
 
@@ -179,10 +260,12 @@
         <ViewFields>
 
 
+
           <FieldRef Name="LinkTitleNoMenu"></FieldRef>
         </ViewFields>
         <Query>
           <OrderBy>
+
 
 
             <FieldRef Name="Modified" Ascending="FALSE"></FieldRef>
@@ -238,7 +321,44 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           <FieldRef Name="Project" />
+          <FieldRef Name="HourType" />
           <FieldRef Name="Month" />
           <FieldRef Name="Year" />
           <FieldRef Name="AssignedTo" />
@@ -277,6 +397,7 @@
         </ViewFields>
         <Query>
           <OrderBy>
+
 
 
             <FieldRef Name="ID"></FieldRef>

@@ -9,7 +9,20 @@ function retrieve() {
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('MyTimesheet');
     var camlQuery = new SP.CamlQuery();
-    camlQuery.set_viewXml('<View><Query><OrderBy><FieldRef Name=\'Title\' ' + 'Ascending=\'TRUE\' /></OrderBy></Query><ViewFields><FieldRef Name=\'Id\' /><FieldRef Name=\'Title\' /><FieldRef Name=\'Year\' /><FieldRef Name=\'Total\' /><FieldRef Name=\'Status\' /></ViewFields></View>');
+    camlQuery.set_viewXml('<View>' +
+                            '<Query>' +
+                            '<OrderBy>' +
+                                '<FieldRef Name=\'Title\' Ascending=\'TRUE\' />' +
+                                '</OrderBy>' +
+                            '</Query>' +
+                            '<ViewFields>' +
+                                '<FieldRef Name=\'Id\' />' +
+                                '<FieldRef Name=\'Title\' />' +
+                                '<FieldRef Name=\'Year\' />' +
+                                '<FieldRef Name=\'Total\' />' +
+                                '<FieldRef Name=\'Status\' />' +
+                            '</ViewFields>' +
+                          '</View>');
     window.collListItem = oList.getItems(camlQuery);
     context.load(collListItem, 'Include(Id, Title, Year, Total, Status)');
     context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
@@ -40,13 +53,14 @@ function onQuerySucceeded(sender, args) {
 
         listInfo +=
         "<tr>" +
-           "<td class='col-md-1'><a href='#' onclick='ShowDialog(" + oListItem.get_id() + ")'><img src='../Images/EditIcon.png' /></a></td>" +
+           "<td class='col-md-1'><a href='EditTimesheet.aspx?Month="+oListItem.get_item('Title')+"&Year="+oListItem.get_item('Year')+"'><img src='../Images/EditIcon.png' /></a></td>" +
            "<td>" + oListItem.get_item('Title') + "</td>" +
            "<td>" + oListItem.get_item('Year') + "</td>" +
            "<td>" + oListItem.get_item('Total') + "</td>" +
            "<td>" + oListItem.get_item('Status') + "</td>" +
         "</tr>";
     }
+    //oListItem.get_id()
     listInfo += "</table>";
     $("#results").html(listInfo);
 }
@@ -55,7 +69,9 @@ function onQuerySucceeded(sender, args) {
  * @param {number} ID - The project identifier.
  * @returns {boolean} 
  */
-function ShowDialog(ID) {
+
+
+/*function ShowDialog(ID) {
     var options = {
         url: "..Lists/MyTimesheet/EditForm.aspx?ID=" + ID,
         allowMaximize: true,
@@ -65,5 +81,5 @@ function ShowDialog(ID) {
     SP.SOD.execute('sp.ui.dialog.js', 'SP.UI.ModalDialog.showModalDialog', options);
     return false;
 }
-
+*/
 

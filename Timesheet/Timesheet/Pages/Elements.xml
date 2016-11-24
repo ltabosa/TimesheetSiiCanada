@@ -3,5 +3,6 @@
   <Module Name="Pages">
     <File Path="Pages\Default.aspx" Url="Pages/Default.aspx" ReplaceContent="TRUE" />
     <File Path="Pages\NewTimesheet.aspx" Url="Pages/NewTimesheet.aspx" ReplaceContent="TRUE" />
+    <File Path="Pages\EditTimesheet.aspx" Url="Pages/EditTimesheet.aspx" ReplaceContent="TRUE" />
   </Module>
 </Elements>
