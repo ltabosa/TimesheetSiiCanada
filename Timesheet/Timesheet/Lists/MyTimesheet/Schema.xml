@@ -7,8 +7,24 @@
 
 
 
+
+
+
+
+
+
       <ContentType ID="0x010040dc78757bf4489aaa170902ac497912" Name="ListFieldsContentType">
         <FieldRefs>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -17,6 +33,8 @@
           <FieldRef ID="{deb3848f-678a-4ef0-bd21-3fdf33624771}" Name="Year" />
           <FieldRef ID="{13bd4b28-875f-40a6-bd4d-60c460307e17}" Name="Total" />
           <FieldRef ID="{186eea4b-5675-4c63-a583-0ff0f5596c0b}" Name="Status" />
+          <FieldRef ID="{53101f38-dd2e-458c-b245-0c236cc13d1a}" Name="AssignedTo" />
+          <FieldRef ID="{2E8881DA-0332-4ad9-A565-45B5B8B2702F}" Name="ReportOwner" />
         </FieldRefs>
       </ContentType>
       <ContentTypeRef ID="0x01">
@@ -30,12 +48,28 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
       <Field ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Type="Text" Name="Title" DisplayName="Month" Required="FALSE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Title" MaxLength="255" />
       <Field Name="Year" ID="{deb3848f-678a-4ef0-bd21-3fdf33624771}" DisplayName="Year" Type="Text" />
       <Field Name="Total" ID="{13bd4b28-875f-40a6-bd4d-60c460307e17}" DisplayName="Total" Type="Number" />
       <Field Name="Status" ID="{186eea4b-5675-4c63-a583-0ff0f5596c0b}" DisplayName="Status" Type="MultiChoice" />
+      <Field ID="{53101f38-dd2e-458c-b245-0c236cc13d1a}" Name="AssignedTo" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="AssignedTo" Group="$Resources:core,Issue_Task_Columns;" Type="User" List="UserInfo" DisplayName="$Resources:core,Assigned_To;" DelayActivateTemplateBinding="GROUP,SPSPERS" />
+      <Field ID="{2E8881DA-0332-4ad9-A565-45B5B8B2702F}" Name="ReportOwner" StaticName="ReportOwner" Description="$Resources:spscore,BizAppsFields_ReportOwner_Description;" List="UserInfo" DisplayName="$Resources:spscore,BizAppsFields_ReportOwner_Name;" Group="$Resources:spscore,BizAppsFields_ReportGroup;" Type="User" SourceID="http://schemas.microsoft.com/sharepoint/v3" />
     </Fields>
     <Views>
+
+
+
+
 
 
 
@@ -47,10 +81,14 @@
         <ViewFields>
 
 
+
+
           <FieldRef Name="LinkTitleNoMenu"></FieldRef>
         </ViewFields>
         <Query>
           <OrderBy>
+
+
 
 
             <FieldRef Name="Modified" Ascending="FALSE"></FieldRef>
@@ -73,13 +111,26 @@
 
 
 
+
+
+
+
+
+
+
+
+
           <FieldRef Name="LinkTitle"></FieldRef>
           <FieldRef Name="Year" />
           <FieldRef Name="Total" />
           <FieldRef Name="Status" />
+          <FieldRef Name="AssignedTo" />
+          <FieldRef Name="ReportOwner" />
         </ViewFields>
         <Query>
           <OrderBy>
+
+
 
 
             <FieldRef Name="ID"></FieldRef>

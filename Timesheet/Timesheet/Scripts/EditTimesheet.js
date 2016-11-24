@@ -1,9 +1,10 @@
 ﻿$(document).ready(function () {
 
     //take month, year and user to collect data
-
+    timesheetId = GetUrlKeyValue('ID', false);
     month = GetUrlKeyValue('Month', false);
     year = GetUrlKeyValue('Year', false);
+    sumCol = 0;
     count = 0;
     array = new Array();
     //console.log("Month: " + month);
@@ -20,16 +21,47 @@
 
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', takeCurrentUser);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', fillArrayAndTakeCount);
+
+    //otherProject
+    $("#otherProject").click(function () {
+        newLineOfProject1();
+    });
     
-    //SP.SOD.executeFunc('sp.js', 'SP.ClientContext', newLineOfProject);
-    
+    //Delete Selected Lines
+    $("#deleteLine").click(function () {
+        deleteLineOfProject();
+    });
+
+    $("#Submit").click(function () {
+        //delete old draft
+        console.log(sumCol);
+        console.log(currentUser);
+        //save info in list
+        updateListMyTimesheet();
+        //updateTimesheetList();
+    });
    
 
 });
 //get current logged in user
 function takeCurrentUser() {
+    var clientContext = SP.ClientContext.get_current();
+    var website = clientContext.get_web();
+    currentUser = website.get_currentUser();
+    clientContext.load(website);
+    clientContext.load(currentUser);
+    clientContext.executeQueryAsync(onRequestSucceeded, onRequestFailed);
 
+    function onRequestSucceeded() {
+        //alert(currentUser.LoginName);
+        
+    }
+
+    function onRequestFailed(sender, args) {
+        alert('Error: ' + args.get_message());
+    }
 }
+
 
 //Take the current number of rows in the specific month
 //Change the Where to accept the month, year and current user for the request
@@ -134,6 +166,7 @@ function onQuerySucceeded(sender, args) {
                 total+=array[temp][j];
         }
         array[temp][3] = total;
+        sumCol += total;
     }
     console.log(array);
     //Create lines off projects
@@ -141,7 +174,7 @@ function onQuerySucceeded(sender, args) {
 
     //Call this function to build the empty table.
     newLineOfProject(count);
-
+    $('#totalHour').html(sumCol);
 
     //listInfo += "</table>";
    // $(".results").html(listInfo);
@@ -217,6 +250,87 @@ function newLineOfProject(rows) {
     //SP.SOD.executeFunc('sp.js', 'SP.ClientContext', lookupProject);
     
 
+}
+
+//changed
+function newLineOfProject1() {
+    count++;
+    var newLine = "";
+    for (var i = 0; i < count; i++) {
+        newLine += '<tr id="row' + i + '">' +
+                    '<td><input type="checkbox" id="col' + i + '0"></td>' +
+                    '<td><select class="form-control results" id="col' + i + '1"></select></td>' +
+                    '<td><select class="form-control" id="col' + i + '2">' +
+                            '<option value="N" label="Normal Hour" selected="selected">N</option>' +
+                            '<option value="S" label="Supplemental Hour">S</option>' +
+                            '<option value="O" label="Overtime Hour">O</option>' +
+                            '<option value="G" label="Gratuity Hour">G</option>' +
+                        '</select>' +
+                    '</td>' +
+                    '<td><input type="text" value="" id="col' + i + '3" class="form-control" readonly/></td>' +
+                    '<td><input type="text"  id="col' + i + '4" class="form-control" pattern = "[1-9][0-4]?"/></td>' +
+                    '<td><input type="text"  id="col' + i + '5" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '6" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '7" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '8" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '9" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '10" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '11" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '12" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '13" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '14" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '15" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '16" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '17" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '18" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '19" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '20" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '21" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '22" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '23" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '24" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '25" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '26" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '27" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '28" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '29" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '30" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '31" class="form-control"/></td>' +
+                    '<td class="month28Days"><input type="text"  id="col' + i + '32" class="form-control"/></td>' +
+                    '<td class="month29Days"><input type="text"  id="col' + i + '33" class="form-control"/></td>' +
+                    '<td class="month30Days"><input type="text"  id="col' + i + '34" class="form-control"/></td>' +
+                    '<td><input type="hidden" id="col' + i + '35"></td>' +
+                  '</tr>';
+    }
+    fillArray();
+    
+
+    //Delete old table and create new one empty
+    $("#newLine").html(newLine);
+
+
+    //Update the total
+    $(".form-control").focusout(function () {
+        updateLineTotal();
+
+    });
+    lookupProject();
+    numberOfDaysInMonth();
+
+}
+
+//same
+function fillArray() {
+    if (count != 0) {
+        var temp = count - 1;
+        array[temp] = new Array(35);
+        for (var i = 0; i < count; i++) {
+            for (var j = 0; j < 35; j++) {
+                array[i][j] = $('#col' + i + '' + j).val();
+            }
+        }
+    }
+    console.log(array);
 }
 
 
@@ -364,3 +478,51 @@ function updateProjects() {
 
     
 }
+
+//same
+function deleteLineOfProject() {
+    for (var i = 0; i < count; i++) {
+        if ($('#col' + i + '0').is(':checked')) {
+            $("#row" + i).hide();
+            array[i][35] = "Deleted";
+            updateLineTotal();
+            console.log("delete the line: " + i);
+        }
+    }
+}
+
+
+function updateListMyTimesheet() {
+    //if (colCreated == (count - 1)) {
+
+    //update My Timesheet list
+    var clientContext = new SP.ClientContext.get_current();
+
+    var oList = clientContext.get_web().get_lists().getByTitle('MyTimesheet');
+
+    this.oListItem = oList.getItemById(timesheetId);
+
+    //var itemCreateInfo = new SP.ListItemCreationInformation();
+    //this.oListItem = oList.addItem(itemCreateInfo);
+
+    oListItem.set_item('Title', month);
+    oListItem.set_item('Year', year);
+    oListItem.set_item('Total', sumCol);
+    oListItem.set_item('Status', "In Progress");
+    oListItem.set_item('ReportOwner', currentUser);
+
+
+    oListItem.update();
+
+    clientContext.load(oListItem);
+
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryCreateMyTimesheet), Function.createDelegate(this, this.onQueryCreateFailed));
+
+    function onQueryCreateMyTimesheet() {
+        // return to MyTimesheet
+    }
+    //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    //window.location.href = '../Pages/File.aspx?ID=' + projectId + '&Title=' + projectTitle;
+    // }
+}
+

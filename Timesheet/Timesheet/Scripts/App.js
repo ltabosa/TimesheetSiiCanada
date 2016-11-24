@@ -1,16 +1,28 @@
 ﻿/**Query to shows all projects*/
 $(document).ready(function () {
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', retrieve);
+
 });
 /**
  * Retrieves the DGD project.
  */
 function retrieve() {
+    //Id of User logged in
+    var userId = _spPageContextInfo.userId;
+    console.log(userId);
+
+
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('MyTimesheet');
     var camlQuery = new SP.CamlQuery();
     camlQuery.set_viewXml('<View>' +
                             '<Query>' +
+                                '<Where>' +
+                                        '<Eq>' +
+                                            '<FieldRef Name=\'ReportOwner\'/>' +
+                                            '<Value Type=\'User\'>' + userId + '</Value>' +
+                                        '</Eq>' +
+                                '</Where>' +
                             '<OrderBy>' +
                                 '<FieldRef Name=\'Title\' Ascending=\'TRUE\' />' +
                                 '</OrderBy>' +
@@ -53,7 +65,7 @@ function onQuerySucceeded(sender, args) {
 
         listInfo +=
         "<tr>" +
-           "<td class='col-md-1'><a href='EditTimesheet.aspx?Month="+oListItem.get_item('Title')+"&Year="+oListItem.get_item('Year')+"'><img src='../Images/EditIcon.png' /></a></td>" +
+           "<td class='col-md-1'><a href='EditTimesheet.aspx?ID=" + oListItem.get_id() + "&Month=" + oListItem.get_item('Title') + "&Year=" + oListItem.get_item('Year') + "'><img src='../Images/EditIcon.png' /></a></td>" +
            "<td>" + oListItem.get_item('Title') + "</td>" +
            "<td>" + oListItem.get_item('Year') + "</td>" +
            "<td>" + oListItem.get_item('Total') + "</td>" +
