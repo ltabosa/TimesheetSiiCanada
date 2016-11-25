@@ -42,6 +42,8 @@
 <asp:Content ContentPlaceHolderID="PlaceHolderMain" runat="server">
     <br />
     <br />
+     
+    <div id="errorMsg"></div>
 
     <a href="../Pages/Default.aspx" class="btn btn-primary " role="button">BACK</a>
 
@@ -187,7 +189,7 @@
         <br />
         <p><strong>Total: <span id="totalHour">0</span></strong></p>
         <input name="Submit" id="Submit" type="button" value="Submit" class="btn btn-default btn-lg" />
-
+        
         
             
         

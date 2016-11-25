@@ -51,6 +51,7 @@ function onQueryFailed(sender, args) {
  */
 function onQuerySucceeded(sender, args) {
     var listEnumerator = collListItem.getEnumerator();
+   
     var listInfo =
         "<table class='table table-striped'>" +
             "<tr>" +
@@ -63,10 +64,16 @@ function onQuerySucceeded(sender, args) {
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
 
+        listInfo += "<tr>";
+        
+        if (oListItem.get_item('Status')=="Approved"){
+            listInfo += "<td class='col-md-1'></td>";
+        } else {
+            listInfo += "<td class='col-md-1'><a href='EditTimesheet.aspx?ID=" + oListItem.get_id() + "&Status=" + oListItem.get_item('Status') + "&Month=" + oListItem.get_item('Title') + "&Year=" + oListItem.get_item('Year') + "'><img src='../Images/EditIcon.png' /></a></td>";
+        }
+
         listInfo +=
-        "<tr>" +
-           "<td class='col-md-1'><a href='EditTimesheet.aspx?ID=" + oListItem.get_id() + "&Month=" + oListItem.get_item('Title') + "&Year=" + oListItem.get_item('Year') + "'><img src='../Images/EditIcon.png' /></a></td>" +
-           "<td>" + oListItem.get_item('Title') + "</td>" +
+          "<td>" + oListItem.get_item('Title') + "</td>" +
            "<td>" + oListItem.get_item('Year') + "</td>" +
            "<td>" + oListItem.get_item('Total') + "</td>" +
            "<td>" + oListItem.get_item('Status') + "</td>" +

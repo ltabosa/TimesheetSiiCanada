@@ -1,8 +1,10 @@
 ﻿$(document).ready(function () {
+
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', monthYearFieldFill);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', lookupProject);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', numberOfDaysInMonth);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', setLoggedInUser);
+    
     count = 1;
     colCreated = 0;
     //newLine = "";
@@ -21,8 +23,25 @@
         deleteLineOfProject();
     });
     $("#Submit").click(function () {
-        updateTimesheetList();
+        //get month and year
+        monthSubmit = $('#txtMonth').val();
+        yearSubmit = $('#txtYear').val();
+
+        //Update Array With the Most Recent Data
+        fillArray();
+
+        //get user ID
+        var users = $('#peoplePickerDivLinMan_TopSpan_HiddenInput').val();
+        users = users.substring(1, users.length - 1);
+        var obj = JSON.parse(users);
+        console.log(obj);
+        getUserId(obj.AutoFillKey);
     });
+    $("body").focusout(function () {
+        $("#errorMsg").html("");
+        //$("#errorMsg").hide("fade");
+    });
+    
 });
 
 function monthYearFieldFill() {
@@ -307,34 +326,11 @@ function updateLineTotal() {
     //console.log("Total= " + sumCol);
 }
 
-function updateTimesheetList() {
-    /*
-    documentType = $("#DocumentType option:selected").text();
-    description = $('#peoplePickerDivLinMan').val();
-    dateCreated = document.getElementById('DateCreated').value;
-    */
-    monthSubmit = $('#txtMonth').val();
-    yearSubmit = $('#txtYear').val();
-    //var html = $('#ctl00_PlaceHolderMain_SdfPeoplePicker_upLevelDiv');
-    //var user = $("#divEntityData", html).attr("displaytext");
+function updateTimesheetList(user) {
     
-    var users = $('#peoplePickerDivLinMan_TopSpan_HiddenInput').val();
-    users = users.substring(1, users.length - 1);
-    //var peoplePicker = this.SPClientPeoplePicker.SPClientPeoplePickerDict.peoplePickerDiv_TopSpan;
-    var obj = JSON.parse(users);
-    console.log(obj.DisplayText);
-    // var users = peoplePicker.GetAllUserInfo();
-    //console.log(users);
-
-    //var user = document.getElementById('SdfPeoplePicker').value;
-    console.log("Month: " + monthSubmit);
-    console.log("Year: " + yearSubmit);
-    //console.log("User: " + user);
-
-    //Update Array With the Most Recent Data
-    fillArray();
-    updateListMyTimesheet();
-    //
+    var assignedToVal = new SP.FieldUserValue();
+    assignedToVal.set_lookupId(user);
+    
 
     while (colCreated < (count - 1)) {
         if (array[colCreated][35] != "Deleted") {
@@ -352,6 +348,8 @@ function updateTimesheetList() {
             oListItem.set_item('Month', monthSubmit);
             oListItem.set_item('Year', yearSubmit);
             oListItem.set_item('Total', array[colCreated][3]);
+            oListItem.set_item('AssignedTo', assignedToVal);
+            
             
             for (var i = 0; i < 31; i++) {
                 var x = i + 1;
@@ -374,8 +372,6 @@ function updateTimesheetList() {
             onQueryCreateSucceeded();
         }
     }
-    //
-
 }
 
 function onQueryCreateSucceeded() {
@@ -389,8 +385,9 @@ function onQueryCreateSucceeded() {
 
 }
 
-function updateListMyTimesheet(){
-    //if (colCreated == (count - 1)) {
+function updateListMyTimesheet(user) {
+        var assignedToVal = new SP.FieldUserValue();
+        assignedToVal.set_lookupId(user);
 
         //update My Timesheet list
         var clientContext = new SP.ClientContext.get_current(); 
@@ -404,6 +401,7 @@ function updateListMyTimesheet(){
         oListItem.set_item('Year', yearSubmit);
         oListItem.set_item('Total', sumCol);
         oListItem.set_item('Status', "In Progress");
+        oListItem.set_item('ReportOwner', assignedToVal);
 
         oListItem.update();
 
@@ -411,10 +409,6 @@ function updateListMyTimesheet(){
 
         clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryCreateMyTimesheet), Function.createDelegate(this, this.onQueryCreateFailed));
 
-
-        //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-        //window.location.href = '../Pages/File.aspx?ID=' + projectId + '&Title=' + projectTitle;
-   // }
 }
 
 function onQueryCreateMyTimesheet() {
@@ -444,7 +438,8 @@ function setLoggedInUser() {
         schema['AllowMultipleValues'] = false;
         schema['MaximumEntitySuggestions'] = 50;
         schema['Width'] = '280px';
-
+        
+        //Create logged in object
         var users = new Array(1);
         var defaultUser = new Object();
         defaultUser.AutoFillDisplayText = data.d.Title;
@@ -468,6 +463,87 @@ function setLoggedInUser() {
     }
 }
 
+
+// Get the user ID.
+function getUserId(loginName) {
+    var context = new SP.ClientContext.get_current();
+    this.user = context.get_web().ensureUser(loginName);
+    context.load(this.user);
+    context.executeQueryAsync(
+         Function.createDelegate(null, ensureUserSuccess),
+         Function.createDelegate(null, onFail)
+    );
+}
+
+function ensureUserSuccess() {
+    console.log("User ID:" + this.user.get_id());
+    userId = this.user.get_id();
+
+    //Check if the month and Year Already exists before create Items
+
+    var context = new SP.ClientContext.get_current();
+    var oList = context.get_web().get_lists().getByTitle('MyTimesheet');
+    var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml('<View>' +
+                            '<Query>' +
+                                '<Where>' +
+                                            '<Eq>'+
+                                                '<FieldRef Name=\'ReportOwner\' LookupId=\'TRUE\'/>' +
+                                                '<Value Type=\'User\'>' + userId + '</Value>' +
+                                            '</Eq>' +
+                                '</Where>' +
+                            '<OrderBy>' +
+                                '<FieldRef Name=\'Title\' Ascending=\'TRUE\' />' +
+                                '</OrderBy>' +
+                            '</Query>' +
+                            '<ViewFields>' +
+                                '<FieldRef Name=\'Id\' />' +
+                                '<FieldRef Name=\'Title\' />' +
+                                '<FieldRef Name=\'Year\' />' +
+                                '<FieldRef Name=\'Total\' />' +
+                                '<FieldRef Name=\'Status\' />' +
+                            '</ViewFields>' +
+                          '</View>');
+    window.collListItem = oList.getItems(camlQuery);
+    context.load(collListItem, 'Include(Id, Title, Year, Total, Status)');
+    context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceededCreateItems),
+    Function.createDelegate(this, window.onQueryFailed));
+
+    
+    
+}
+
+function onFail(sender, args) {
+    alert('Query failed. Error: ' + args.get_message());
+}
+
+
+function onQuerySucceededCreateItems() {
+    var listEnumerator = collListItem.getEnumerator();
+    //console.log(listEnumerator);
+    var control = 0;
+    while (listEnumerator.moveNext()) {
+        var oListItem = listEnumerator.get_current();
+        if (oListItem.get_item('Title') == monthSubmit && oListItem.get_item('Year') == yearSubmit) {
+            control++;
+        }
+    }
+
+    //console.log("Control: " + control);
+    //Check if the Month And Year is Already in Draft Mode
+    if (control == 0) {
+        updateListMyTimesheet(userId);
+        updateTimesheetList(userId);
+    } else {
+        //alert("error");
+        var errorMes = '<div class="alert alert-danger">'+
+                            '<strong>Atention!</strong> You have already one draft for '+monthSubmit+' '+yearSubmit+'.'+
+                        '</div>';
+        $("#errorMsg").html(errorMes);
+    }
+    //Create Items If Query is empty
+    
+}
 
 
 

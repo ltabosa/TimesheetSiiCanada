@@ -4,14 +4,16 @@
     timesheetId = GetUrlKeyValue('ID', false);
     month = GetUrlKeyValue('Month', false);
     year = GetUrlKeyValue('Year', false);
+    status = GetUrlKeyValue('Status', false);
     sumCol = 0;
     count = 0;
+    colCreated = 0;
     array = new Array();
     //console.log("Month: " + month);
     //console.log("Year: " + year);
 
     //go back to beginning if take url without month and year 
-    if (!month || !year) {
+    if (!month || !year ) {
         window.location.href = 'Default.aspx';
     }
     
@@ -33,12 +35,16 @@
     });
 
     $("#Submit").click(function () {
+        //update array with the newest info
+        fillArray()
         //delete old draft
         console.log(sumCol);
+        //var userid = _spPageContextInfo.userId;
+        deleteOldListItems();
         console.log(currentUser);
         //save info in list
         updateListMyTimesheet();
-        //updateTimesheetList();
+        updateTimesheetList(currentUser);
     });
    
 
@@ -70,12 +76,10 @@ function fillArrayAndTakeCount() {
     var oList = context.get_web().get_lists().getByTitle('Timesheet');
     var camlQuery = new SP.CamlQuery();
     /*
-    <Eq>
-                 <FieldRef Name='Requester' />
-                 <Value Type='User'>
-                    <UserID />
-                 </Value>
-              </Eq>
+     '<Eq>'+
+                                                '<FieldRef Name=\'ReportOwner\' LookupId=\'TRUE\'/>' +
+                                                '<Value Type=\'User\'>' + userId + '</Value>' +
+                                            '</Eq>' +
     */
     camlQuery.set_viewXml('<View>' +
                             '<Query>' +
@@ -167,6 +171,7 @@ function onQuerySucceeded(sender, args) {
         }
         array[temp][3] = total;
         sumCol += total;
+
     }
     console.log(array);
     //Create lines off projects
@@ -518,11 +523,153 @@ function updateListMyTimesheet() {
 
     clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryCreateMyTimesheet), Function.createDelegate(this, this.onQueryCreateFailed));
 
-    function onQueryCreateMyTimesheet() {
-        // return to MyTimesheet
-    }
+  
     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     //window.location.href = '../Pages/File.aspx?ID=' + projectId + '&Title=' + projectTitle;
     // }
+}
+
+function onQueryCreateMyTimesheet() {
+    // return to MyTimesheet
+}
+//changed
+function updateTimesheetList(user) {
+
+    var assignedToVal = new SP.FieldUserValue();
+    assignedToVal.set_lookupId(user);
+    console.log(user);
+    console.log("Count: " + count);
+    console.log("colCreated: " + colCreated);
+    while (colCreated < count) {
+        if (array[colCreated][35] != "Deleted") {
+            console.log("Linha nao deletada: " + colCreated);
+
+            var clientContext = new SP.ClientContext.get_current();
+
+            //update Timesheet List
+            var oList = clientContext.get_web().get_lists().getByTitle('Timesheet');
+
+            var itemCreateInfo = new SP.ListItemCreationInformation();
+            this.oListItem = oList.addItem(itemCreateInfo);
+
+            oListItem.set_item('Project', array[colCreated][1]);
+            oListItem.set_item('Month', month);
+            oListItem.set_item('Year', year);
+            oListItem.set_item('Total', array[colCreated][3]);
+            oListItem.set_item('AssignedTo', assignedToVal);
+
+
+            for (var i = 0; i < 31; i++) {
+                var x = i + 1;
+                oListItem.set_item('_x00' + x + '_', array[colCreated][i + 4]);
+            }
+
+            oListItem.update();
+
+            clientContext.load(oListItem);
+            console.log("colCreated antes:" + colCreated);
+
+
+            clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryCreateSucceeded), Function.createDelegate(this, this.onQueryCreateFailed));
+            colCreated++;
+            console.log("colCreated depois:" + colCreated);
+
+        } else {
+            console.log("Linha deletada: " + colCreated);
+            colCreated++;
+            onQueryCreateSucceeded();
+        }
+    }
+}
+//same
+function onQueryCreateSucceeded() {
+    console.log("colCreated: " + colCreated);
+    console.log("count: " + count);
+    console.log("tamanho no array= " + array.length);
+    //window.location.href = '../Pages/Default.aspx?ID=' + projectId + '&Title=' + projectTitle;
+    if (colCreated == (count - 1)) {
+        window.location.href = '../Pages/Default.aspx';
+    }
+
+}
+
+function deleteOldListItems() {
+    var userid = _spPageContextInfo.userId;
+    var context = new SP.ClientContext.get_current();
+    var oList = context.get_web().get_lists().getByTitle('Timesheet');
+    var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml('<View>' +
+                            '<Query>' +
+                                '<Where>' +
+                                        '<Eq>' +
+                                                '<FieldRef Name=\'AssignedTo\' LookupId=\'TRUE\'/>' +
+                                                '<Value Type=\'User\'>' + userid + '</Value>' +
+                                        '</Eq>' +
+                                '</Where>' +
+                                '<OrderBy>' +
+                                    '<FieldRef Name=\'Title\' Ascending=\'TRUE\' />' +
+                                '</OrderBy>' +
+                            '</Query>' +
+                            '<ViewFields>' +
+                                '<FieldRef Name=\'Id\' />' +
+                                '<FieldRef Name=\'Month\' />' +
+                                '<FieldRef Name=\'Year\' />' +
+                            '</ViewFields>' +
+                          '</View>');
+    window.collListItem = oList.getItems(camlQuery);
+    context.load(collListItem, 'Include(Id, Month, Year)');
+    context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceededOther),
+    Function.createDelegate(this, window.onQueryFailed));
+}
+
+function onQuerySucceededOther() {
+    //alert("works");
+    deleteRow = new Array();
+    var posArr = 0;
+    var listEnumerator = collListItem.getEnumerator();
+    while (listEnumerator.moveNext()) {
+        var oListItem = listEnumerator.get_current();
+        if (oListItem.get_item('Month') == month && oListItem.get_item('Year') == year) {
+            //control++;
+            //delete this line
+            deleteRow[posArr] = oListItem.get_id();
+            posArr++;
+            console.log(deleteRow);
+           /* var itemId = oListItem.get_id();
+            console.log("itemId: " + itemId);
+            var context = new SP.ClientContext.get_current();
+            var oList = context.get_web().get_lists().getByTitle('Timesheet');
+
+            window.oListItem = oList.getItemById(itemId);
+
+            oListItem.deleteObject();
+
+            context.executeQueryAsync(Function.createDelegate(this, this.onQuerySucceededDeleted), Function.createDelegate(this, this.onQueryFailed));
+        */
+        }
+    }
+    continueDeleting();
+}
+
+
+function continueDeleting() {
+    deleteRow.forEach(function (val) {
+
+        this.itemId = val;
+
+        var clientContext = new SP.ClientContext.get_current();
+        var oList = clientContext.get_web().get_lists().getByTitle('Timesheet');
+
+        this.oListItem = oList.getItemById(itemId);
+
+        oListItem.deleteObject();
+
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.onQuerySucceededDeleted), Function.createDelegate(this, this.onQueryFailed));
+    });
+}
+function onQuerySucceededDeleted() {
+    //updateTimesheetList(currentUser);
+   // alert('Item deleted: ' + itemId);
+
 }
 
