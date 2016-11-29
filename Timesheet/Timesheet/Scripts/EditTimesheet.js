@@ -281,6 +281,8 @@ function newLineOfProject(rows) {
     
     weekendDay();
 
+    
+
 }
 
 //changed
@@ -354,6 +356,8 @@ function newLineOfProject1() {
     lookupProject();
 
     weekendDay();
+
+   
     
 }
 
@@ -492,6 +496,7 @@ function onQueryLookupSucceeded(sender, args) {
     //listInfo += "</table>";
     $(".results").html(listInfo);
     updateProjects();
+    holiday();
 }
 
 
@@ -727,6 +732,7 @@ function weekendDay() {
             }
         }
     }
+    
 
 }
 
@@ -734,4 +740,62 @@ function getMonthFromString(mon) {
     return new Date(Date.parse(mon + " 1, 2012")).getMonth()
 }
 
+function holiday() {
+    var ctx = new SP.ClientContext.get_current();
+    var siteUrl = 'https://leonardotabosa.sharepoint.com/';
+    var context = new SP.AppContextSite(ctx, siteUrl);
+    ctx.load(context.get_web());
+    var oList = context.get_web().get_lists().getByTitle('Holiday List');
+    var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml('<View>' +
+            '<Query>' +
+                '<OrderBy>' +
+                '<FieldRef Name=\'Title\' Ascending=\'TRUE\' />' +
+                '</OrderBy>' +
+            '</Query>' +
+            '<ViewFields>' +
+                '<FieldRef Name=\'Id\' />' +
+                '<FieldRef Name=\'Title\' />' +
+                '<FieldRef Name=\'HolidayDate\' />' +
+            '</ViewFields>' +
+        '</View>');
+    window.collListItem = oList.getItems(camlQuery);
+    ctx.load(collListItem, 'Include(Id, Title, HolidayDate)');
+    ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryHolidaySucceeded),
+    Function.createDelegate(this, window.onQueryFailed));
+}
 
+function onQueryHolidaySucceeded(sender, args) {
+    console.log(count);
+    //var month = $("#txtMonth").val();
+    //var year = $("#txtYear").val();
+    var listEnumerator = collListItem.getEnumerator();
+    while (listEnumerator.moveNext()) {
+        var oListItem = listEnumerator.get_current();
+        var holidayDate = oListItem.get_item('HolidayDate');
+        var holidayDay = holidayDate.getDate();
+        var holidayMonth = holidayDate.getMonth();
+        var holidayYear = holidayDate.getFullYear();
+        holidayDate = new Date(holidayYear, holidayMonth, holidayDay);
+
+        //holidayDate = holidayDate.setHours(0, 0, 0, 0);
+        //console.log(oListItem.get_item('HolidayDate'));
+
+        console.log(holidayDate);
+        var m = getMonthFromString(month);
+        //var day = new Date(year, m, j);
+        //console.log(day);
+        //if (holidayDate===day){
+        //   alert(day);
+        // }
+        for (i = 0; i < count ; i++) {
+            for (j = 4; j < 35; j++) {
+                var d = new Date(year, m, (j - 3));
+                if ((holidayYear == d.getFullYear()) && (holidayMonth == d.getMonth()) && (holidayDay == d.getDate())) {
+                    $("#col" + i + "" + j).css("background-color", "#F5F5DC");
+                }
+            }
+        }
+
+    }
+}
