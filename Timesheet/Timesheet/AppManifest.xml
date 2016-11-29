@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <!--Created:cb85b80c-f585-40ff-8bfc-12ff4d0e34a9-->
 <App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest"
-     Name="Timesheet"
+     Name="TimesheetV1"
      ProductID="{cae7bd4b-3029-433f-9e1d-23b1fae4101a}"
      Version="1.0.0.0"
      SharePointMinVersion="16.0.0.0"
 >
   <Properties>
-    <Title>Timesheet</Title>
+    <Title>TimesheetV1</Title>
     <StartPage>~appWebUrl/Pages/Default.aspx?{StandardTokens}</StartPage>
   </Properties>
 
@@ -17,5 +17,6 @@
   <AppPermissionRequests>
     <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web/list" Right="FullControl" />
     <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web" Right="FullControl" />
+    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" Right="FullControl" />
   </AppPermissionRequests>
 </App>

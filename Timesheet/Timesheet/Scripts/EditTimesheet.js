@@ -7,8 +7,11 @@
     status = GetUrlKeyValue('Status', false);
     sumCol = 0;
     count = 0;
-    colCreated = 0;
+    //colCreated = 0;
     array = new Array();
+    deleteLineArray = new Array();
+    submitClicked = true;
+
     //console.log("Month: " + month);
     //console.log("Year: " + year);
 
@@ -21,7 +24,7 @@
     $('#txtMonth').val(month);
     $('#txtYear').val(year);
 
-    SP.SOD.executeFunc('sp.js', 'SP.ClientContext', takeCurrentUser);
+    SP.SOD.executeFunc('sp.js', 'SP.ClientContext', takeCurrentUser);//is not working
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', fillArrayAndTakeCount);
 
     //otherProject
@@ -35,26 +38,40 @@
     });
 
     $("#Submit").click(function () {
-        //update array with the newest info
-        fillArray()
-        //delete old draft
-        console.log(sumCol);
-        //var userid = _spPageContextInfo.userId;
-        deleteOldListItems();
-        console.log(currentUser);
-        //save info in list
-        updateListMyTimesheet();
-        updateTimesheetList(currentUser);
+        
+        //prevent clicks
+        //console.log(submitClicked);
+        if (submitClicked){
+            submitClicked = false;
+            
+            //update array with the newest info
+            fillArray();
+
+            console.log(array);
+            //delete old draft
+            //console.log(sumCol);
+            //var userid = _spPageContextInfo.userId;
+            //console.log(deleteLineArray);
+            deleteOldListItems();
+            //console.log(currentUser);
+            //save info in list
+            updateListMyTimesheet();
+            colCreated = 0;
+            console.log(currentUser);
+            
+            updateTimesheetList(currentUser);
+        }
     });
    
-
+    //weekendDay();
 });
 //get current logged in user
 function takeCurrentUser() {
-    var clientContext = SP.ClientContext.get_current();
+    var clientContext = new SP.ClientContext.get_current();
     var website = clientContext.get_web();
-    currentUser = website.get_currentUser();
     clientContext.load(website);
+    currentUser = website.get_currentUser();
+    
     clientContext.load(currentUser);
     clientContext.executeQueryAsync(onRequestSucceeded, onRequestFailed);
 
@@ -72,28 +89,29 @@ function takeCurrentUser() {
 //Take the current number of rows in the specific month
 //Change the Where to accept the month, year and current user for the request
 function fillArrayAndTakeCount() {
+    var userId = _spPageContextInfo.userId;
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('Timesheet');
     var camlQuery = new SP.CamlQuery();
-    /*
-     '<Eq>'+
-                                                '<FieldRef Name=\'ReportOwner\' LookupId=\'TRUE\'/>' +
-                                                '<Value Type=\'User\'>' + userId + '</Value>' +
-                                            '</Eq>' +
-    */
     camlQuery.set_viewXml('<View>' +
                             '<Query>' +
                                 '<Where>' +
-                                    '<And>'+
-                                        '<Eq>' +
-                                            '<FieldRef Name=\'Month\'/>' +
-                                            '<Value Type=\'Text\'>' + month + '</Value>' +
-                                        '</Eq>' +
-                                        '<Eq>' +
-                                            '<FieldRef Name=\'Year\'/>' +
-                                            '<Value Type=\'Text\'>' + year + '</Value>' +
-                                        '</Eq>' +
-                                    '</And>'+
+                                    '<And>' +
+                                        '<And>' +
+                                            '<Eq>' +
+                                                '<FieldRef Name=\'Month\'/>' +
+                                                '<Value Type=\'Text\'>' + month + '</Value>' +
+                                            '</Eq>' +
+                                            '<Eq>' +
+                                                '<FieldRef Name=\'Year\'/>' +
+                                                '<Value Type=\'Text\'>' + year + '</Value>' +
+                                            '</Eq>' +
+                                        '</And>' +
+                                         '<Eq>' +
+                                             '<FieldRef Name=\'AssignedTo\' LookupId=\'TRUE\'/>' +
+                                             '<Value Type=\'User\'>' + userId + '</Value>' +
+                                         '</Eq>' +
+                                     '</And>' +
                                 '</Where>' +
                                 '<OrderBy>' +
                                     '<FieldRef Name=\'Title\' Ascending=\'TRUE\' />' +
@@ -103,6 +121,8 @@ function fillArrayAndTakeCount() {
                                 '<FieldRef Name=\'Id\' />' +
                                 '<FieldRef Name=\'Title\' />' +
                                 '<FieldRef Name=\'Project\' />' +
+                                '<FieldRef Name=\'Month\' />' +
+                                '<FieldRef Name=\'Year\' />' +
                                 '<FieldRef Name=\'HourType\' />' +
                                 '<FieldRef Name=\'_x001_\' />' +
                                 '<FieldRef Name=\'_x002_\' />' +
@@ -138,7 +158,7 @@ function fillArrayAndTakeCount() {
                             '</ViewFields>' +
                           '</View>');
     window.collListItem = oList.getItems(camlQuery);
-    context.load(collListItem, 'Include(Id, Project, HourType, _x001_, _x002_, _x003_, _x004_, _x005_, _x006_, _x007_, _x008_, _x009_, _x0010_, _x0011_, _x0012_, _x0013_, _x0014_, _x0015_, _x0016_, _x0017_, _x0018_, _x0019_, _x0020_, _x0021_, _x0022_, _x0023_, _x0024_, _x0025_, _x0026_, _x0027_, _x0028_, _x0029_, _x0030_, _x0031_)');
+    context.load(collListItem, 'Include(Id, Project, Month, Year, HourType, _x001_, _x002_, _x003_, _x004_, _x005_, _x006_, _x007_, _x008_, _x009_, _x0010_, _x0011_, _x0012_, _x0013_, _x0014_, _x0015_, _x0016_, _x0017_, _x0018_, _x0019_, _x0020_, _x0021_, _x0022_, _x0023_, _x0024_, _x0025_, _x0026_, _x0027_, _x0028_, _x0029_, _x0030_, _x0031_)');
     context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceeded),
     Function.createDelegate(this, window.onQueryFailed));
 }
@@ -153,15 +173,18 @@ function onQueryFailed(sender, args) {
 function onQuerySucceeded(sender, args) {
     var listEnumerator = collListItem.getEnumerator();
     while (listEnumerator.moveNext()) {
+        
         //count number of rows in list
         count++;
         
-
         //update array
         var oListItem = listEnumerator.get_current();
+        //save the number of lines to be deleted
+        deleteLineArray[count] = oListItem.get_id();
+
         var temp = count - 1;
         var total=0;
-        array[temp] = new Array(35);
+        array[temp] = new Array(36);
         array[temp][1] = oListItem.get_item('Project');
         array[temp][2] = oListItem.get_item('HourType');
 
@@ -173,7 +196,9 @@ function onQuerySucceeded(sender, args) {
         sumCol += total;
 
     }
-    console.log(array);
+    //console.log(array);
+    //console.log("Lines to be deleted:");
+    //console.log(deleteLineArray);
     //Create lines off projects
     //console.log("Count:" + count);
 
@@ -188,7 +213,7 @@ function onQuerySucceeded(sender, args) {
 
 function newLineOfProject(rows) {
     var newLine = "";
-    console.log(rows);
+    //console.log(rows);
     for (var i = 0; i < rows; i++) {
         newLine += '<tr id="row' + i + '">' +
                     '<td><input type="checkbox" id="col' + i + '0"></td>' +
@@ -254,12 +279,14 @@ function newLineOfProject(rows) {
     });
     //SP.SOD.executeFunc('sp.js', 'SP.ClientContext', lookupProject);
     
+    weekendDay();
 
 }
 
 //changed
 function newLineOfProject1() {
     count++;
+    //console.log(count);
     var newLine = "";
     for (var i = 0; i < count; i++) {
         newLine += '<tr id="row' + i + '">' +
@@ -308,10 +335,12 @@ function newLineOfProject1() {
                   '</tr>';
     }
     fillArray();
-    
+    //console.log(array);
 
     //Delete old table and create new one empty
     $("#newLine").html(newLine);
+
+    
 
 
     //Update the total
@@ -319,23 +348,28 @@ function newLineOfProject1() {
         updateLineTotal();
 
     });
-    lookupProject();
+
     numberOfDaysInMonth();
 
+    lookupProject();
+
+    weekendDay();
+    
 }
 
-//same
+//changed
 function fillArray() {
+    //console.log(count);
     if (count != 0) {
         var temp = count - 1;
-        array[temp] = new Array(35);
+        array[temp] = new Array(36);
         for (var i = 0; i < count; i++) {
-            for (var j = 0; j < 35; j++) {
+            for (var j = 0; j < 36; j++) {
                 array[i][j] = $('#col' + i + '' + j).val();
             }
         }
     }
-    console.log(array);
+    //console.log(array);
 }
 
 
@@ -362,7 +396,7 @@ function numberOfDaysInMonth() {
         //Delete day 31 from array
         for (var i = 0; i < count; i++) {
             $('#col' + i + '34').val(0);
-            console.log("numero de dias= " + numberOfDays);
+            //console.log("numero de dias= " + numberOfDays);
         }
     } else if (numberOfDays == 29) {
         $(".month28Days").show();
@@ -372,7 +406,7 @@ function numberOfDaysInMonth() {
         for (var i = 0; i < count; i++) {
             $('#col' + i + '33').val(0);
             $('#col' + i + '34').val(0);
-            console.log("numero de dias= " + numberOfDays);
+            //console.log("numero de dias= " + numberOfDays);
         }
     } else if (numberOfDays == 28) {
         $(".month28Days").hide();
@@ -383,7 +417,7 @@ function numberOfDaysInMonth() {
             $('#col' + i + '32').val(0);
             $('#col' + i + '33').val(0);
             $('#col' + i + '34').val(0);
-            console.log("numero de dias= " + numberOfDays);
+            //console.log("numero de dias= " + numberOfDays);
         }
 
     } else {
@@ -394,17 +428,17 @@ function numberOfDaysInMonth() {
 }
 
 function updateLineTotal() {
-    console.log(count);
+    //console.log(count);
     if (count > 0) { //Changed this line
         sumCol = 0;
         var error = "";
         for (var i = 0; i < (count) ; i++) {//Changed this line
             var sumLine = 0;
            
-            for (var j = 4; j < 36; j++) {
+            for (var j = 4; j < 35; j++) {
                 var temp = Number($('#col' + i + ''+j).val());
                 //console.log("Valor cada coluna: " + $('#col' + i + ''+j).val());
-                console.log("Temp= "+ temp);
+                //console.log("Temp= "+ temp);
                 if (temp >= 0 && temp < 25) {
                     //error = "";
                     //alert($('#col' + i + '3').val());
@@ -420,11 +454,13 @@ function updateLineTotal() {
                 sumCol += sumLine;
             }
         }
+        //console.log(array);
     }
     //totalHour $("#newLine").html(newLine);
     $('#totalHour').html(sumCol);
     $('#msg').html(error);
     //console.log("Total= " + sumCol);
+    //console.log(array);
 }
 
 //Same functions in the two filles
@@ -460,7 +496,7 @@ function onQueryLookupSucceeded(sender, args) {
 
 
 function updateProjects() {
-    console.log(count);
+   // console.log(count);
 
         for (var i = 0; i < count ; i++) {//changed this line
             //console.log("Count - 1: " + (count - 1));
@@ -477,23 +513,25 @@ function updateProjects() {
                 $('#row' + i).hide();
             }
             document.getElementById('col' + i + '1').value = array[i][1];
-            console.log("Nome do Projeto: " + array[i][1]);
-
+           // console.log("Nome do Projeto: " + array[i][1]);
         }
-
-    
 }
 
 //same
 function deleteLineOfProject() {
+   // console.log(count);
     for (var i = 0; i < count; i++) {
         if ($('#col' + i + '0').is(':checked')) {
             $("#row" + i).hide();
             array[i][35] = "Deleted";
+            $('#col' + i + '35').val(array[i][35]);
+            console.log(array);
+            console.log($('#col' + i + '35').val());
             updateLineTotal();
-            console.log("delete the line: " + i);
+            //console.log("delete the line: " + i);
         }
     }
+    //console.log(array);
 }
 
 
@@ -514,7 +552,7 @@ function updateListMyTimesheet() {
     oListItem.set_item('Year', year);
     oListItem.set_item('Total', sumCol);
     oListItem.set_item('Status', "In Progress");
-    oListItem.set_item('ReportOwner', currentUser);
+    //oListItem.set_item('ReportOwner', currentUser);
 
 
     oListItem.update();
@@ -537,12 +575,12 @@ function updateTimesheetList(user) {
 
     var assignedToVal = new SP.FieldUserValue();
     assignedToVal.set_lookupId(user);
-    console.log(user);
-    console.log("Count: " + count);
-    console.log("colCreated: " + colCreated);
+    //console.log(assignedToVal);
+    //console.log("Count: " + count);
+    //console.log("colCreated: " + colCreated);
     while (colCreated < count) {
         if (array[colCreated][35] != "Deleted") {
-            console.log("Linha nao deletada: " + colCreated);
+            //console.log("Linha nao deletada: " + colCreated);
 
             var clientContext = new SP.ClientContext.get_current();
 
@@ -556,7 +594,7 @@ function updateTimesheetList(user) {
             oListItem.set_item('Month', month);
             oListItem.set_item('Year', year);
             oListItem.set_item('Total', array[colCreated][3]);
-            oListItem.set_item('AssignedTo', assignedToVal);
+            oListItem.set_item('AssignedTo', user);
 
 
             for (var i = 0; i < 31; i++) {
@@ -567,15 +605,15 @@ function updateTimesheetList(user) {
             oListItem.update();
 
             clientContext.load(oListItem);
-            console.log("colCreated antes:" + colCreated);
+            //console.log("colCreated antes:" + colCreated);
 
 
             clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryCreateSucceeded), Function.createDelegate(this, this.onQueryCreateFailed));
             colCreated++;
-            console.log("colCreated depois:" + colCreated);
+            //console.log("colCreated depois:" + colCreated);
 
         } else {
-            console.log("Linha deletada: " + colCreated);
+            //console.log("Linha deletada: " + colCreated);
             colCreated++;
             onQueryCreateSucceeded();
         }
@@ -587,12 +625,13 @@ function onQueryCreateSucceeded() {
     console.log("count: " + count);
     console.log("tamanho no array= " + array.length);
     //window.location.href = '../Pages/Default.aspx?ID=' + projectId + '&Title=' + projectTitle;
-    if (colCreated == (count - 1)) {
+    if (colCreated == count ){
         window.location.href = '../Pages/Default.aspx';
     }
 
 }
 
+/*
 function deleteOldListItems() {
     var userid = _spPageContextInfo.userId;
     var context = new SP.ClientContext.get_current();
@@ -645,21 +684,22 @@ function onQuerySucceededOther() {
             oListItem.deleteObject();
 
             context.executeQueryAsync(Function.createDelegate(this, this.onQuerySucceededDeleted), Function.createDelegate(this, this.onQueryFailed));
-        */
+       
         }
     }
     continueDeleting();
 }
-
-
-function continueDeleting() {
-    deleteRow.forEach(function (val) {
-
+ */
+//function continueDeleting() {
+//deleteRow.forEach(function (val) {
+function deleteOldListItems(){
+    deleteLineArray.forEach(function (val) {
+        
         this.itemId = val;
 
         var clientContext = new SP.ClientContext.get_current();
         var oList = clientContext.get_web().get_lists().getByTitle('Timesheet');
-
+        //console.log(itemId);
         this.oListItem = oList.getItemById(itemId);
 
         oListItem.deleteObject();
@@ -667,9 +707,31 @@ function continueDeleting() {
         clientContext.executeQueryAsync(Function.createDelegate(this, this.onQuerySucceededDeleted), Function.createDelegate(this, this.onQueryFailed));
     });
 }
+
 function onQuerySucceededDeleted() {
     //updateTimesheetList(currentUser);
    // alert('Item deleted: ' + itemId);
+    //console.log(array);
+}
+
+function weekendDay() {
+
+    var m = getMonthFromString(month);
+    
+    for(i=0;i<count;i++){
+        for (j = 1; j < 32; j++) {
+            var d = new Date(year, m, j);
+            var day = d.getDay();
+            if (( day==6) || (day==0 )){
+                $("#col" + i + "" + (j + 3)).css("background-color", "#D3D3D3");
+            }
+        }
+    }
 
 }
+
+function getMonthFromString(mon) {
+    return new Date(Date.parse(mon + " 1, 2012")).getMonth()
+}
+
 
