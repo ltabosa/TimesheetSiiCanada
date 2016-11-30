@@ -48,8 +48,8 @@
             <div class="col-xs-6">
                 <a href="../Pages/ApproverView.aspx" id="backBtn" class="btn btn-default " role="button">BACK</a>
                 <!--<button name="Submit" id="Submit" type="submit" class="btn btn-primary">SEND</button>-->
-                <input name="Submit" id="Submit" type="button" value="APPROVE" class="btn btn-primary btn-lg" />
-                <input name="Submit" id="Reject" type="button" value="REJECT" class="btn btn-primary btn-lg" />
+                <input name="Submit" id="Submit" type="button" value="APPROVE" class="btn btn-default btn-lg" />
+                <input name="Submit" id="Reject" type="button" value="REJECT" class="btn btn-default btn-lg" />
             </div>
         </div>
          

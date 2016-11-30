@@ -39,6 +39,11 @@
         deleteLineOfProject();
     });
 
+    
+    $("#Reject").click(function () {
+        myTimesheetReject();
+    });
+
     $("#Submit").click(function () {
 
         //prevent clicks
@@ -49,7 +54,7 @@
             //update array with the newest info
             fillArray();
 
-            console.log(array);
+            //console.log(array);
             //delete old draft
             //console.log(sumCol);
             //var userid = _spPageContextInfo.userId;
@@ -759,4 +764,39 @@ function onQueryCreateSucceeded() {
         window.location.href = '../Pages/ApproverView.aspx';
     }
 
+}
+
+//*************************************************************************************
+//                                     Reject Clicked
+//*************************************************************************************
+
+function myTimesheetReject() {
+    //if (colCreated == (count - 1)) {
+
+    //update My Timesheet list
+    var clientContext = new SP.ClientContext.get_current();
+
+    var oList = clientContext.get_web().get_lists().getByTitle('MyTimesheet');
+
+    this.oListItem = oList.getItemById(timesheetId);
+
+    //var itemCreateInfo = new SP.ListItemCreationInformation();
+    //this.oListItem = oList.addItem(itemCreateInfo);
+    
+    oListItem.set_item('Status', "Rejected");
+    //oListItem.set_item('ReportOwner', currentUser);
+
+
+    oListItem.update();
+
+    clientContext.load(oListItem);
+
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryMyTimesheetReject), Function.createDelegate(this, this.onQueryCreateFailed));
+
+}
+
+function onQueryMyTimesheetReject() {
+    // send email to user
+
+    window.location.href = '../Pages/ApproverView.aspx';
 }

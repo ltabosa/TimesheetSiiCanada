@@ -12,9 +12,15 @@
     deleteLineArray = new Array();
     submitClicked = true;
 
-    //console.log("Month: " + month);
-    //console.log("Year: " + year);
-
+    if (status == "Approved") {
+        $("#Submit").hide();
+        $("#newDeleteButtons").hide();
+        
+        var errorMes = '<div class="alert alert-success">' +
+                            '<strong>Sucess!</strong> Your Timesheet for ' + month + ' ' + year + ' is approved.' +
+                        '</div>';
+        $("#errorMsg").html(errorMes);
+    }
     //go back to beginning if take url without month and year 
     if (!month || !year ) {
         window.location.href = 'Default.aspx';
@@ -263,6 +269,8 @@ function newLineOfProject(rows) {
     //fillArray();
     //count++;
     $("#newLine").html(newLine);
+
+    
     //Update number of columns in table
     numberOfDaysInMonth();
 
@@ -281,7 +289,7 @@ function newLineOfProject(rows) {
     
     weekendDay();
 
-    
+   
 
 }
 
@@ -519,6 +527,9 @@ function updateProjects() {
             }
             document.getElementById('col' + i + '1').value = array[i][1];
            // console.log("Nome do Projeto: " + array[i][1]);
+        }
+        if (status == "Approved") {
+            $("input").prop("readonly", true);
         }
 }
 
