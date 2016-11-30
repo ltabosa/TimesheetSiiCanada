@@ -45,14 +45,16 @@
      
     <div id="errorMsg"></div>
 
-    <a href="../Pages/Default.aspx" class="btn btn-primary " role="button">BACK</a>
-
-    <br />
-    <br />
-    
-
     <form autocomplete="off">
-         
+         <div class="form-group row">
+            <div class="col-xs-6">
+                <a href="../Pages/Default.aspx" id="backBtn" class="btn btn-default " role="button">BACK</a>
+               <!-- <button onclick="location.href='../Pages/Default.aspx'" id="backBtn" type="submit" class="btn btn-primary">BACK</button>-->
+                
+                <input name="Submit" id="Submit" type="button" value="SEND" class="btn btn-primary btn-lg" />
+        
+            </div>
+        </div>
          
         <div class="form-group row">
             <div class="col-xs-2">
@@ -188,7 +190,6 @@
 
         <br />
         <p><strong>Total: <span id="totalHour">0</span></strong></p>
-        <input name="Submit" id="Submit" type="button" value="Submit" class="btn btn-default btn-lg" />
         
         
             
@@ -198,7 +199,7 @@
     </form>
 
 
-  
+  <br /><br />
 
 
 </asp:Content>

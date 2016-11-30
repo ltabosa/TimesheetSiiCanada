@@ -31,7 +31,7 @@
 <asp:Content ContentPlaceHolderID="PlaceHolderMain" runat="server">
      <br/><br/>
 
-    <a href="../Pages/NewTimesheet.aspx" class="btn btn-primary " role="button">NEW TIMESHEET</a>
+    <a href="../Pages/NewTimesheet.aspx" class="btn btn-default " role="button">NEW TIMESHEET</a>
 
     <br/><br/>
 

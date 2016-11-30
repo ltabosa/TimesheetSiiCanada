@@ -594,8 +594,9 @@ function updateTimesheetList(user) {
 
             var itemCreateInfo = new SP.ListItemCreationInformation();
             this.oListItem = oList.addItem(itemCreateInfo);
-
+            //console.log(array[colCreated][2]);
             oListItem.set_item('Project', array[colCreated][1]);
+            oListItem.set_item('HourType', array[colCreated][2]);
             oListItem.set_item('Month', month);
             oListItem.set_item('Year', year);
             oListItem.set_item('Total', array[colCreated][3]);

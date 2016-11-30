@@ -136,6 +136,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Lists\Timesheet\TimesheetInstance\Elements.xml" />
+    <Content Include="Pages\ApproverView.aspx" />
     <Content Include="Pages\EditTimesheet.aspx" />
     <Content Include="Pages\Elements.xml" />
     <Content Include="Pages\Default.aspx" />
@@ -150,6 +151,7 @@
       <SharePointProjectItemId>{52216b29-d5f6-49d4-aa1f-56b46464b983}</SharePointProjectItemId>
     </None>
     <Content Include="Pages\NewTimesheet.aspx" />
+    <Content Include="Scripts\ApproverView.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\EditTimesheet.js" />
@@ -198,6 +200,19 @@
     <AppManifestFile Include="AppManifest.xml">
       <SubType>Designer</SubType>
     </AppManifestFile>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Activities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SharePoint.DesignTime.Activities.16.0, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel.Activities" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

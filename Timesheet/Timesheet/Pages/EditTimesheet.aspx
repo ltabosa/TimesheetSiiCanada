@@ -40,14 +40,18 @@
 <asp:Content ContentPlaceHolderId="PlaceHolderMain" runat="server">
     <br />
     <br />
-
-    <a href="../Pages/Default.aspx" class="btn btn-primary " role="button">BACK</a>
-
-    <br />
-    <br />
     
 
     <form autocomplete="off">
+
+        <div class="form-group row">
+            <div class="col-xs-6">
+                <a href="../Pages/Default.aspx" id="backBtn" class="btn btn-default " role="button">BACK</a>
+                <!--<button name="Submit" id="Submit" type="submit" class="btn btn-primary">SEND</button>-->
+                <input name="Submit" id="Submit" type="button" value="SEND" class="btn btn-primary btn-lg" />
+        
+            </div>
+        </div>
          
          
         <div class="form-group row">
@@ -130,12 +134,12 @@
 
         <br />
         <p><strong>Total: <span id="totalHour">0</span></strong></p>
-        <input name="Submit" id="Submit" type="button" value="Submit" class="btn btn-default btn-lg" />
-
+        
         
             
         
 
         
     </form>
+    <br /><br />
 </asp:Content>

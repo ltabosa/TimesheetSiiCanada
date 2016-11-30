@@ -5,5 +5,6 @@
     <ProjectItemFile Source="Default.aspx" Target="Pages\" Type="ElementFile" />
     <ProjectItemFile Source="NewTimesheet.aspx" Target="Pages\" Type="ElementFile" />
     <ProjectItemFile Source="EditTimesheet.aspx" Target="Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="ApproverView.aspx" Target="Pages\" Type="ElementFile" />
   </Files>
 </ProjectItem>

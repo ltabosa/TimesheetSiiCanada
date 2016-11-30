@@ -7,6 +7,7 @@
     
     count = 1;
     colCreated = 0;
+    submitClicked = true;
     //newLine = "";
     array = new Array();
 
@@ -25,19 +26,23 @@
         deleteLineOfProject();
     });
     $("#Submit").click(function () {
-        //get month and year
-        monthSubmit = $('#txtMonth').val();
-        yearSubmit = $('#txtYear').val();
+        //avoid multiple submit
+        if (submitClicked) {
+            submitClicked = false;
+            //get month and year
+            monthSubmit = $('#txtMonth').val();
+            yearSubmit = $('#txtYear').val();
 
-        //Update Array With the Most Recent Data
-        fillArray();
+            //Update Array With the Most Recent Data
+            fillArray();
 
-        //get user ID
-        var users = $('#peoplePickerDivLinMan_TopSpan_HiddenInput').val();
-        users = users.substring(1, users.length - 1);
-        var obj = JSON.parse(users);
-        console.log(obj);
-        getUserId(obj.AutoFillKey);
+            //get user ID
+            var users = $('#peoplePickerDivLinMan_TopSpan_HiddenInput').val();
+            users = users.substring(1, users.length - 1);
+            var obj = JSON.parse(users);
+            console.log(obj);
+            getUserId(obj.AutoFillKey);
+        }
     });
     $("body").focusout(function () {
         $("#errorMsg").html("");
@@ -149,7 +154,7 @@ function numberOfDaysInMonth() {
         //Delete day 31 from array
         for (var i = 0; i < count; i++) {
             $('#col' + i + '34').val(0);
-            console.log("numero de dias= " + numberOfDays);
+            //console.log("numero de dias= " + numberOfDays);
         }
     } else if (numberOfDays == 29) {
         $(".month28Days").show();
@@ -159,7 +164,7 @@ function numberOfDaysInMonth() {
         for (var i = 0; i < count; i++) {
             $('#col' + i + '33').val(0);
             $('#col' + i + '34').val(0);
-            console.log("numero de dias= " + numberOfDays);
+            //console.log("numero de dias= " + numberOfDays);
         }
     } else if (numberOfDays == 28) {
         $(".month28Days").hide();
@@ -170,7 +175,7 @@ function numberOfDaysInMonth() {
             $('#col' + i + '32').val(0);
             $('#col' + i + '33').val(0);
             $('#col' + i + '34').val(0);
-            console.log("numero de dias= " + numberOfDays);
+            //console.log("numero de dias= " + numberOfDays);
         }
 
     } else {
@@ -270,12 +275,12 @@ function fillArray() {
 }
 
 function updateProjects() {
-    console.log(count);
+    //console.log(count);
     if (count > 1) {
         var temp = count - 2;
-        console.log("temp: " + temp);
+        //console.log("temp: " + temp);
         for (var i = 0; i < (count - 1); i++) {
-            console.log("Count - 1: " + (count - 1));
+            //console.log("Count - 1: " + (count - 1));
             for (var j = 0; j < 36; j++) {
                 $('#col' + i + '' + j).val(array[i][j]);
             }
@@ -289,7 +294,7 @@ function updateProjects() {
                 $('#row' + i).hide();
             }
             document.getElementById('col' + i + '1').value = array[i][1];
-            console.log("Nome do Projeto: " + array[i][1]);
+            //console.log("Nome do Projeto: " + array[i][1]);
             
         }
         
@@ -338,7 +343,7 @@ function updateTimesheetList(user) {
 
     while (colCreated < (count - 1)) {
         if (array[colCreated][35] != "Deleted") {
-            console.log("Linha nao deletada: " + colCreated);
+            //console.log("Linha nao deletada: " + colCreated);
             
             var clientContext = new SP.ClientContext.get_current();
 
@@ -347,26 +352,30 @@ function updateTimesheetList(user) {
 
             var itemCreateInfo = new SP.ListItemCreationInformation();
             this.oListItem = oList.addItem(itemCreateInfo);
+            
+            //verify if the line is well filled
+            //if (array[colCreated][1] !== "" || array[colCreated][1] !== undefined || array[colCreated][1] !== null) {
+                oListItem.set_item('Project', array[colCreated][1]);
+                oListItem.set_item('HourType', array[colCreated][2]);
+                oListItem.set_item('Month', monthSubmit);
+                oListItem.set_item('Year', yearSubmit);
+                oListItem.set_item('Total', array[colCreated][3]);
+                oListItem.set_item('AssignedTo', assignedToVal);
+            
+            
+                for (var i = 0; i < 31; i++) {
+                    var x = i + 1;
+                    oListItem.set_item('_x00'+x+'_', array[colCreated][i+4]);
+                }
 
-            oListItem.set_item('Project', array[colCreated][1]);
-            oListItem.set_item('Month', monthSubmit);
-            oListItem.set_item('Year', yearSubmit);
-            oListItem.set_item('Total', array[colCreated][3]);
-            oListItem.set_item('AssignedTo', assignedToVal);
-            
-            
-            for (var i = 0; i < 31; i++) {
-                var x = i + 1;
-                oListItem.set_item('_x00'+x+'_', array[colCreated][i+4]);
-            }
+                oListItem.update();
 
-            oListItem.update();
+                clientContext.load(oListItem);
+                console.log("colCreated antes:" + colCreated);
+            //}
+            
+                clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryCreateSucceeded), Function.createDelegate(this, this.onQueryCreateFailed));
 
-            clientContext.load(oListItem);
-            console.log("colCreated antes:" + colCreated);
-            
-            
-            clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryCreateSucceeded), Function.createDelegate(this, this.onQueryCreateFailed));
             colCreated++;
             console.log("colCreated depois:" + colCreated);
             
@@ -382,6 +391,13 @@ function onQueryCreateSucceeded() {
     console.log("colCreated: " + colCreated);
     console.log("count: " + count);
     console.log("tamanho no array= " + array.length);
+
+    //console.log()
+
+    sendEmail("leonardo.tabosa@leonardotabosa.onmicrosoft.com", "leonardo.tabosa@leonardotabosa.onmicrosoft.com", "<b>Teste aqui</b>", "Outro teste");
+   
+
+
     //window.location.href = '../Pages/Default.aspx?ID=' + projectId + '&Title=' + projectTitle;
     if (colCreated == (count - 1)) {
         window.location.href = '../Pages/Default.aspx';
@@ -455,7 +471,7 @@ function setLoggedInUser() {
         defaultUser.Key = data.d.LoginName;
         defaultUser.Resolved = true;
         users[0] = defaultUser;
-        console.log(users);
+        //console.log(users);
         SPClientPeoplePicker.ShowUserPresence = false;
         SPClientPeoplePicker_InitStandaloneControlWrapper('peoplePickerDivLinMan', users, schema);
         
@@ -527,13 +543,15 @@ function onQuerySucceededCreateItems() {
     var control = 0;
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
+        //Check if the Month And Year is Already in Draft Mode
         if (oListItem.get_item('Title') == monthSubmit && oListItem.get_item('Year') == yearSubmit) {
             control++;
         }
     }
 
     //console.log("Control: " + control);
-    //Check if the Month And Year is Already in Draft Mode
+    //console.log(array);
+    //console.log(count);
     if (control == 0) {
         updateListMyTimesheet(userId);
         updateTimesheetList(userId);
@@ -596,7 +614,7 @@ function holiday() {
 }
 
 function onQueryHolidaySucceeded(sender, args) {
-    console.log(count);
+   // console.log(count);
     var month = $("#txtMonth").val();
     var year = $("#txtYear").val();
     var listEnumerator = collListItem.getEnumerator();
@@ -611,7 +629,7 @@ function onQueryHolidaySucceeded(sender, args) {
         //holidayDate = holidayDate.setHours(0, 0, 0, 0);
         //console.log(oListItem.get_item('HolidayDate'));
         
-        console.log(holidayDate);
+        //console.log(holidayDate);
         var m = getMonthFromString(month);
         //var day = new Date(year, m, j);
         //console.log(day);
@@ -628,4 +646,38 @@ function onQueryHolidaySucceeded(sender, args) {
         }
 
     }
+}
+
+function sendEmail(from, to, body, subject) {
+
+    var siteurl = _spPageContextInfo.webServerRelativeUrl;
+
+    var urlTemplate = siteurl + "/_api/SP.Utilities.Utility.SendEmail";
+    $.ajax({
+        contentType: 'application/json',
+        url: urlTemplate,
+        type: "POST",
+        data: JSON.stringify({
+            'properties': {
+                '__metadata': { 'type': 'SP.Utilities.EmailProperties' },
+                'From': from,
+                'To': { 'results': [to] },
+                'Body': body,
+                'Subject': subject
+            }
+        }
+      ),
+        headers: {
+            "Accept": "application/json;odata=verbose",
+            "content-type": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val()
+        },
+        success: function (data) {
+            //alert("Eposten ble sendt");
+        },
+        error: function (err) {
+            //alert(err.responseText);
+            //debugger;
+        }
+    });
 }
