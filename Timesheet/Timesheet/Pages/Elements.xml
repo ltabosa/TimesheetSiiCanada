@@ -5,5 +5,6 @@
     <File Path="Pages\NewTimesheet.aspx" Url="Pages/NewTimesheet.aspx" ReplaceContent="TRUE" />
     <File Path="Pages\EditTimesheet.aspx" Url="Pages/EditTimesheet.aspx" ReplaceContent="TRUE" />
     <File Path="Pages\ApproverView.aspx" Url="Pages/ApproverView.aspx" ReplaceContent="TRUE" />
+    <File Path="Pages\ApproverEdit.aspx" Url="Pages/ApproverEdit.aspx" ReplaceContent="TRUE" />
   </Module>
 </Elements>

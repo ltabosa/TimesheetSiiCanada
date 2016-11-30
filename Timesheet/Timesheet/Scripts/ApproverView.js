@@ -58,11 +58,9 @@ function onQuerySucceeded(sender, args) {
         //console.log(oListItem.get_item('ReportOwner').get_lookupValue());
         listInfo += "<tr>";
 
-        if (oListItem.get_item('Status') == "Approved") {
-            listInfo += "<td class='col-md-1'></td>";
-        } else {
-            listInfo += "<td class='col-md-1'><a href='EditTimesheet.aspx?ID=" + oListItem.get_id() + "&Status=" + oListItem.get_item('Status') + "&Month=" + oListItem.get_item('Title') + "&Year=" + oListItem.get_item('Year') + "'><img src='../Images/EditIcon.png' /></a></td>";
-        }
+        
+        listInfo += "<td class='col-md-1'><a href='ApproverEdit.aspx?ID=" + oListItem.get_id() + "&Status=" + oListItem.get_item('Status') + "&User=" + oListItem.get_item('ReportOwner').get_lookupValue() + "&Month=" + oListItem.get_item('Title') + "&Year=" + oListItem.get_item('Year') + "'><img src='../Images/EditIcon.png' /></a></td>";
+        
 
         listInfo +=
            "<td>" + oListItem.get_item('ReportOwner').get_lookupValue() + "</td>" +

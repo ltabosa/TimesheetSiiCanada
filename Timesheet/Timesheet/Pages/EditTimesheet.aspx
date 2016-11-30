@@ -48,7 +48,7 @@
             <div class="col-xs-6">
                 <a href="../Pages/Default.aspx" id="backBtn" class="btn btn-default " role="button">BACK</a>
                 <!--<button name="Submit" id="Submit" type="submit" class="btn btn-primary">SEND</button>-->
-                <input name="Submit" id="Submit" type="button" value="SEND" class="btn btn-primary btn-lg" />
+                <input name="Submit" id="Submit" type="button" value="SEND" class="btn btn-default btn-lg" />
         
             </div>
         </div>
@@ -119,27 +119,17 @@
               </tr>
             </thead>
            
-            
             <tbody id="newLine"></tbody>
             <tbody id="msg"></tbody> 
           </table>
                 
                 <p class=".col-md-8">New: <a href="#" id="otherProject"><span class="glyphicon glyphicon-plus-sign"></span></a> / Delete Selected Lines: <a href="#" id="deleteLine"><span class="glyphicon glyphicon glyphicon-minus-sign"></span></a> </p>
-                
-            
+             
         </div>
-
-
-
 
         <br />
         <p><strong>Total: <span id="totalHour">0</span></strong></p>
-        
-        
-            
-        
-
-        
+         
     </form>
     <br /><br />
 </asp:Content>

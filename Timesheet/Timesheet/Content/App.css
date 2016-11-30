@@ -20,13 +20,13 @@
 .notShow{
     display:none;
 }
-#Submit,#backBtn{
+#Submit,#backBtn,#Reject{
     font-size:14px;
     color:#333;
     border-radius:4px;
 
 }
-#Submit:hover{
+#Reject:hover,#Submit:hover{
     color:#333;
     background-color:#e6e6e6;
     border-color:#adadad;
