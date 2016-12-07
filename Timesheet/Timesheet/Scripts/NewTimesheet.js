@@ -4,6 +4,20 @@
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', lookupProject);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', numberOfDaysInMonth);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', setLoggedInUser);
+
+    //check if the current user is member of the approver group
+    function IsCurrentUserHasContribPerms() {
+        IsCurrentUserMemberOfGroup("Approvers", function (isCurrentUserInGroup) {
+            if (isCurrentUserInGroup) {
+                // The current user is in the [Members] group!
+                //alert(isCurrentUserInGroup);
+                $("#approverMember").show();
+            } 
+        });
+
+    }
+    ExecuteOrDelayUntilScriptLoaded(IsCurrentUserHasContribPerms, 'SP.js');
+    
     
     count = 1;
     colCreated = 0;
@@ -26,26 +40,59 @@
         deleteLineOfProject();
     });
     $("#Submit").click(function () {
+        //get month and year
+        monthSubmit = $('#txtMonth').val();
+        yearSubmit = $('#txtYear').val();
+
+        //Update Array With the Most Recent Data
+        fillArray();
         //avoid multiple submit
         if (submitClicked) {
             submitClicked = false;
-            //get month and year
-            monthSubmit = $('#txtMonth').val();
-            yearSubmit = $('#txtYear').val();
-
-            //Update Array With the Most Recent Data
-            fillArray();
-
-            //get user ID
-            var users = $('#peoplePickerDivLinMan_TopSpan_HiddenInput').val();
-            users = users.substring(1, users.length - 1);
-            var obj = JSON.parse(users);
-            console.log(obj);
-            getUserId(obj.AutoFillKey);
+            //console.log(count);
+            //console.log(array);
+            var errorMes="";
+            for (var i = 0; i < (count-1); i++) {
+                if (((array[i][1]==null)||(array[i][1]==undefined))&&(array[i][35]!=="Deleted")) {
+                    errorMes = '<div class="alert alert-danger">' +
+                            '<strong>Atention!</strong> Please fill the field <strong>Project</strong>.' +
+                        '</div>';
+                    submitClicked = true;
+                    
+                } else if((array[i][3]==0)&&(array[i][35]!=="Deleted")){
+                    errorMes += '<div class="alert alert-danger">' +
+                            '<strong>Atention!</strong> You must have one hour in <strong>' + array[i][1] + '</strong> project.' +
+                        '</div>';
+                    submitClicked = true;
+                }
+                if (i > 0) {
+                    for (var k = 0; k < i; k++) {
+                        if (((array[i][1] == array[k][1]) && (array[i][2] == array[k][2]))&&(array[i][35]!=="Deleted")) {
+                            errorMes = '<div class="alert alert-danger">' +
+                                            '<strong>Atention!</strong> You already have this project and hour type.' +
+                                        '</div>';
+                            submitClicked = true;
+                        }
+                    }
+                    
+                }
+                $("#errorMsg").html(errorMes);
+               if (errorMes == "") {
+                   
+                    //get user ID
+                    var users = $('#peoplePickerDivLinMan_TopSpan_HiddenInput').val();
+                    users = users.substring(1, users.length - 1);
+                    var obj = JSON.parse(users);
+                    console.log(obj);
+                   getUserId(obj.AutoFillKey);
+                }
+            }
         }
     });
+    //Delete error msg
     $("body").focusout(function () {
         $("#errorMsg").html("");
+        //submitClicked = true;
         //$("#errorMsg").hide("fade");
     });
     
@@ -271,7 +318,7 @@ function fillArray() {
             }
         }  
     }
-    console.log(array);   
+    //console.log(array);   
 }
 
 function updateProjects() {
@@ -302,7 +349,7 @@ function updateProjects() {
 }
 
 function updateLineTotal() {
-    console.log(count);
+    //console.log(count);
     if (count > 1) {
         sumCol = 0;
         var error = "";
@@ -560,6 +607,8 @@ function onQuerySucceededCreateItems() {
         var errorMes = '<div class="alert alert-danger">'+
                             '<strong>Atention!</strong> You have already one draft for '+monthSubmit+' '+yearSubmit+'.'+
                         '</div>';
+        submitClicked = true;
+
         $("#errorMsg").html(errorMes);
     }
     //Create Items If Query is empty
@@ -681,3 +730,41 @@ function sendEmail(from, to, body, subject) {
         }
     });
 }
+
+function IsCurrentUserMemberOfGroup(groupName, OnComplete) {
+
+        var currentContext = new SP.ClientContext.get_current();
+        var currentWeb = currentContext.get_web();
+
+        var currentUser = currentContext.get_web().get_currentUser();
+        currentContext.load(currentUser);
+
+        var allGroups = currentWeb.get_siteGroups();
+        currentContext.load(allGroups);
+
+        var group = allGroups.getByName(groupName);
+        currentContext.load(group);
+
+        var groupUsers = group.get_users();
+        currentContext.load(groupUsers);
+
+        currentContext.executeQueryAsync(OnSuccess,OnFailure);
+
+        function OnSuccess(sender, args) {
+            var userInGroup = false;
+            var groupUserEnumerator = groupUsers.getEnumerator();
+            while (groupUserEnumerator.moveNext()) {
+                var groupUser = groupUserEnumerator.get_current();
+                if (groupUser.get_id() == currentUser.get_id()) {
+                    userInGroup = true;
+                    break;
+                }
+            }  
+            OnComplete(userInGroup);
+        }
+
+        function OnFailure(sender, args) {
+            OnComplete(false);
+        }    
+    }
+

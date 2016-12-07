@@ -49,23 +49,52 @@
         //console.log(submitClicked);
         if (submitClicked){
             submitClicked = false;
-            
+            //console.log(count);
+            //console.log(array);
             //update array with the newest info
             fillArray();
-
-            console.log(array);
-            //delete old draft
-            //console.log(sumCol);
-            //var userid = _spPageContextInfo.userId;
-            //console.log(deleteLineArray);
-            deleteOldListItems();
-            //console.log(currentUser);
-            //save info in list
-            updateListMyTimesheet();
-            colCreated = 0;
-            console.log(currentUser);
             
-            updateTimesheetList(currentUser);
+            var errorMes = "";
+
+            for (var i = 0; i < count ; i++) {
+                if (((array[i][1] == null) || (array[i][1] == undefined)) && (array[i][35] !== "Deleted")) {
+                    errorMes = '<div class="alert alert-danger">' +
+                            '<strong>Atention!</strong> Please fill the field <strong>Project</strong>.' +
+                        '</div>';
+                    submitClicked = true;
+
+                } else if ((array[i][3] == 0) && (array[i][35] !== "Deleted")) {
+                    errorMes += '<div class="alert alert-danger">' +
+                            '<strong>Atention!</strong> You must have one hour in <strong>' + array[i][1] + '</strong> project.' +
+                        '</div>';
+                    submitClicked = true;
+                }
+                if (i > 0) {
+                    for (var k = 0; k < i; k++) {
+                        if (((array[i][1] == array[k][1]) && (array[i][2] == array[k][2])) && (array[i][35] !== "Deleted")) {
+                            errorMes = '<div class="alert alert-danger">' +
+                                            '<strong>Atention!</strong> You already have this project and hour type.' +
+                                        '</div>';
+                            submitClicked = true;
+                        }
+                    }
+                }
+            }
+            $("#errorMsg").html(errorMes);
+            if (errorMes == "") {
+                    //console.log(array);
+                    //delete old draft
+                    //console.log(sumCol);
+                    //var userid = _spPageContextInfo.userId;
+                    //console.log(deleteLineArray);
+                    deleteOldListItems();
+                    //console.log(currentUser);
+                    //save info in list
+                    updateListMyTimesheet();
+                    colCreated = 0;
+                    //console.log(currentUser);
+                    updateTimesheetList(currentUser);
+            }
         }
     });
    
@@ -638,9 +667,9 @@ function updateTimesheetList(user) {
 }
 //same
 function onQueryCreateSucceeded() {
-    console.log("colCreated: " + colCreated);
-    console.log("count: " + count);
-    console.log("tamanho no array= " + array.length);
+    //console.log("colCreated: " + colCreated);
+    //console.log("count: " + count);
+    //console.log("tamanho no array= " + array.length);
     //window.location.href = '../Pages/Default.aspx?ID=' + projectId + '&Title=' + projectTitle;
     if (colCreated == count ){
         window.location.href = '../Pages/Default.aspx';
@@ -778,7 +807,7 @@ function holiday() {
 }
 
 function onQueryHolidaySucceeded(sender, args) {
-    console.log(count);
+    //console.log(count);
     //var month = $("#txtMonth").val();
     //var year = $("#txtYear").val();
     var listEnumerator = collListItem.getEnumerator();
@@ -793,7 +822,7 @@ function onQueryHolidaySucceeded(sender, args) {
         //holidayDate = holidayDate.setHours(0, 0, 0, 0);
         //console.log(oListItem.get_item('HolidayDate'));
 
-        console.log(holidayDate);
+        //console.log(holidayDate);
         var m = getMonthFromString(month);
         //var day = new Date(year, m, j);
         //console.log(day);

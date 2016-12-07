@@ -41,6 +41,7 @@
     <br />
     <br />
     
+    <div id="errorMsg"></div>
 
     <form autocomplete="off">
 

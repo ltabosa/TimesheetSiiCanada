@@ -70,7 +70,7 @@
         </div>
 
         
-         <div class="form-group row">
+         <div class="form-group row" id="approverMember">
             <div class="col-xs-2">
                 <label for="SdfPeoplePicker">User</label>
                 <div id="peoplePickerDivLinMan" title="User_"></div>

@@ -54,19 +54,48 @@
             //update array with the newest info
             fillArray();
 
-            //console.log(array);
-            //delete old draft
-            //console.log(sumCol);
-            //var userid = _spPageContextInfo.userId;
-            //console.log(deleteLineArray);
-            deleteOldListItems();
-            //console.log(currentUser);
-            //save info in list
-            updateListMyTimesheet();
-            colCreated = 0;
-            //console.log(currentUser);
+            var errorMes = "";
 
-            updateTimesheetList(user);
+            for (var i = 0; i < count ; i++) {
+                if (((array[i][1] == null) || (array[i][1] == undefined)) && (array[i][35] !== "Deleted")) {
+                    errorMes = '<div class="alert alert-danger">' +
+                            '<strong>Atention!</strong> Please fill the field <strong>Project</strong>.' +
+                        '</div>';
+                    submitClicked = true;
+
+                } else if ((array[i][3] == 0) && (array[i][35] !== "Deleted")) {
+                    errorMes += '<div class="alert alert-danger">' +
+                            '<strong>Atention!</strong> You must have one hour in <strong>' + array[i][1] + '</strong> project.' +
+                        '</div>';
+                    submitClicked = true;
+                }
+                if (i > 0) {
+                    for (var k = 0; k < i; k++) {
+                        if (((array[i][1] == array[k][1]) && (array[i][2] == array[k][2])) && (array[i][35] !== "Deleted")) {
+                            errorMes = '<div class="alert alert-danger">' +
+                                            '<strong>Atention!</strong> You already have this project and hour type.' +
+                                        '</div>';
+                            submitClicked = true;
+                        }
+                    }
+                }
+            }
+            $("#errorMsg").html(errorMes);
+            if (errorMes == "") {
+                //console.log(array);
+                //delete old draft
+                //console.log(sumCol);
+                //var userid = _spPageContextInfo.userId;
+                //console.log(deleteLineArray);
+                deleteOldListItems();
+                //console.log(currentUser);
+                //save info in list
+                updateListMyTimesheet();
+                colCreated = 0;
+                //console.log(currentUser);
+
+                updateTimesheetList(user);
+            }
         }
     });
 

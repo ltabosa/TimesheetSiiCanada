@@ -9,7 +9,7 @@ $(document).ready(function () {
 function retrieve() {
     //Id of User logged in
     var userId = _spPageContextInfo.userId;
-    console.log(userId);
+    //console.log(userId);
 
 
     var context = new SP.ClientContext.get_current();
