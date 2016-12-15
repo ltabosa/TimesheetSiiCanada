@@ -18,7 +18,7 @@
     }
     ExecuteOrDelayUntilScriptLoaded(IsCurrentUserHasContribPerms, 'SP.js');
     
-    
+    sumCol = 0;
     count = 1;
     colCreated = 0;
     submitClicked = true;
@@ -76,8 +76,15 @@
                     }
                     
                 }
-                $("#errorMsg").html(errorMes);
-               if (errorMes == "") {
+            }
+            if (sumCol == 0) {
+                errorMes = '<div class="alert alert-danger">' +
+                               '<strong>Atention!</strong> You can not send this project empty.' +
+                           '</div>';
+                submitClicked = true;
+            }
+            $("#errorMsg").html(errorMes);
+            if (errorMes == "") {
                    
                     //get user ID
                     var users = $('#peoplePickerDivLinMan_TopSpan_HiddenInput').val();
@@ -85,8 +92,7 @@
                     var obj = JSON.parse(users);
                     console.log(obj);
                    getUserId(obj.AutoFillKey);
-                }
-            }
+            } 
         }
     });
     //Delete error msg
@@ -351,7 +357,7 @@ function updateProjects() {
 function updateLineTotal() {
     //console.log(count);
     if (count > 1) {
-        sumCol = 0;
+        
         var error = "";
         for (var i = 0; i < (count - 1) ; i++) {
             var sumLine = 0;

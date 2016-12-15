@@ -80,6 +80,12 @@
                     }
                 }
             }
+            if (sumCol == 0) {
+                errorMes = '<div class="alert alert-danger">' +
+                               '<strong>Atention!</strong> You can not send this project empty.' +
+                           '</div>';
+                submitClicked = true;
+            }
             $("#errorMsg").html(errorMes);
             if (errorMes == "") {
                     //console.log(array);
