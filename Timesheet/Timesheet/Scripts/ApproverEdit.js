@@ -6,6 +6,8 @@
     year = GetUrlKeyValue('Year', false);
     status = GetUrlKeyValue('Status', false);
     user = GetUrlKeyValue('User', false);
+    projectInfo = new Array();
+    projectCount = 0;
     sumCol = 0;
     count = 0;
     //colCreated = 0;
@@ -93,14 +95,15 @@
                 //console.log(sumCol);
                 //var userid = _spPageContextInfo.userId;
                 //console.log(deleteLineArray);
-                deleteOldListItems();
+                //deleteOldListItems();
                 //console.log(currentUser);
                 //save info in list
-                updateListMyTimesheet();
+                //updateListMyTimesheet();
                 colCreated = 0;
+                getProjectInfo();
                 //console.log(currentUser);
 
-                updateTimesheetList(user);
+                //updateTimesheetList(user);
             }
         }
     });
@@ -409,14 +412,35 @@ function numberOfDaysInMonth() {
 //Same functions in the two filles
 function lookupProject() {
     var ctx = new SP.ClientContext.get_current();
-    var siteUrl = 'https://leonardotabosa.sharepoint.com/';
+    var siteUrl = 'https://siicanada.sharepoint.com/direction/';
     var context = new SP.AppContextSite(ctx, siteUrl);
     ctx.load(context.get_web());
-    var oList = context.get_web().get_lists().getByTitle('Projets');
+    var oList = context.get_web().get_lists().getByTitle('Project-List');
     var camlQuery = new SP.CamlQuery();
-    camlQuery.set_viewXml('<View><Query><OrderBy><FieldRef Name=\'Title\' Ascending=\'TRUE\' /></OrderBy></Query><ViewFields><FieldRef Name=\'Id\' /><FieldRef Name=\'Title\' /><FieldRef Name=\'ActiveTitle\' /></ViewFields></View>');
+    camlQuery.set_viewXml('<View>' +
+                            '<Query>' +
+                                '<Where>' +
+                                            '<Eq>' +
+                                                '<FieldRef Name=\'Status\'/>' +
+                                                '<Value Type=\'Calculated\'>1-LAUNCHED</Value>' +
+                                            '</Eq>' +
+                                '</Where>' +
+                                '<OrderBy>' +
+                                    '<FieldRef Name=\'Final_x0020_Client\' Ascending=\'TRUE\' />' +
+                                '</OrderBy>' +
+                            '</Query>' +
+                            '<ViewFields>' +
+                                '<FieldRef Name=\'Id\' />' +
+                                '<FieldRef Name=\'Title\' />' +
+                                '<FieldRef Name=\'Cat\' />' +
+                                '<FieldRef Name=\'Final_x0020_Client\' />' +
+                                '<FieldRef Name=\'Details\' />' +
+                                '<FieldRef Name=\'PNum\' />' +
+                                '<FieldRef Name=\'Amdt0\' />' +
+                            '</ViewFields>' +
+                          '</View>');
     window.collListItem = oList.getItems(camlQuery);
-    ctx.load(collListItem, 'Include(Id, Title, ActiveTitle)');
+    ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0)');
     ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryLookupSucceeded),
     Function.createDelegate(this, window.onQueryFailed));
 
@@ -428,9 +452,8 @@ function onQueryLookupSucceeded(sender, args) {
     var listInfo = "";
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
-        if (oListItem.get_item('ActiveTitle')) {
-            listInfo += "<option>" + oListItem.get_item('ActiveTitle') + "</option>";
-        }
+        listInfo += "<option value='" + oListItem.get_id() + "' label='" + oListItem.get_item('Final_x0020_Client').Label + " " + oListItem.get_item('Title') + " " + oListItem.get_item('PNum') + "-" + oListItem.get_item('Amdt0') + "'>" + oListItem.get_id() + "</option>";
+
     }
     //listInfo += "</table>";
     $(".results").html(listInfo);
@@ -482,7 +505,7 @@ function weekendDay() {
 
 function holiday() {
     var ctx = new SP.ClientContext.get_current();
-    var siteUrl = 'https://leonardotabosa.sharepoint.com/';
+    var siteUrl = 'https://siicanada.sharepoint.com/';
     var context = new SP.AppContextSite(ctx, siteUrl);
     ctx.load(context.get_web());
     var oList = context.get_web().get_lists().getByTitle('Holiday List');
@@ -759,7 +782,13 @@ function updateTimesheetList(user) {
             var itemCreateInfo = new SP.ListItemCreationInformation();
             this.oListItem = oList.addItem(itemCreateInfo);
             //console.log(array[colCreated][2]);
-            oListItem.set_item('Project', array[colCreated][1]);
+            oListItem.set_item('PNum', projectInfo[colCreated][0]);
+            oListItem.set_item('Amdt', projectInfo[colCreated][1]);
+            oListItem.set_item('Project', projectInfo[colCreated][2]);
+            oListItem.set_item('Cat', projectInfo[colCreated][3]);
+            oListItem.set_item('FinalClient', projectInfo[colCreated][4]);
+            oListItem.set_item('ProjectDetails', projectInfo[colCreated][5]);
+            //oListItem.set_item('Project', array[colCreated][1]);
             oListItem.set_item('HourType', array[colCreated][2]);
             oListItem.set_item('Month', month);
             oListItem.set_item('Year', year);
@@ -796,6 +825,7 @@ function onQueryCreateSucceeded() {
     console.log("tamanho no array= " + array.length);
     //window.location.href = '../Pages/Default.aspx?ID=' + projectId + '&Title=' + projectTitle;
     if (colCreated == count) {
+        deleteOldListItems();
         window.location.href = '../Pages/ApproverView.aspx';
     }
 
@@ -834,4 +864,76 @@ function onQueryMyTimesheetReject() {
     // send email to user
 
     window.location.href = '../Pages/ApproverView.aspx';
+}
+
+
+function getProjectInfo() {
+    console.log(count);
+    var ctx = new SP.ClientContext.get_current();
+    var siteUrl = 'https://siicanada.sharepoint.com/direction/';
+    var context = new SP.AppContextSite(ctx, siteUrl);
+    ctx.load(context.get_web());
+    var oList = context.get_web().get_lists().getByTitle('Project-List');
+    var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml('<View>' +
+                            '<Query>' +
+                                '<Where>' +
+                                            '<Eq>' +
+                                                '<FieldRef Name=\'ID\'/>' +
+                                                '<Value Type=\'Number\'>' + array[projectCount][1] + '</Value>' +
+                                            '</Eq>' +
+                                '</Where>' +
+                            '</Query>' +
+                            '<ViewFields>' +
+                                '<FieldRef Name=\'Id\' />' +
+                                '<FieldRef Name=\'Title\' />' +
+                                '<FieldRef Name=\'Cat\' />' +
+                                '<FieldRef Name=\'Final_x0020_Client\' />' +
+                                '<FieldRef Name=\'Details\' />' +
+                                '<FieldRef Name=\'PNum\' />' +
+                                '<FieldRef Name=\'Amdt0\' />' +
+                            '</ViewFields>' +
+                          '</View>');
+    window.collListItem = oList.getItems(camlQuery);
+    ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0)');
+    ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryGetProjectInfo),
+    Function.createDelegate(this, window.onQueryFailed));
+
+
+
+
+}
+
+function onQueryGetProjectInfo() {
+    var listEnumerator = collListItem.getEnumerator();
+
+    while (listEnumerator.moveNext()) {
+        var oListItem = listEnumerator.get_current();
+        projectInfo[projectCount] = new Array();
+        projectInfo[projectCount][0] = oListItem.get_item('PNum');
+        projectInfo[projectCount][1] = oListItem.get_item('Amdt0');
+        projectInfo[projectCount][2] = oListItem.get_item('Title');
+        projectInfo[projectCount][3] = oListItem.get_item('Cat');
+        projectInfo[projectCount][4] = oListItem.get_item('Final_x0020_Client').Label;
+        projectInfo[projectCount][5] = oListItem.get_item('Details');
+        projectCount++;
+        //console.log(projectCount);
+        console.log(projectInfo);
+        //console.log(oListItem.get_item('Final_x0020_Client').Label);
+        // listInfo += "<option value='" + oListItem.get_id() + "' label='" + oListItem.get_item('Final_x0020_Client').Label + " " + oListItem.get_item('Title') + " " + oListItem.get_item('PNum') + "-" + oListItem.get_item('Amdt0') + "'>" + oListItem.get_id() + "</option>";
+    }
+    console.log(count);
+    console.log(projectCount);
+    if (projectCount != count) {
+        getProjectInfo();
+    } else {
+        //updateListMyTimesheet(userId);
+        //updateTimesheetList(userId);
+        updateListMyTimesheet();
+        //colCreated = 0;
+        //console.log(currentUser);
+
+        updateTimesheetList(user);
+    }
+
 }

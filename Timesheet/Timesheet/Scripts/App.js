@@ -79,22 +79,5 @@ function onQuerySucceeded(sender, args) {
     listInfo += "</table>";
     $("#results").html(listInfo);
 }
-/**
- * Shows the dialog.
- * @param {number} ID - The project identifier.
- * @returns {boolean} 
- */
 
-
-/*function ShowDialog(ID) {
-    var options = {
-        url: "..Lists/MyTimesheet/EditForm.aspx?ID=" + ID,
-        allowMaximize: true,
-        title: "Edit Timesheet",
-        dialogReturnValueCallback: scallback
-    };
-    SP.SOD.execute('sp.ui.dialog.js', 'SP.UI.ModalDialog.showModalDialog', options);
-    return false;
-}
-*/
 

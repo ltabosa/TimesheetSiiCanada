@@ -5,11 +5,6 @@
 
 
 
-
-
-
-
-
       <ContentType ID="0x0100fa5d561830074bacb2080fe7dcedb7d4" Name="ListFieldsContentType">
         <FieldRefs>
 
@@ -56,38 +51,13 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           <FieldRef ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Name="Title" />
+          <FieldRef ID="{dcb697b8-227c-4ffd-8ba4-d7f9da85a260}" Name="PNum" />
+          <FieldRef ID="{a66582d6-1a67-46a3-b597-1edea5ef4ba8}" Name="Amdt" />
           <FieldRef ID="{ab74935f-5af6-4e06-80d2-67265964bfbe}" Name="Project" />
+          <FieldRef ID="{da6133e1-b521-414d-8495-2377046c4949}" Name="Cat" />
+          <FieldRef ID="{eb30e20f-c39d-4157-b6ec-203755693c59}" Name="FinalClient" />
+          <FieldRef ID="{5873951b-4776-48e7-9c94-079229cc5bf2}" Name="ProjectDetails" />
           <FieldRef ID="{2e095610-19c9-4be5-8cdc-65e820ccd99a}" Name="Month" />
           <FieldRef ID="{e66189e0-1d97-4f18-94ea-f33dccdcc4dc}" Name="Year" />
           <FieldRef ID="{53101f38-dd2e-458c-b245-0c236cc13d1a}" Name="AssignedTo" />
@@ -177,38 +147,13 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       <Field ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Type="Text" Name="Title" DisplayName="Comments" Required="FALSE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Title" MaxLength="255" />
+      <Field Name="PNum" ID="{dcb697b8-227c-4ffd-8ba4-d7f9da85a260}" DisplayName="PNum" Type="Text" />
+      <Field Name="Amdt" ID="{a66582d6-1a67-46a3-b597-1edea5ef4ba8}" DisplayName="Amdt" Type="Text" />
       <Field Name="Project" ID="{ab74935f-5af6-4e06-80d2-67265964bfbe}" DisplayName="Project" Type="Text" />
+      <Field Name="Cat" ID="{da6133e1-b521-414d-8495-2377046c4949}" DisplayName="Cat" Type="Text" />
+      <Field Name="FinalClient" ID="{eb30e20f-c39d-4157-b6ec-203755693c59}" DisplayName="FinalClient" Type="Text" />
+      <Field Name="ProjectDetails" ID="{5873951b-4776-48e7-9c94-079229cc5bf2}" DisplayName="ProjectDetails" Type="Text" />
       <Field Name="Month" ID="{2e095610-19c9-4be5-8cdc-65e820ccd99a}" DisplayName="Month" Type="Text" />
       <Field Name="Year" ID="{e66189e0-1d97-4f18-94ea-f33dccdcc4dc}" DisplayName="Year" Type="Text" />
       <Field ID="{53101f38-dd2e-458c-b245-0c236cc13d1a}" Name="AssignedTo" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="AssignedTo" Group="$Resources:core,Issue_Task_Columns;" Type="User" List="UserInfo" DisplayName="$Resources:core,Assigned_To;" DelayActivateTemplateBinding="GROUP,SPSPERS" />
@@ -251,13 +196,12 @@
 
 
 
-
-
       <View BaseViewID="0" Type="HTML" MobileView="TRUE" TabularView="FALSE">
         <Toolbar Type="Standard" />
         <XslLink Default="TRUE">main.xsl</XslLink>
         <RowLimit Paged="TRUE">30</RowLimit>
         <ViewFields>
+
 
 
 
@@ -357,7 +301,91 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <FieldRef Name="PNum" />
+          <FieldRef Name="Amdt" />
           <FieldRef Name="Project" />
+          <FieldRef Name="Cat" />
+          <FieldRef Name="FinalClient" />
+          <FieldRef Name="ProjectDetails" />
           <FieldRef Name="HourType" />
           <FieldRef Name="Month" />
           <FieldRef Name="Year" />
@@ -397,6 +425,8 @@
         </ViewFields>
         <Query>
           <OrderBy>
+
+
 
 
 

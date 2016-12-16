@@ -18,6 +18,8 @@
     }
     ExecuteOrDelayUntilScriptLoaded(IsCurrentUserHasContribPerms, 'SP.js');
     
+    projectInfo = new Array();
+    projectCount = 0;
     sumCol = 0;
     count = 1;
     colCreated = 0;
@@ -90,7 +92,7 @@
                     var users = $('#peoplePickerDivLinMan_TopSpan_HiddenInput').val();
                     users = users.substring(1, users.length - 1);
                     var obj = JSON.parse(users);
-                    console.log(obj);
+                    //console.log(obj);
                    getUserId(obj.AutoFillKey);
             } 
         }
@@ -140,14 +142,35 @@ function monthYearFieldFill() {
 
 function lookupProject() {
     var ctx = new SP.ClientContext.get_current();
-    var siteUrl = 'https://leonardotabosa.sharepoint.com/';
+    var siteUrl = 'https://siicanada.sharepoint.com/direction/';
     var context = new SP.AppContextSite(ctx, siteUrl);
     ctx.load(context.get_web());
-    var oList = context.get_web().get_lists().getByTitle('Projets');
+    var oList = context.get_web().get_lists().getByTitle('Project-List');
     var camlQuery = new SP.CamlQuery();
-    camlQuery.set_viewXml('<View><Query><OrderBy><FieldRef Name=\'Title\' Ascending=\'TRUE\' /></OrderBy></Query><ViewFields><FieldRef Name=\'Id\' /><FieldRef Name=\'Title\' /><FieldRef Name=\'ActiveTitle\' /></ViewFields></View>');
+    camlQuery.set_viewXml('<View>' +
+                            '<Query>' +
+                                '<Where>' +
+                                            '<Eq>' +
+                                                '<FieldRef Name=\'Status\'/>' +
+                                                '<Value Type=\'Calculated\'>1-LAUNCHED</Value>' +
+                                            '</Eq>' +
+                                '</Where>' +
+                                '<OrderBy>' +
+                                    '<FieldRef Name=\'Final_x0020_Client\' Ascending=\'TRUE\' />' +
+                                '</OrderBy>' +
+                            '</Query>' +
+                            '<ViewFields>' +
+                                '<FieldRef Name=\'Id\' />' +
+                                '<FieldRef Name=\'Title\' />' +
+                                '<FieldRef Name=\'Cat\' />' +
+                                '<FieldRef Name=\'Final_x0020_Client\' />' +
+                                '<FieldRef Name=\'Details\' />' +
+                                '<FieldRef Name=\'PNum\' />' +
+                                '<FieldRef Name=\'Amdt0\' />' +
+                            '</ViewFields>' +
+                          '</View>');
     window.collListItem = oList.getItems(camlQuery);
-    ctx.load(collListItem, 'Include(Id, Title, ActiveTitle)');
+    ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0)');
     ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryLookupSucceeded),
     Function.createDelegate(this, window.onQueryFailed));
     
@@ -165,21 +188,11 @@ function onQueryFailed(sender, args) {
 function onQueryLookupSucceeded(sender, args) {
     var listEnumerator = collListItem.getEnumerator();
     var listInfo = "";
-    /*"<table class='table table-striped'>" +
-        "<tr>" +
-            "<th class='col-md-1'></th>" +
-            "<th>ID</th>" +
-            "<th>Title</th>" +
-            "<th>Active Title</th>" +
-        "</tr>";
-        */
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
-        if (oListItem.get_item('ActiveTitle')) {
-            listInfo += "<option>" + oListItem.get_item('ActiveTitle') + "</option>";
-        }
+        //console.log(oListItem.get_item('Final_x0020_Client').Label);
+        listInfo += "<option value='" + oListItem.get_id() + "' label='" + oListItem.get_item('Final_x0020_Client').Label + " " + oListItem.get_item('Title') + " " + oListItem.get_item('PNum') + "-" + oListItem.get_item('Amdt0') + "'>" + oListItem.get_id() + "</option>";
     }
-    //listInfo += "</table>";
     $(".results").html(listInfo);
     updateProjects();
     holiday();
@@ -357,7 +370,7 @@ function updateProjects() {
 function updateLineTotal() {
     //console.log(count);
     if (count > 1) {
-        
+        sumCol = 0;
         var error = "";
         for (var i = 0; i < (count - 1) ; i++) {
             var sumLine = 0;
@@ -408,7 +421,15 @@ function updateTimesheetList(user) {
             
             //verify if the line is well filled
             //if (array[colCreated][1] !== "" || array[colCreated][1] !== undefined || array[colCreated][1] !== null) {
-                oListItem.set_item('Project', array[colCreated][1]);
+            //projectInfo
+                oListItem.set_item('PNum', projectInfo[colCreated][0]);
+                oListItem.set_item('Amdt', projectInfo[colCreated][1]);
+                oListItem.set_item('Project', projectInfo[colCreated][2]);
+                oListItem.set_item('Cat', projectInfo[colCreated][3]);
+                oListItem.set_item('FinalClient', projectInfo[colCreated][4]);
+                oListItem.set_item('ProjectDetails', projectInfo[colCreated][5]);
+
+                //oListItem.set_item('Project', array[colCreated][1]);
                 oListItem.set_item('HourType', array[colCreated][2]);
                 oListItem.set_item('Month', monthSubmit);
                 oListItem.set_item('Year', yearSubmit);
@@ -606,8 +627,10 @@ function onQuerySucceededCreateItems() {
     //console.log(array);
     //console.log(count);
     if (control == 0) {
-        updateListMyTimesheet(userId);
-        updateTimesheetList(userId);
+        //take information from 
+        getProjectInfo();
+        //updateListMyTimesheet(userId);
+        //updateTimesheetList(userId);
     } else {
         //alert("error");
         var errorMes = '<div class="alert alert-danger">'+
@@ -645,7 +668,7 @@ function getMonthFromString(mon) {
 
 function holiday() {
     var ctx = new SP.ClientContext.get_current();
-    var siteUrl = 'https://leonardotabosa.sharepoint.com/';
+    var siteUrl = 'https://siicanada.sharepoint.com/';
     var context = new SP.AppContextSite(ctx, siteUrl);
     ctx.load(context.get_web());
     var oList = context.get_web().get_lists().getByTitle('Holiday List');
@@ -772,5 +795,71 @@ function IsCurrentUserMemberOfGroup(groupName, OnComplete) {
         function OnFailure(sender, args) {
             OnComplete(false);
         }    
+}
+
+function getProjectInfo() {
+    console.log(count);
+        var ctx = new SP.ClientContext.get_current();
+        var siteUrl = 'https://siicanada.sharepoint.com/direction/';
+        var context = new SP.AppContextSite(ctx, siteUrl);
+        ctx.load(context.get_web());
+        var oList = context.get_web().get_lists().getByTitle('Project-List');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml('<View>' +
+                                '<Query>' +
+                                    '<Where>' +
+                                                '<Eq>' +
+                                                    '<FieldRef Name=\'ID\'/>' +
+                                                    '<Value Type=\'Number\'>' + array[projectCount][1] + '</Value>' +
+                                                '</Eq>' +
+                                    '</Where>' +
+                                '</Query>' +
+                                '<ViewFields>' +
+                                    '<FieldRef Name=\'Id\' />' +
+                                    '<FieldRef Name=\'Title\' />' +
+                                    '<FieldRef Name=\'Cat\' />' +
+                                    '<FieldRef Name=\'Final_x0020_Client\' />' +
+                                    '<FieldRef Name=\'Details\' />' +
+                                    '<FieldRef Name=\'PNum\' />' +
+                                    '<FieldRef Name=\'Amdt0\' />' +
+                                '</ViewFields>' +
+                              '</View>');
+        window.collListItem = oList.getItems(camlQuery);
+        ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0)');
+        ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryGetProjectInfo),
+        Function.createDelegate(this, window.onQueryFailed));
+
+    
+    
+
+}
+
+function onQueryGetProjectInfo() {
+    var listEnumerator = collListItem.getEnumerator();
+    
+    while (listEnumerator.moveNext()) {
+        var oListItem = listEnumerator.get_current();
+        projectInfo[projectCount] = new Array();
+        projectInfo[projectCount][0] = oListItem.get_item('PNum');
+        projectInfo[projectCount][1] = oListItem.get_item('Amdt0');
+        projectInfo[projectCount][2] = oListItem.get_item('Title');
+        projectInfo[projectCount][3] = oListItem.get_item('Cat');
+        projectInfo[projectCount][4] = oListItem.get_item('Final_x0020_Client').Label;
+        projectInfo[projectCount][5] = oListItem.get_item('Details');
+        projectCount++;
+        //console.log(projectCount);
+        console.log(projectInfo);
+        //console.log(oListItem.get_item('Final_x0020_Client').Label);
+       // listInfo += "<option value='" + oListItem.get_id() + "' label='" + oListItem.get_item('Final_x0020_Client').Label + " " + oListItem.get_item('Title') + " " + oListItem.get_item('PNum') + "-" + oListItem.get_item('Amdt0') + "'>" + oListItem.get_id() + "</option>";
     }
+    console.log(count);
+    console.log(projectCount);
+    if (projectCount != (count - 1)) {
+        getProjectInfo();
+    } else {
+        updateListMyTimesheet(userId);
+        updateTimesheetList(userId);
+    }
+    
+}
 
