@@ -210,8 +210,8 @@ function fillArrayAndTakeCount() {
 
 //same function in two files
 function onQueryFailed(sender, args) {
-    SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
-    args.get_stackTrace(), true);
+    //SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
+    //args.get_stackTrace(), true);
 }
 
 //take new count, fill array
@@ -219,14 +219,14 @@ function onQuerySucceeded(sender, args) {
     var listEnumerator = collListItem.getEnumerator();
     while (listEnumerator.moveNext()) {
         
-        //count number of rows in list
-        count++;
+        
         
         //update array
         var oListItem = listEnumerator.get_current();
         //save the number of lines to be deleted
         deleteLineArray[count] = oListItem.get_id();
-
+        //count number of rows in list
+        count++;
         var temp = count - 1;
         var total=0;
         array[temp] = new Array(36);
@@ -668,12 +668,13 @@ function updateTimesheetList(user) {
             //console.log(array[colCreated][2]);
             oListItem.set_item('PNum', projectInfo[colCreated][0]);
             oListItem.set_item('Amdt', projectInfo[colCreated][1]);
-            oListItem.set_item('Project', projectInfo[colCreated][2]);
+            oListItem.set_item('ProjectTitle', projectInfo[colCreated][2]);
             oListItem.set_item('Cat', projectInfo[colCreated][3]);
             oListItem.set_item('FinalClient', projectInfo[colCreated][4]);
             oListItem.set_item('ProjectDetails', projectInfo[colCreated][5]);
+            oListItem.set_item('Bench', projectInfo[colCreated][6]);
 
-            //oListItem.set_item('Project', array[colCreated][1]);
+            oListItem.set_item('Project', array[colCreated][1]);
             oListItem.set_item('HourType', array[colCreated][2]);
             oListItem.set_item('Month', month);
             oListItem.set_item('Year', year);
@@ -847,10 +848,11 @@ function getProjectInfo() {
                                 '<FieldRef Name=\'Details\' />' +
                                 '<FieldRef Name=\'PNum\' />' +
                                 '<FieldRef Name=\'Amdt0\' />' +
+                                '<FieldRef Name=\'Bench\' />' +
                             '</ViewFields>' +
                           '</View>');
     window.collListItem = oList.getItems(camlQuery);
-    ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0)');
+    ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0, Bench)');
     ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryGetProjectInfo),
     Function.createDelegate(this, window.onQueryFailed));
 
@@ -864,13 +866,17 @@ function onQueryGetProjectInfo() {
 
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
+        console.log(oListItem);
         projectInfo[projectCount] = new Array();
         projectInfo[projectCount][0] = oListItem.get_item('PNum');
         projectInfo[projectCount][1] = oListItem.get_item('Amdt0');
         projectInfo[projectCount][2] = oListItem.get_item('Title');
         projectInfo[projectCount][3] = oListItem.get_item('Cat');
+        
+        //projectInfo[projectCount][3] = context.CastTo(oList.get_fields().getByInternalNameOrTitle("Cat"),SP.FieldChoice);
         projectInfo[projectCount][4] = oListItem.get_item('Final_x0020_Client').Label;
         projectInfo[projectCount][5] = oListItem.get_item('Details');
+        projectInfo[projectCount][6] = oListItem.get_item('Bench');
         projectCount++;
         //console.log(projectCount);
         console.log(projectInfo);
@@ -891,3 +897,5 @@ function onQueryGetProjectInfo() {
     }
 
 }
+
+

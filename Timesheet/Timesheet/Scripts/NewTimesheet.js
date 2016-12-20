@@ -4,10 +4,11 @@
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', lookupProject);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', numberOfDaysInMonth);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', setLoggedInUser);
-
+    SP.SOD.executeFunc('sp.js', 'SP.ClientContext', CheckMemberInAdminGroup);
+    //ExecuteOrDelayUntilScriptLoaded(init, 'sp.js');
     //check if the current user is member of the approver group
-    function IsCurrentUserHasContribPerms() {
-        IsCurrentUserMemberOfGroup("Approvers", function (isCurrentUserInGroup) {
+    /*function IsCurrentUserHasContribPerms() {
+        IsCurrentUserMemberOfGroup("gs-administration", function (isCurrentUserInGroup) {
             if (isCurrentUserInGroup) {
                 // The current user is in the [Members] group!
                 //alert(isCurrentUserInGroup);
@@ -16,8 +17,9 @@
         });
 
     }
-    ExecuteOrDelayUntilScriptLoaded(IsCurrentUserHasContribPerms, 'SP.js');
+    ExecuteOrDelayUntilScriptLoaded(IsCurrentUserHasContribPerms, 'SP.js');*/
     
+
     projectInfo = new Array();
     projectCount = 0;
     sumCol = 0;
@@ -177,8 +179,8 @@ function lookupProject() {
 }
 
 function onQueryFailed(sender, args) {
-    SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
-    args.get_stackTrace(), true);
+   // SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
+   // args.get_stackTrace(), true);
 }
 /**
  * On the query succeeded. Lists all the projects
@@ -424,12 +426,13 @@ function updateTimesheetList(user) {
             //projectInfo
                 oListItem.set_item('PNum', projectInfo[colCreated][0]);
                 oListItem.set_item('Amdt', projectInfo[colCreated][1]);
-                oListItem.set_item('Project', projectInfo[colCreated][2]);
+                oListItem.set_item('ProjectTitle', projectInfo[colCreated][2]);
                 oListItem.set_item('Cat', projectInfo[colCreated][3]);
                 oListItem.set_item('FinalClient', projectInfo[colCreated][4]);
                 oListItem.set_item('ProjectDetails', projectInfo[colCreated][5]);
+                oListItem.set_item('Bench', projectInfo[colCreated][6]);
 
-                //oListItem.set_item('Project', array[colCreated][1]);
+                oListItem.set_item('Project', array[colCreated][1]);
                 oListItem.set_item('HourType', array[colCreated][2]);
                 oListItem.set_item('Month', monthSubmit);
                 oListItem.set_item('Year', yearSubmit);
@@ -822,10 +825,11 @@ function getProjectInfo() {
                                     '<FieldRef Name=\'Details\' />' +
                                     '<FieldRef Name=\'PNum\' />' +
                                     '<FieldRef Name=\'Amdt0\' />' +
+                                    '<FieldRef Name=\'Bench\' />' +
                                 '</ViewFields>' +
                               '</View>');
         window.collListItem = oList.getItems(camlQuery);
-        ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0)');
+        ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0, Bench)');
         ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryGetProjectInfo),
         Function.createDelegate(this, window.onQueryFailed));
 
@@ -846,6 +850,7 @@ function onQueryGetProjectInfo() {
         projectInfo[projectCount][3] = oListItem.get_item('Cat');
         projectInfo[projectCount][4] = oListItem.get_item('Final_x0020_Client').Label;
         projectInfo[projectCount][5] = oListItem.get_item('Details');
+        projectInfo[projectCount][6] = oListItem.get_item('Bench');
         projectCount++;
         //console.log(projectCount);
         console.log(projectInfo);
@@ -862,4 +867,64 @@ function onQueryGetProjectInfo() {
     }
     
 }
+
+function CheckMemberInAdminGroup() {
+    var clientContext = new SP.ClientContext.get_current();
+    this.currentUser = clientContext.get_web().get_currentUser();
+    clientContext.load(this.currentUser);
+
+    window.userGroups = this.currentUser.get_groups();
+    clientContext.load(window.userGroups);
+    clientContext.executeQueryAsync(success, failure);
+    function success() {
+        var groupsEnumerator = userGroups.getEnumerator();
+        while (groupsEnumerator.moveNext()) {
+            var group = groupsEnumerator.get_current();
+            console.log(group.get_title());
+            if (group.get_title() == "Approbateurs") {
+                // User is member of Admin group, do stuff
+                //alert("OK");
+                $("#approverMember").show();
+            }
+        }
+    }
+
+    function failure() {
+        // Something went wrong with the query
+    }
+}
+
+
+/*
+function init() {
+    var currentContext = SP.ClientContext.get_current();
+    var currentWeb = currentContext.get_web();
+    var currentUser = currentContext.get_web().get_currentUser();
+    currentContext.load(currentUser);
+    var allGroups = currentWeb.get_siteGroups();
+    currentContext.load(allGroups);
+    var group = allGroups.getByName('gs-administrator');
+    currentContext.load(group);
+    var groupUsers = group.get_users();
+    console.log(groupUsers);
+    currentContext.load(groupUsers);
+    currentContext.executeQueryAsync(OnSuccess, OnFailure);
+    function OnSuccess(sender, args) {
+        var userInGroup = false;
+        var groupUserEnumerator = groupUsers.getEnumerator();
+        while (groupUserEnumerator.moveNext()) {
+            var groupUser = groupUserEnumerator.get_current();
+            if (groupUser.get_id() == currentUser.get_id()) {
+                //do something
+                break;
+            }
+        }
+    }
+
+    function OnFailure(sender, args) {
+        alert('error');
+    }
+}
+
+*/
 
