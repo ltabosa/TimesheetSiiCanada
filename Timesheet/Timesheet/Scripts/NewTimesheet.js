@@ -1,17 +1,17 @@
-﻿var hostweburl;
-var appweburl;
+﻿//var hostweburl;
+//var appweburl;
 
 $(document).ready(function () {
 
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', monthYearFieldFill);
-    //SP.SOD.executeFunc('sp.js', 'SP.ClientContext', lookupProject);
+    SP.SOD.executeFunc('sp.js', 'SP.ClientContext', lookupProject);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', numberOfDaysInMonth);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', setLoggedInUser);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', CheckMemberInAdminGroup);
 
-    hostweburl = 'https://siicanada.sharepoint.com';
-    appweurl = 'https://siicanada.sharepoint.com/agency/direction';
-    var scriptbase = hostweburl + "/_layouts/15/";
+    //hostweburl = 'https://siicanada.sharepoint.com';
+    //appweurl = 'https://siicanada.sharepoint.com/agency/direction';
+    //var scriptbase = hostweburl + "/_layouts/15/";
 
     projectInfo = new Array();
     projectCount = 0;
@@ -24,8 +24,8 @@ $(document).ready(function () {
     $(".changeDate").focusout(function () {
         numberOfDaysInMonth();
         weekendDay();
-        //holiday();
-        $.getScript(hostweburl + "/_layouts/15/" + "SP.RequestExecutor.js", holiday);
+        holiday();
+        //$.getScript(hostweburl + "/_layouts/15/" + "SP.RequestExecutor.js", holiday);
     });
     
     //otherProject
@@ -180,8 +180,8 @@ function onQueryLookupSucceeded(sender, args) {
     }
     $(".results").html(listInfo);
     updateProjects();
-    //holiday();
-    $.getScript(hostweburl + "/_layouts/15/" + "SP.RequestExecutor.js", holiday);
+    holiday();
+    //$.getScript(hostweburl + "/_layouts/15/" + "SP.RequestExecutor.js", holiday);
 
 }
 
@@ -294,7 +294,8 @@ function newLineOfProject() {
 
     });
     
-    $.getScript(hostweburl + "/_layouts/15/" + "SP.RequestExecutor.js", lookupProject);
+    //$.getScript(hostweburl + "/_layouts/15/" + "SP.RequestExecutor.js", lookupProject);
+    lookupProject();
     numberOfDaysInMonth();
     weekendDay();
     
@@ -724,7 +725,7 @@ function IsCurrentUserMemberOfGroup(groupName, OnComplete) {
 
 function getProjectInfo() {
         var ctx = new SP.ClientContext.get_current();
-        var siteUrl = 'https://siicanada.sharepoint.com/direction/';
+        var siteUrl = 'https://siicanada.sharepoint.com/agency/direction/';
         var context = new SP.AppContextSite(ctx, siteUrl);
         ctx.load(context.get_web());
         var oList = context.get_web().get_lists().getByTitle('Project-List');
@@ -804,75 +805,5 @@ function CheckMemberInAdminGroup() {
     function failure() {
         // Something went wrong with the query
     }
-}
-
-//**********************************************************************************************
-//**********************************************************************************************
-//**********************************************************************************************
-// Function to retrieve a query string value.
-// For production purposes you may want to use
-//  a library to handle the query string.
-function getQueryStringParameter(paramToRetrieve) {
-    var params =
-        document.URL.split("?")[1].split("&");
-    var strParams = "";
-    for (var i = 0; i < params.length; i = i + 1) {
-        var singleParam = params[i].split("=");
-        if (singleParam[0] == paramToRetrieve)
-            return singleParam[1];
-    }
-}
-
-// Function to prepare and issue the request to get
-//  SharePoint data
-function execCrossDomainRequest() {
-    // executor: The RequestExecutor object
-    // Initialize the RequestExecutor with the add-in web URL.
-    var executor = new SP.RequestExecutor(appweburl);
-
-    // Issue the call against the add-in web.
-    // To get the title using REST we can hit the endpoint:
-    //      appweburl/_api/web/lists/getbytitle('listname')/items
-    // The response formats the data in the JSON format.
-    // The functions successHandler and errorHandler attend the
-    //      sucess and error events respectively.
-    executor.executeAsync(
-        {
-            url:
-                appweburl +
-                "/_api/web/lists/getbytitle('Project-List')/items",
-            method: "GET",
-            headers: { "Accept": "application/json; odata=verbose" },
-            success: successHandler,
-            error: errorHandler
-        }
-    );
-}
-
-// Function to handle the success event.
-// Prints the data to the page.
-function successHandler(data) {
-    var jsonObject = JSON.parse(data.body);
-    var listInfo = "";
-
-    var results = jsonObject.d.results;
-    for (var i = 0; i < results.length; i++) {
-        listInfo = listInfo +
-            "<option value='" + results[i].Id +
-                "' label='" + results[i].Final_x0020_Client +
-                " " + results[i].Title +
-                " " + results[i].PNum +
-                "-" + results[i].Amdt0 +
-                "'>" + results[i].Id +
-             "</option>";
-    }
-
-    $(".results").html(listInfo);
-}
-
-// Function to handle the error event.
-// Prints the error message to the page.
-function errorHandler(data, errorCode, errorMessage) {
-    $(".results").html("Could not complete cross-domain call: " + errorMessage);
 }
 
