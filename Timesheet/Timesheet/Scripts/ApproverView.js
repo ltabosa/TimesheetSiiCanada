@@ -54,8 +54,6 @@ function onQuerySucceeded(sender, args) {
             "</tr>";
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
-        //var user = oListItem.get_item('ReportOwner');
-        //console.log(oListItem.get_item('ReportOwner').get_lookupValue());
         listInfo += "<tr>";
 
         
@@ -70,7 +68,6 @@ function onQuerySucceeded(sender, args) {
            "<td>" + oListItem.get_item('Status') + "</td>" +
         "</tr>";
     }
-    //oListItem.get_id()
     listInfo += "</table>";
     $("#results").html(listInfo);
 }

@@ -9,8 +9,6 @@ $(document).ready(function () {
 function retrieve() {
     //Id of User logged in
     var userId = _spPageContextInfo.userId;
-    //console.log(userId);
-
 
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('MyTimesheet');
@@ -75,7 +73,6 @@ function onQuerySucceeded(sender, args) {
            "<td>" + oListItem.get_item('Status') + "</td>" +
         "</tr>";
     }
-    //oListItem.get_id()
     listInfo += "</table>";
     $("#results").html(listInfo);
 }

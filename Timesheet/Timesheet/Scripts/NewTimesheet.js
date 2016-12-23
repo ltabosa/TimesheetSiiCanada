@@ -1,24 +1,17 @@
-﻿$(document).ready(function () {
+﻿var hostweburl;
+var appweburl;
+
+$(document).ready(function () {
 
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', monthYearFieldFill);
-    SP.SOD.executeFunc('sp.js', 'SP.ClientContext', lookupProject);
+    //SP.SOD.executeFunc('sp.js', 'SP.ClientContext', lookupProject);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', numberOfDaysInMonth);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', setLoggedInUser);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', CheckMemberInAdminGroup);
-    //ExecuteOrDelayUntilScriptLoaded(init, 'sp.js');
-    //check if the current user is member of the approver group
-    /*function IsCurrentUserHasContribPerms() {
-        IsCurrentUserMemberOfGroup("gs-administration", function (isCurrentUserInGroup) {
-            if (isCurrentUserInGroup) {
-                // The current user is in the [Members] group!
-                //alert(isCurrentUserInGroup);
-                $("#approverMember").show();
-            } 
-        });
 
-    }
-    ExecuteOrDelayUntilScriptLoaded(IsCurrentUserHasContribPerms, 'SP.js');*/
-    
+    hostweburl = 'https://siicanada.sharepoint.com';
+    appweurl = 'https://siicanada.sharepoint.com/agency/direction';
+    var scriptbase = hostweburl + "/_layouts/15/";
 
     projectInfo = new Array();
     projectCount = 0;
@@ -26,13 +19,13 @@
     count = 1;
     colCreated = 0;
     submitClicked = true;
-    //newLine = "";
     array = new Array();
 
     $(".changeDate").focusout(function () {
         numberOfDaysInMonth();
         weekendDay();
-        holiday();
+        //holiday();
+        $.getScript(hostweburl + "/_layouts/15/" + "SP.RequestExecutor.js", holiday);
     });
     
     //otherProject
@@ -53,8 +46,6 @@
         //avoid multiple submit
         if (submitClicked) {
             submitClicked = false;
-            //console.log(count);
-            //console.log(array);
             var errorMes="";
             for (var i = 0; i < (count-1); i++) {
                 if (((array[i][1]==null)||(array[i][1]==undefined))&&(array[i][35]!=="Deleted")) {
@@ -94,7 +85,6 @@
                     var users = $('#peoplePickerDivLinMan_TopSpan_HiddenInput').val();
                     users = users.substring(1, users.length - 1);
                     var obj = JSON.parse(users);
-                    //console.log(obj);
                    getUserId(obj.AutoFillKey);
             } 
         }
@@ -102,8 +92,6 @@
     //Delete error msg
     $("body").focusout(function () {
         $("#errorMsg").html("");
-        //submitClicked = true;
-        //$("#errorMsg").hide("fade");
     });
     
 });
@@ -112,7 +100,6 @@ function monthYearFieldFill() {
     $('#txtMonth').datepicker({
         changeMonth: true,
         changeYear: true,
-        //showButtonPanel: true,
         dateFormat: 'MM',
         onClose: function (dateText, inst) {
             var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
@@ -125,7 +112,6 @@ function monthYearFieldFill() {
     });
     $('#txtYear').datepicker({
         changeYear: true,
-        //showButtonPanel: true,
         dateFormat: 'yy',
         onClose: function (dateText, inst) {
             var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
@@ -144,7 +130,7 @@ function monthYearFieldFill() {
 
 function lookupProject() {
     var ctx = new SP.ClientContext.get_current();
-    var siteUrl = 'https://siicanada.sharepoint.com/direction/';
+    var siteUrl = 'https://siicanada.sharepoint.com/agency/direction/';
     var context = new SP.AppContextSite(ctx, siteUrl);
     ctx.load(context.get_web());
     var oList = context.get_web().get_lists().getByTitle('Project-List');
@@ -179,8 +165,6 @@ function lookupProject() {
 }
 
 function onQueryFailed(sender, args) {
-   // SP.UI.Notify.addNotification('Request failed. ' + args.get_message() + '\n' +
-   // args.get_stackTrace(), true);
 }
 /**
  * On the query succeeded. Lists all the projects
@@ -192,12 +176,13 @@ function onQueryLookupSucceeded(sender, args) {
     var listInfo = "";
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
-        //console.log(oListItem.get_item('Final_x0020_Client').Label);
         listInfo += "<option value='" + oListItem.get_id() + "' label='" + oListItem.get_item('Final_x0020_Client').Label + " " + oListItem.get_item('Title') + " " + oListItem.get_item('PNum') + "-" + oListItem.get_item('Amdt0') + "'>" + oListItem.get_id() + "</option>";
     }
     $(".results").html(listInfo);
     updateProjects();
-    holiday();
+    //holiday();
+    $.getScript(hostweburl + "/_layouts/15/" + "SP.RequestExecutor.js", holiday);
+
 }
 
 function numberOfDaysInMonth() {
@@ -222,7 +207,6 @@ function numberOfDaysInMonth() {
         //Delete day 31 from array
         for (var i = 0; i < count; i++) {
             $('#col' + i + '34').val(0);
-            //console.log("numero de dias= " + numberOfDays);
         }
     } else if (numberOfDays == 29) {
         $(".month28Days").show();
@@ -232,7 +216,6 @@ function numberOfDaysInMonth() {
         for (var i = 0; i < count; i++) {
             $('#col' + i + '33').val(0);
             $('#col' + i + '34').val(0);
-            //console.log("numero de dias= " + numberOfDays);
         }
     } else if (numberOfDays == 28) {
         $(".month28Days").hide();
@@ -243,7 +226,6 @@ function numberOfDaysInMonth() {
             $('#col' + i + '32').val(0);
             $('#col' + i + '33').val(0);
             $('#col' + i + '34').val(0);
-            //console.log("numero de dias= " + numberOfDays);
         }
 
     } else {
@@ -311,8 +293,8 @@ function newLineOfProject() {
         updateLineTotal();
 
     });
-   
-    lookupProject();
+    
+    $.getScript(hostweburl + "/_layouts/15/" + "SP.RequestExecutor.js", lookupProject);
     numberOfDaysInMonth();
     weekendDay();
     
@@ -324,7 +306,6 @@ function deleteLineOfProject() {
             $("#row" + i).hide();
             array[i][35] = "Deleted";
             updateLineTotal();
-            console.log("delete the line: " + i);
         }
     }
 }
@@ -339,16 +320,12 @@ function fillArray() {
             }
         }  
     }
-    //console.log(array);   
 }
 
 function updateProjects() {
-    //console.log(count);
     if (count > 1) {
         var temp = count - 2;
-        //console.log("temp: " + temp);
         for (var i = 0; i < (count - 1); i++) {
-            //console.log("Count - 1: " + (count - 1));
             for (var j = 0; j < 36; j++) {
                 $('#col' + i + '' + j).val(array[i][j]);
             }
@@ -362,15 +339,11 @@ function updateProjects() {
                 $('#row' + i).hide();
             }
             document.getElementById('col' + i + '1').value = array[i][1];
-            //console.log("Nome do Projeto: " + array[i][1]);
-            
-        }
-        
+        } 
     }
 }
 
 function updateLineTotal() {
-    //console.log(count);
     if (count > 1) {
         sumCol = 0;
         var error = "";
@@ -379,17 +352,11 @@ function updateLineTotal() {
            
             for (var j = 4; j < 36; j++) {
                 var temp = Number($('#col' + i + ''+j).val());
-                //console.log("Valor cada coluna: " + $('#col' + i + ''+j).val());
-                console.log("Temp= "+ temp);
                 if (temp >= 0 && temp < 25) {
-                    //error = "";
-                    //alert($('#col' + i + '3').val());
                     sumLine += temp;
                     $('#col' + i + '3').val(sumLine);
-                    //console.log("Soma= " + sumLine);
                 } else if (!$('#col' + i + ''+j).val()==""){
                     $('#col' + i + '' + j).val(0);
-                    //error = '<tr ><td colspan="35" class="bg-danger"><span id="errorMsg">Please fill field with a number between 0 and 24</span></td></tr>';
                 }
             }
             if(array[i][35]!="Deleted"){
@@ -397,10 +364,8 @@ function updateLineTotal() {
             }
         }
     }
-    //totalHour $("#newLine").html(newLine);
     $('#totalHour').html(sumCol);
     $('#msg').html(error);
-    //console.log("Total= " + sumCol);
 }
 
 function updateTimesheetList(user) {
@@ -411,7 +376,6 @@ function updateTimesheetList(user) {
 
     while (colCreated < (count - 1)) {
         if (array[colCreated][35] != "Deleted") {
-            //console.log("Linha nao deletada: " + colCreated);
             
             var clientContext = new SP.ClientContext.get_current();
 
@@ -422,8 +386,6 @@ function updateTimesheetList(user) {
             this.oListItem = oList.addItem(itemCreateInfo);
             
             //verify if the line is well filled
-            //if (array[colCreated][1] !== "" || array[colCreated][1] !== undefined || array[colCreated][1] !== null) {
-            //projectInfo
                 oListItem.set_item('PNum', projectInfo[colCreated][0]);
                 oListItem.set_item('Amdt', projectInfo[colCreated][1]);
                 oListItem.set_item('ProjectTitle', projectInfo[colCreated][2]);
@@ -448,16 +410,12 @@ function updateTimesheetList(user) {
                 oListItem.update();
 
                 clientContext.load(oListItem);
-                console.log("colCreated antes:" + colCreated);
-            //}
             
                 clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryCreateSucceeded), Function.createDelegate(this, this.onQueryCreateFailed));
 
             colCreated++;
-            console.log("colCreated depois:" + colCreated);
             
         } else {
-            console.log("Linha deletada: " + colCreated);
             colCreated++;
             onQueryCreateSucceeded();
         }
@@ -465,17 +423,9 @@ function updateTimesheetList(user) {
 }
 
 function onQueryCreateSucceeded() {
-    console.log("colCreated: " + colCreated);
-    console.log("count: " + count);
-    console.log("tamanho no array= " + array.length);
 
-    //console.log()
-
-    sendEmail("leonardo.tabosa@leonardotabosa.onmicrosoft.com", "leonardo.tabosa@leonardotabosa.onmicrosoft.com", "<b>Teste aqui</b>", "Outro teste");
+    //sendEmail("leonardo.tabosa@leonardotabosa.onmicrosoft.com", "leonardo.tabosa@leonardotabosa.onmicrosoft.com", "<b>Teste aqui</b>", "Outro teste");
    
-
-
-    //window.location.href = '../Pages/Default.aspx?ID=' + projectId + '&Title=' + projectTitle;
     if (colCreated == (count - 1)) {
         window.location.href = '../Pages/Default.aspx';
     }
@@ -548,11 +498,9 @@ function setLoggedInUser() {
         defaultUser.Key = data.d.LoginName;
         defaultUser.Resolved = true;
         users[0] = defaultUser;
-        //console.log(users);
         SPClientPeoplePicker.ShowUserPresence = false;
         SPClientPeoplePicker_InitStandaloneControlWrapper('peoplePickerDivLinMan', users, schema);
         
-        //alert(loginName);
     }
 
     function onError(error) {
@@ -573,7 +521,6 @@ function getUserId(loginName) {
 }
 
 function ensureUserSuccess() {
-    console.log("User ID:" + this.user.get_id());
     userId = this.user.get_id();
 
     //Check if the month and Year Already exists before create Items
@@ -616,7 +563,6 @@ function onFail(sender, args) {
 
 function onQuerySucceededCreateItems() {
     var listEnumerator = collListItem.getEnumerator();
-    //console.log(listEnumerator);
     var control = 0;
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
@@ -626,16 +572,9 @@ function onQuerySucceededCreateItems() {
         }
     }
 
-    //console.log("Control: " + control);
-    //console.log(array);
-    //console.log(count);
     if (control == 0) {
-        //take information from 
         getProjectInfo();
-        //updateListMyTimesheet(userId);
-        //updateTimesheetList(userId);
     } else {
-        //alert("error");
         var errorMes = '<div class="alert alert-danger">'+
                             '<strong>Atention!</strong> You have already one draft for '+monthSubmit+' '+yearSubmit+'.'+
                         '</div>';
@@ -643,8 +582,6 @@ function onQuerySucceededCreateItems() {
 
         $("#errorMsg").html(errorMes);
     }
-    //Create Items If Query is empty
-    
 }
 
 
@@ -652,7 +589,6 @@ function weekendDay() {
     var month = $("#txtMonth").val();
     var year = $("#txtYear").val();
     var m = getMonthFromString(month);
-    console.log(count);
     for (i = 0; i < count; i++) {
         for (j = 1; j < 32; j++) {
             var d = new Date(year, m, j);
@@ -695,7 +631,6 @@ function holiday() {
 }
 
 function onQueryHolidaySucceeded(sender, args) {
-   // console.log(count);
     var month = $("#txtMonth").val();
     var year = $("#txtYear").val();
     var listEnumerator = collListItem.getEnumerator();
@@ -706,17 +641,7 @@ function onQueryHolidaySucceeded(sender, args) {
         var holidayMonth = holidayDate.getMonth();
         var holidayYear = holidayDate.getFullYear();
         holidayDate = new Date(holidayYear, holidayMonth, holidayDay);
-
-        //holidayDate = holidayDate.setHours(0, 0, 0, 0);
-        //console.log(oListItem.get_item('HolidayDate'));
-        
-        //console.log(holidayDate);
         var m = getMonthFromString(month);
-        //var day = new Date(year, m, j);
-        //console.log(day);
-        //if (holidayDate===day){
-         //   alert(day);
-       // }
         for (i = 0; i < (count - 1) ; i++) {
             for (j = 4; j < 35; j++) {
                 var d = new Date(year, m, (j - 3));
@@ -754,11 +679,8 @@ function sendEmail(from, to, body, subject) {
             "X-RequestDigest": $("#__REQUESTDIGEST").val()
         },
         success: function (data) {
-            //alert("Eposten ble sendt");
         },
         error: function (err) {
-            //alert(err.responseText);
-            //debugger;
         }
     });
 }
@@ -801,7 +723,6 @@ function IsCurrentUserMemberOfGroup(groupName, OnComplete) {
 }
 
 function getProjectInfo() {
-    console.log(count);
         var ctx = new SP.ClientContext.get_current();
         var siteUrl = 'https://siicanada.sharepoint.com/direction/';
         var context = new SP.AppContextSite(ctx, siteUrl);
@@ -852,13 +773,7 @@ function onQueryGetProjectInfo() {
         projectInfo[projectCount][5] = oListItem.get_item('Details');
         projectInfo[projectCount][6] = oListItem.get_item('Bench');
         projectCount++;
-        //console.log(projectCount);
-        console.log(projectInfo);
-        //console.log(oListItem.get_item('Final_x0020_Client').Label);
-       // listInfo += "<option value='" + oListItem.get_id() + "' label='" + oListItem.get_item('Final_x0020_Client').Label + " " + oListItem.get_item('Title') + " " + oListItem.get_item('PNum') + "-" + oListItem.get_item('Amdt0') + "'>" + oListItem.get_id() + "</option>";
     }
-    console.log(count);
-    console.log(projectCount);
     if (projectCount != (count - 1)) {
         getProjectInfo();
     } else {
@@ -880,10 +795,7 @@ function CheckMemberInAdminGroup() {
         var groupsEnumerator = userGroups.getEnumerator();
         while (groupsEnumerator.moveNext()) {
             var group = groupsEnumerator.get_current();
-            console.log(group.get_title());
             if (group.get_title() == "Approbateurs") {
-                // User is member of Admin group, do stuff
-                //alert("OK");
                 $("#approverMember").show();
             }
         }
@@ -894,37 +806,73 @@ function CheckMemberInAdminGroup() {
     }
 }
 
-
-/*
-function init() {
-    var currentContext = SP.ClientContext.get_current();
-    var currentWeb = currentContext.get_web();
-    var currentUser = currentContext.get_web().get_currentUser();
-    currentContext.load(currentUser);
-    var allGroups = currentWeb.get_siteGroups();
-    currentContext.load(allGroups);
-    var group = allGroups.getByName('gs-administrator');
-    currentContext.load(group);
-    var groupUsers = group.get_users();
-    console.log(groupUsers);
-    currentContext.load(groupUsers);
-    currentContext.executeQueryAsync(OnSuccess, OnFailure);
-    function OnSuccess(sender, args) {
-        var userInGroup = false;
-        var groupUserEnumerator = groupUsers.getEnumerator();
-        while (groupUserEnumerator.moveNext()) {
-            var groupUser = groupUserEnumerator.get_current();
-            if (groupUser.get_id() == currentUser.get_id()) {
-                //do something
-                break;
-            }
-        }
-    }
-
-    function OnFailure(sender, args) {
-        alert('error');
+//**********************************************************************************************
+//**********************************************************************************************
+//**********************************************************************************************
+// Function to retrieve a query string value.
+// For production purposes you may want to use
+//  a library to handle the query string.
+function getQueryStringParameter(paramToRetrieve) {
+    var params =
+        document.URL.split("?")[1].split("&");
+    var strParams = "";
+    for (var i = 0; i < params.length; i = i + 1) {
+        var singleParam = params[i].split("=");
+        if (singleParam[0] == paramToRetrieve)
+            return singleParam[1];
     }
 }
 
-*/
+// Function to prepare and issue the request to get
+//  SharePoint data
+function execCrossDomainRequest() {
+    // executor: The RequestExecutor object
+    // Initialize the RequestExecutor with the add-in web URL.
+    var executor = new SP.RequestExecutor(appweburl);
+
+    // Issue the call against the add-in web.
+    // To get the title using REST we can hit the endpoint:
+    //      appweburl/_api/web/lists/getbytitle('listname')/items
+    // The response formats the data in the JSON format.
+    // The functions successHandler and errorHandler attend the
+    //      sucess and error events respectively.
+    executor.executeAsync(
+        {
+            url:
+                appweburl +
+                "/_api/web/lists/getbytitle('Project-List')/items",
+            method: "GET",
+            headers: { "Accept": "application/json; odata=verbose" },
+            success: successHandler,
+            error: errorHandler
+        }
+    );
+}
+
+// Function to handle the success event.
+// Prints the data to the page.
+function successHandler(data) {
+    var jsonObject = JSON.parse(data.body);
+    var listInfo = "";
+
+    var results = jsonObject.d.results;
+    for (var i = 0; i < results.length; i++) {
+        listInfo = listInfo +
+            "<option value='" + results[i].Id +
+                "' label='" + results[i].Final_x0020_Client +
+                " " + results[i].Title +
+                " " + results[i].PNum +
+                "-" + results[i].Amdt0 +
+                "'>" + results[i].Id +
+             "</option>";
+    }
+
+    $(".results").html(listInfo);
+}
+
+// Function to handle the error event.
+// Prints the error message to the page.
+function errorHandler(data, errorCode, errorMessage) {
+    $(".results").html("Could not complete cross-domain call: " + errorMessage);
+}
 
