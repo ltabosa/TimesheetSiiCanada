@@ -1,6 +1,4 @@
-﻿//var hostweburl;
-//var appweburl;
-
+﻿
 $(document).ready(function () {
 
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', monthYearFieldFill);
@@ -8,10 +6,6 @@ $(document).ready(function () {
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', numberOfDaysInMonth);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', setLoggedInUser);
     SP.SOD.executeFunc('sp.js', 'SP.ClientContext', CheckMemberInAdminGroup);
-
-    //hostweburl = 'https://siicanada.sharepoint.com';
-    //appweurl = 'https://siicanada.sharepoint.com/agency/direction';
-    //var scriptbase = hostweburl + "/_layouts/15/";
 
     projectInfo = new Array();
     projectCount = 0;
@@ -25,7 +19,6 @@ $(document).ready(function () {
         numberOfDaysInMonth();
         weekendDay();
         holiday();
-        //$.getScript(hostweburl + "/_layouts/15/" + "SP.RequestExecutor.js", holiday);
     });
     
     //otherProject
@@ -608,7 +601,7 @@ function getMonthFromString(mon) {
 
 function holiday() {
     var ctx = new SP.ClientContext.get_current();
-    var siteUrl = 'https://siicanada.sharepoint.com/';
+    var siteUrl = 'https://siicanada.sharepoint.com/agency/direction/mysii/';
     var context = new SP.AppContextSite(ctx, siteUrl);
     ctx.load(context.get_web());
     var oList = context.get_web().get_lists().getByTitle('Holiday List');

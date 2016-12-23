@@ -442,7 +442,7 @@ function weekendDay() {
 
 function holiday() {
     var ctx = new SP.ClientContext.get_current();
-    var siteUrl = 'https://siicanada.sharepoint.com/';
+    var siteUrl = 'https://siicanada.sharepoint.com/agency/direction/mysii/';
     var context = new SP.AppContextSite(ctx, siteUrl);
     ctx.load(context.get_web());
     var oList = context.get_web().get_lists().getByTitle('Holiday List');
