@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="d7e607df-1413-4a67-bb2e-18be372573ec" 
+        solutionId="d7e607df-1413-4a67-bb2e-18be372573ec" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="AttachementFile"
+        sharePointProductVersion="16.0">
+  <features>
+        <featureReference itemId="ae572243-c6a8-4f2b-baf5-0ea31404a11a" />
+  </features>
+</package>
