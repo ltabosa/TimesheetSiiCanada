@@ -18,5 +18,6 @@
     <File Path="Scripts\EditTimesheet.js" Url="Scripts/EditTimesheet.js" ReplaceContent="TRUE" />
     <File Path="Scripts\ApproverView.js" Url="Scripts/ApproverView.js" ReplaceContent="TRUE" />
     <File Path="Scripts\ApproverEdit.js" Url="Scripts/ApproverEdit.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\AddAttachmentFile.js" Url="Scripts/AddAttachmentFile.js" ReplaceContent="TRUE" />
   </Module>
 </Elements>

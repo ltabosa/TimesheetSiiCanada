@@ -153,6 +153,7 @@
       <SharePointProjectItemId>{52216b29-d5f6-49d4-aa1f-56b46464b983}</SharePointProjectItemId>
     </None>
     <Content Include="Pages\NewTimesheet.aspx" />
+    <Content Include="Scripts\AddAttachmentFile.js" />
     <Content Include="Scripts\ApproverEdit.js" />
     <Content Include="Scripts\ApproverView.js" />
     <Content Include="Scripts\bootstrap.js" />

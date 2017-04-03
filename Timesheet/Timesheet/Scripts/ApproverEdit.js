@@ -42,6 +42,7 @@
     });
 
     $("#Submit").click(function () {
+        addFileToListMyTimesheet(timesheetId);
 
         //prevent multiple clicks
         if (submitClicked) {
@@ -650,7 +651,7 @@ function updateListMyTimesheet() {
 }
 
 function onQueryCreateMyTimesheet() {
-    
+   
 }
 
 

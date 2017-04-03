@@ -27,6 +27,7 @@
 
     <!-- Ajoutez votre code JavaScript au fichier suivant -->
     <script type="text/javascript" src="../Scripts/NewTimesheet.js"></script>
+    <script type="text/javascript" src="../Scripts/AddAttachmentFile.js"></script>
     <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
     <script type="text/javascript" src="../Scripts/jquery-ui-1.12.1.min.js"></script>
     <script type="text/javascript" src="../Scripts/jquery.SPServices-2014.02.min.js"></script>
@@ -76,13 +77,15 @@
                 <div id="peoplePickerDivLinMan" title="User_"></div>
             </div>
         </div>
-        <!--
+
         <div class="form-group row">
             <div class="col-xs-2">
-                <label for="SdfPeoplePicker">User</label>
-                <SharePoint:PeopleEditor ID="SdfPeoplePicker" runat="server" SelectionSet='User,SecGroup,SPGroup' />
+                <label for="customFileUploadControl">File input</label>
+                <input id="customFileUploadControl" type="file" />
             </div>
-        </div>-->
+        </div>
+
+        
          
         <div class="container" id="myclass">
          

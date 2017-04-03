@@ -45,7 +45,7 @@
     });
 
     $("#Submit").click(function () {
-        
+        addFileToListMyTimesheet(timesheetId);
         //prevent clicks
         if (submitClicked){
             submitClicked = false;
@@ -117,7 +117,6 @@ function takeCurrentUser() {
 //Change the Where to accept the month, year and current user for the request
 function fillArrayAndTakeCount() {
     var userId = _spPageContextInfo.userId;
-    console.log(userId);
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('Timesheet');
     var camlQuery = new SP.CamlQuery();
@@ -220,9 +219,9 @@ function onQuerySucceeded(sender, args) {
         sumCol += total;
 
     }
-    console.log(array);
-    console.log("Lines to be deleted:");
-    console.log(deleteLineArray);
+    //console.log(array);
+    //console.log("Lines to be deleted:");
+    //console.log(deleteLineArray);
 
     //Call this function to build the empty table.
     newLineOfProject(count);

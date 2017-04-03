@@ -421,6 +421,7 @@ function onQueryCreateSucceeded() {
     //sendEmail("leonardo.tabosa@leonardotabosa.onmicrosoft.com", "leonardo.tabosa@leonardotabosa.onmicrosoft.com", "<b>Teste aqui</b>", "Outro teste");
    
     if (colCreated == (count - 1)) {
+        //attachFileToMyTimesheet(userId, monthSubmit, yearSubmit);
         window.location.href = '../Pages/Default.aspx';
     }
 
@@ -454,6 +455,7 @@ function updateListMyTimesheet(user) {
 
 function onQueryCreateMyTimesheet() {
     // return to MyTimesheet
+    attachFileToMyTimesheet(userId, monthSubmit, yearSubmit);
 }
 
 function setLoggedInUser() {

@@ -26,6 +26,7 @@
 
     <!-- Ajoutez votre code JavaScript au fichier suivant -->
     <script type="text/javascript" src="../Scripts/ApproverEdit.js"></script>
+    <script type="text/javascript" src="../Scripts/AddAttachmentFile.js"></script>
     <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
     <script type="text/javascript" src="../Scripts/jquery-ui-1.12.1.min.js"></script>
     <script type="text/javascript" src="../Scripts/jquery.SPServices-2014.02.min.js"></script>
@@ -75,6 +76,14 @@
             
             </div>
         </div>
+        <div class="form-group row">
+            <div class="col-xs-2">
+                <label for="customFileUploadControl">File input</label>
+                <input id="customFileUploadControl" type="file" />
+            </div>
+        </div>
+
+        <div id="result"></div>
          
         <div class="container" id="myclass">
          
