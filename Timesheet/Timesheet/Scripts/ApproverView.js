@@ -13,9 +13,10 @@ function retrieve() {
     camlQuery.set_viewXml('<View>' +
                             '<Query>' +
                                 '<OrderBy>' +
-                                    '<FieldRef Name=\'Year\' Ascending=\'FALSE\' />' +
-                                    '<FieldRef Name=\'Title\' Ascending=\'FALSE\' />' +
-                                    '<FieldRef Name=\'ReportOwner\' Ascending=\'TRUE\' />' +
+                                   '<FieldRef Name=\'Year\' Ascending=\'TRUE\' />' +
+                                   '<FieldRef Name=\'MonthNumber\' Ascending=\'TRUE\' />' +
+                                   '<FieldRef Name=\'Title\' Ascending=\'TRUE\' />' +
+                                   '<FieldRef Name=\'ReportOwner\' Ascending=\'TRUE\' />' +
                                 '</OrderBy>' +
                             '</Query>' +
                             '<ViewFields>' +
@@ -48,31 +49,28 @@ function onQuerySucceeded(sender, args) {
         "<table class='table table-striped'>" +
             "<tr>" +
                 "<th class='col-md-1'></th>" +
-                "<th class='col-md-1'></th>" +
                 "<th>Employee</th>" +
-                "<th>Month</th>" +
                 "<th>Year</th>" +
+                "<th>Month</th>" +
                 "<th>Total</th>" +
                 "<th>Status</th>" +
+                "<th class='col-md-1'></th>" +
             "</tr>";
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
         listInfo += "<tr>";
 
-
         listInfo += "<td class='col-md-1'><a href='ApproverEdit.aspx?ID=" + oListItem.get_id() + "&Status=" + oListItem.get_item('Status') + "&User=" + oListItem.get_item('ReportOwner').get_lookupValue() + "&Month=" + oListItem.get_item('Title') + "&Year=" + oListItem.get_item('Year') + "'><img src='../Images/EditIcon.png' /></a></td>";
-
-        listInfo += "<td id='attachment" + oListItem.get_id() + "'></td>";
-
-        getAttachments(oListItem.get_id());
 
         listInfo +=
            "<td>" + oListItem.get_item('ReportOwner').get_lookupValue() + "</td>" +
-           "<td>" + oListItem.get_item('Title') + "</td>" +
            "<td>" + oListItem.get_item('Year') + "</td>" +
+           "<td>" + oListItem.get_item('Title') + "</td>" +
            "<td>" + oListItem.get_item('Total') + "</td>" +
            "<td>" + oListItem.get_item('Status') + "</td>" +
+           "<td id='attachment" + oListItem.get_id() + "'></td>" +
         "</tr>";
+        getAttachments(oListItem.get_id());
     }
     listInfo += "</table>";
     $("#results").html(listInfo);

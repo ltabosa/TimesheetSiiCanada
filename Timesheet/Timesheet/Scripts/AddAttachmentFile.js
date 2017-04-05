@@ -68,7 +68,7 @@ function addFileToListMyTimesheet(itemId) {
           function () {
               console.log('Attachment file has been uploaded');
               if (itCameFromNewTimesheet) {
-                  window.location.href = '../Pages/EditTimesheet.aspx?ID=' + itemId + '&Status=In Progress&Month=' + monthSubmit + '&Year=' + yearSubmit + '';
+                  window.location.href = '../Pages/EditTimesheet.aspx?ID=' + itemId + '&Status=InProgress&Month=' + monthSubmit + '&Year=' + yearSubmit + '';
               }
               //location.reload();
           },
@@ -77,8 +77,7 @@ function addFileToListMyTimesheet(itemId) {
           });
     } else {
         if (itCameFromNewTimesheet) {
-            alert('come from new timesheet');
-            window.location.href = '../Pages/EditTimesheet.aspx?ID=' + itemId + '&Status="In Progress"&Month=' + monthSubmit + '&Year=' + yearSubmit + '';
+            window.location.href = '../Pages/EditTimesheet.aspx?ID=' + itemId + '&Status=InProgress&Month=' + monthSubmit + '&Year=' + yearSubmit + '';
         }
     }
     function processUpload(fileInput, listTitle, itemId, success, error) {
@@ -258,7 +257,7 @@ function getLastItemId(monthSubmit, yearSubmit) {
 
     }, function () {
         //failure handling comes here
-        alert("failed");
+        //alert("failed");
     });
 }
 

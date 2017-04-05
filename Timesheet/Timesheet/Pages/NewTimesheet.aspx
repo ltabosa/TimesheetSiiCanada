@@ -45,6 +45,7 @@
     <br />
      
     <div id="errorMsg"></div>
+    <div id="warningMsg"></div>
 
     <form autocomplete="off">
          <div class="form-group row">
