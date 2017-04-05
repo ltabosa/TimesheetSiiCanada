@@ -122,6 +122,7 @@
       <DependentUpon>Feature2.feature</DependentUpon>
     </Content>
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Images\attachment.png" />
     <Content Include="Images\CopyIcon.png" />
     <Content Include="Images\CreateIcon.png" />
     <Content Include="Images\EditIcon.png" />

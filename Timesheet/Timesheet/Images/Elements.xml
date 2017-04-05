@@ -7,5 +7,6 @@
     <File Path="Images\EditIcon.png" Url="Images/EditIcon.png" ReplaceContent="TRUE" />
     <File Path="Images\ViewIcon.png" Url="Images/ViewIcon.png" ReplaceContent="TRUE" />
     <File Path="Images\AppIcon.png" Url="Images/AppIcon.png" ReplaceContent="TRUE" />
+    <File Path="Images\attachment.png" Url="Images/attachment.png" ReplaceContent="TRUE" />
   </Module>
 </Elements>

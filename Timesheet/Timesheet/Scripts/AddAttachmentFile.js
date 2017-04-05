@@ -2,30 +2,10 @@
 
 //ExecuteOrDelayUntilScriptLoaded(initializePage, "sp.js");//adicionar na pagina de novo TS e tbm na pagina de edicao de TS
 ExecuteOrDelayUntilScriptLoaded(getWebProperties, "SP.js");//adicionar na pagina de edicao de timesheet
+var itCameFromNewTimesheet = false;
 
 function attachFileToMyTimesheet(userId, monthSubmit, yearSubmit) {
-    ////get user ID
-    //var users = $('#peoplePickerDivLinMan_TopSpan_HiddenInput').val();
-    //users = users.substring(1, users.length - 1);
-    //var obj = JSON.parse(users);
-    //getUserId2(obj.AutoFillKey);
-
-    //function getUserId2(loginName) {
-    //    var context = new SP.ClientContext.get_current();
-    //    this.user = context.get_web().ensureUser(loginName);
-    //    context.load(this.user);
-    //    context.executeQueryAsync(
-    //         Function.createDelegate(null, ensureUserSuccess1),
-    //         Function.createDelegate(null, onFail)
-    //    );
-    //}
-
-    //function ensureUserSuccess1() {
-        //userId = this.user.get_id();
-        //var monthSubmit = $('#txtMonth').val();
-        //var yearSubmit = $('#txtYear').val();
-    //Check if the month and Year Already exists before create Items
-   
+    
         var context = new SP.ClientContext.get_current();
         var oList = context.get_web().get_lists().getByTitle('MyTimesheet');
         var camlQuery = new SP.CamlQuery();
@@ -61,26 +41,23 @@ function attachFileToMyTimesheet(userId, monthSubmit, yearSubmit) {
         context.load(collListItem, 'Include(Id)');
         context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceededAddFileToListMyTimesheet),
         Function.createDelegate(this, window.onQueryFailedToTakeId));
-    //}
+}
+function onQueryFailedToTakeId(sender, args) {
+    //alert('Query failed. Error: ' + args.get_message());
+}
 
-        function onQueryFailedToTakeId(sender, args) {
-        alert('Query failed. Error: ' + args.get_message());
+function onQuerySucceededAddFileToListMyTimesheet() {
+    var listEnumerator = collListItem.getEnumerator();
+    while (listEnumerator.moveNext()) {
+        var oListItem = listEnumerator.get_current();
+        var itemId = oListItem.get_id();
     }
-
-        function onQuerySucceededAddFileToListMyTimesheet() {
-        var listEnumerator = collListItem.getEnumerator();
-        while (listEnumerator.moveNext()) {
-            var oListItem = listEnumerator.get_current();
-            itemId = oListItem.get_id();
-        }
-        addFileToListMyTimesheet(itemId);
-        //window.location.href = '../Pages/Default.aspx';
-    }
+    addFileToListMyTimesheet(itemId);
 }
 
 
+///******************************************************************************
 function addFileToListMyTimesheet(itemId) {
-    ///******************************************************************************
 
     var listTitle = 'MyTimesheet';
     //var itemId = 1;
@@ -90,11 +67,19 @@ function addFileToListMyTimesheet(itemId) {
         processUpload(file, listTitle, itemId,
           function () {
               console.log('Attachment file has been uploaded');
+              if (itCameFromNewTimesheet) {
+                  window.location.href = '../Pages/EditTimesheet.aspx?ID=' + itemId + '&Status=In Progress&Month=' + monthSubmit + '&Year=' + yearSubmit + '';
+              }
               //location.reload();
           },
           function (sender, args) {
               console.log(args.get_message());
           });
+    } else {
+        if (itCameFromNewTimesheet) {
+            alert('come from new timesheet');
+            window.location.href = '../Pages/EditTimesheet.aspx?ID=' + itemId + '&Status="In Progress"&Month=' + monthSubmit + '&Year=' + yearSubmit + '';
+        }
     }
     function processUpload(fileInput, listTitle, itemId, success, error) {
         var reader = new FileReader();
@@ -133,7 +118,6 @@ function addFileToListMyTimesheet(itemId) {
                   //1)create a folder with name in the following format '_<itemid>'
                   //2)rename a folder from '_<itemid>'' into '<itemid>'
                   //This allow to bypass the limitation of creating attachment folders
-                  
                   var request;
                   if(window.XMLHttpRequest)
                       request = new XMLHttpRequest();
@@ -182,6 +166,7 @@ function addFileToListMyTimesheet(itemId) {
 }
 
 function getWebProperties() {
+    
     var attachmentFiles;
     if (timesheetId) {
         var itemId = timesheetId;
@@ -191,7 +176,6 @@ function getWebProperties() {
     var web = ctx.get_web();
     var attachmentFolder = web.getFolderByServerRelativeUrl('Lists/MyTimesheet/Attachments/' + itemId);
     attachmentFiles = attachmentFolder.get_files();
-    //console.log(attachmentFiles);
     ctx.load(attachmentFiles);
 
     ctx.executeQueryAsync(Function.createDelegate(this, onSuccess), Function.createDelegate(this, onFailed));
@@ -239,5 +223,43 @@ function deleteAttach(fileName) {
 }
 
 //********************************************************************************************************
+function getLastItemId(monthSubmit, yearSubmit) {
+    var userId = _spPageContextInfo.userId;
+    var caml = "<View><Query><Where>"
+        + "<Eq><FieldRef Name='Author' LookupId='TRUE' /><Value Type='Integer'>"
+        + userId + "</Value></Eq></Where>"
+        + "<OrderBy><FieldRef Name='Created' Ascending='False' /></OrderBy>"
+        + "</Query><RowLimit>1</RowLimit></View>";
+    var ctx = SP.ClientContext.get_current()
+    var web = ctx.get_web()
+    var list = web.get_lists().getByTitle("MyTimesheet")
+    var query = new SP.CamlQuery();
+    query.set_viewXml(caml);
+    var items = list.getItems(query);
+    ctx.load(items)
+    ctx.executeQueryAsync(function () {
+        // success actions
+        var count = items.get_count();
+        //should only be 1
+        if (count > 1) {
+            throw "Something is wrong. Should only be one latest list item / doc";
+        }
+
+        var enumerator = items.getEnumerator();
+        enumerator.moveNext();
+        var item = enumerator.get_current();
+        var id = item.get_id();
+        itCameFromNewTimesheet = true;
+        // do something with your result!!!!
+        //window.location.href = '../Pages/EditTimesheet.aspx?ID=' + id + '&Status="In Progress"&Month=' + monthSubmit + '&Year=' + yearSubmit + '';
+        //href='EditTimesheet.aspx?ID=" + oListItem.get_id() + "&Status=" + oListItem.get_item('Status') + "&Month=" + oListItem.get_item('Title') + "&Year=" + oListItem.get_item('Year') + "'
+        //alert(id + monthSubmit + yearSubmit);
+        addFileToListMyTimesheet(id);
+
+    }, function () {
+        //failure handling comes here
+        alert("failed");
+    });
+}
 
 

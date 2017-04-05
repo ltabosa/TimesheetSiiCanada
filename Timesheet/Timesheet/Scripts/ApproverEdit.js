@@ -711,7 +711,10 @@ function onQueryCreateSucceeded() {
     console.log("tamanho no array= " + array.length);
     if (colCreated == count) {
         deleteOldListItems();
-        window.location.href = '../Pages/ApproverView.aspx';
+        location.reload();
+        //window.location.href = '../Pages/ApproverView.aspx';
+        //window.location.href = '../Pages/EditTimesheet.aspx?ID=' + timesheetId + '&Status=' + status + '&Month=' + month + '&Year=' + year + '';
+        //window.location.href = '../Pages/ApproverEdit.aspx?ID=' + oListItem.get_id() + '&Status=" + oListItem.get_item('Status') + "&User=" + oListItem.get_item('ReportOwner').get_lookupValue() + "&Month=" + oListItem.get_item('Title') + "&Year=" + oListItem.get_item('Year') + "'
     }
 }
 

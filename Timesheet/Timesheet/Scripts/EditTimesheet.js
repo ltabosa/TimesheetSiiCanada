@@ -634,7 +634,9 @@ function updateTimesheetList(user) {
 function onQueryCreateSucceeded() {
     if (colCreated == count) {
         deleteOldListItems();
-        window.location.href = '../Pages/Default.aspx';
+        //window.location.href = '../Pages/Default.aspx';
+        //window.location.href = '../Pages/EditTimesheet.aspx?ID=' + timesheetId + '&Status=' + status + '&Month=' + month + '&Year=' + year + '';
+        location.reload();
     }
 
 }

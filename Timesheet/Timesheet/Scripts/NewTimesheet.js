@@ -33,7 +33,7 @@ $(document).ready(function () {
         //get month and year
         monthSubmit = $('#txtMonth').val();
         yearSubmit = $('#txtYear').val();
-
+        
         //Update Array With the Most Recent Data
         fillArray();
         //avoid multiple submit
@@ -80,7 +80,7 @@ $(document).ready(function () {
                     var obj = JSON.parse(users);
                    getUserId(obj.AutoFillKey);
             } 
-        }
+        }//submitclicked
     });
     //Delete error msg
     $("body").focusout(function () {
@@ -422,7 +422,8 @@ function onQueryCreateSucceeded() {
    
     if (colCreated == (count - 1)) {
         //attachFileToMyTimesheet(userId, monthSubmit, yearSubmit);
-        window.location.href = '../Pages/Default.aspx';
+        getLastItemId(monthSubmit, yearSubmit);
+        //window.location.href = '../Pages/Default.aspx';
     }
 
 }
@@ -455,7 +456,7 @@ function updateListMyTimesheet(user) {
 
 function onQueryCreateMyTimesheet() {
     // return to MyTimesheet
-    attachFileToMyTimesheet(userId, monthSubmit, yearSubmit);
+    attachFileToMyTimesheet(userId, monthSubmit, yearSubmit); 
 }
 
 function setLoggedInUser() {

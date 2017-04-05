@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="45fa90e0-7cdb-4be7-9fac-265d520157ad" 
+        solutionId="45fa90e0-7cdb-4be7-9fac-265d520157ad" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="TestConnection"
+        sharePointProductVersion="16.0">
+  <features>
+        <featureReference itemId="7dfe823d-aaae-4eac-9e5b-2ff4430e2ae5" />
+  </features>
+</package>

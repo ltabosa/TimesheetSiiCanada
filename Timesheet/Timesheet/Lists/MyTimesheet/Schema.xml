@@ -16,8 +16,17 @@
 
 
 
+
+
+
       <ContentType ID="0x010040dc78757bf4489aaa170902ac497912" Name="ListFieldsContentType">
         <FieldRefs>
+
+
+
+
+
+
 
 
 
@@ -73,6 +82,12 @@
 
 
 
+
+
+
+
+
+
       <Field ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Type="Text" Name="Title" DisplayName="Month" Required="FALSE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Title" MaxLength="255" />
       <Field Name="Year" ID="{deb3848f-678a-4ef0-bd21-3fdf33624771}" DisplayName="Year" Type="Text" />
       <Field Name="Total" ID="{13bd4b28-875f-40a6-bd4d-60c460307e17}" DisplayName="Total" Type="Number" />
@@ -81,6 +96,8 @@
       <Field ID="{2E8881DA-0332-4ad9-A565-45B5B8B2702F}" Name="ReportOwner" StaticName="ReportOwner" Description="$Resources:spscore,BizAppsFields_ReportOwner_Description;" List="UserInfo" DisplayName="$Resources:spscore,BizAppsFields_ReportOwner_Name;" Group="$Resources:spscore,BizAppsFields_ReportGroup;" Type="User" SourceID="http://schemas.microsoft.com/sharepoint/v3" />
     </Fields>
     <Views>
+
+
 
 
 
@@ -101,10 +118,12 @@
 
 
 
+
           <FieldRef Name="LinkTitleNoMenu"></FieldRef>
         </ViewFields>
         <Query>
           <OrderBy>
+
 
 
 
@@ -145,6 +164,13 @@
 
 
 
+
+
+
+
+
+
+          <FieldRef Name="Attachments" />
           <FieldRef Name="LinkTitle"></FieldRef>
           <FieldRef Name="Year" />
           <FieldRef Name="Total" />
@@ -154,6 +180,7 @@
         </ViewFields>
         <Query>
           <OrderBy>
+
 
 
 

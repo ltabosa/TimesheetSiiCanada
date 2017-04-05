@@ -50,7 +50,7 @@
             <div class="col-xs-6">
                 <a href="../Pages/Default.aspx" id="backBtn" class="btn btn-default " role="button">BACK</a>
                 <!--<button name="Submit" id="Submit" type="submit" class="btn btn-primary">SEND</button>-->
-                <input name="Submit" id="Submit" type="button" value="SEND" class="btn btn-default btn-lg" />
+                <input name="Submit" id="Submit" type="button" value="SAVE" class="btn btn-default btn-lg" />
         
             </div>
         </div>
@@ -91,7 +91,7 @@
             <thead>
               <tr>
                 <th></th>
-                <th class="col-xs-2"><label for="results">Project</label></th>
+                <th class="col-xs-4"><label for="results">Project</label></th>
                 <th class="col-xs-1"><label for="hourType">Hour Type</label></th>
                 <th class="projectTotal">Total</th>
                 <th>01</th>

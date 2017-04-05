@@ -8,5 +8,6 @@
     <ProjectItemFile Source="EditIcon.png" Target="Images\" Type="ElementFile" />
     <ProjectItemFile Source="ViewIcon.png" Target="Images\" Type="ElementFile" />
     <ProjectItemFile Source="AppIcon.png" Target="Images\" Type="ElementFile" />
+    <ProjectItemFile Source="attachment.png" Target="Images\" Type="ElementFile" />
   </Files>
 </ProjectItem>
