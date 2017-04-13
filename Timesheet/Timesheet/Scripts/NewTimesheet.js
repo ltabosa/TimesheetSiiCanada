@@ -14,6 +14,8 @@ $(document).ready(function () {
     colCreated = 0;
     submitClicked = true;
     array = new Array();
+    listInfo = new Array();
+    //projectArray = new Array();
     monthsInNumber = [["January", 1], ["February", 2], ["March", 3], ["April", 4], ["May", 5], ["June", 6], ["July", 7], ["August", 8], ["September", 9], ["October", 10], ["November", 11], ["December", 12]];
 
     $(".changeDate").focusout(function () {
@@ -42,13 +44,13 @@ $(document).ready(function () {
             submitClicked = false;
             var errorMes="";
             for (var i = 0; i < (count-1); i++) {
-                if (((array[i][1]==null)||(array[i][1]==undefined))&&(array[i][35]!=="Deleted")) {
+                if (((array[i][1]==null)||(array[i][1]==undefined))&&(array[i][36]!=="Deleted")) {
                     errorMes = '<div class="alert alert-danger">' +
                             '<strong>Atention!</strong> Please fill the field <strong>Project</strong>.' +
                         '</div>';
                     submitClicked = true;
                     
-                } else if((array[i][3]==0)&&(array[i][35]!=="Deleted")){
+                } else if((array[i][4]==0)&&(array[i][36]!=="Deleted")){
                     errorMes += '<div class="alert alert-danger">' +
                             '<strong>Atention!</strong> You must have one hour in <strong>' + array[i][1] + '</strong> project.' +
                         '</div>';
@@ -56,7 +58,7 @@ $(document).ready(function () {
                 }
                 if (i > 0) {
                     for (var k = 0; k < i; k++) {
-                        if (((array[i][1] == array[k][1]) && (array[i][2] == array[k][2]))&&(array[i][35]!=="Deleted")) {
+                        if (((array[i][1] == array[k][1]) && (array[i][3] == array[k][3]))&&(array[i][36]!=="Deleted")) {
                             errorMes = '<div class="alert alert-danger">' +
                                             '<strong>Atention!</strong> You already have this project and hour type.' +
                                         '</div>';
@@ -79,11 +81,11 @@ $(document).ready(function () {
                                '<strong>Wait!</strong> Your form is being submitted...' +
                            '</div>';
                 $("#warningMsg").html(warning);
-                    //get user ID
-                    var users = $('#peoplePickerDivLinMan_TopSpan_HiddenInput').val();
-                    users = users.substring(1, users.length - 1);
-                    var obj = JSON.parse(users);
-                   getUserId(obj.AutoFillKey);
+                //get user ID
+                var users = $('#peoplePickerDivLinMan_TopSpan_HiddenInput').val();
+                users = users.substring(1, users.length - 1);
+                var obj = JSON.parse(users);
+                getUserId(obj.AutoFillKey);
             } 
         }//submitclicked
     });
@@ -153,10 +155,11 @@ function lookupProject() {
                                 '<FieldRef Name=\'Details\' />' +
                                 '<FieldRef Name=\'PNum\' />' +
                                 '<FieldRef Name=\'Amdt0\' />' +
+                                '<FieldRef Name=\'Bench\' />' +
                             '</ViewFields>' +
                           '</View>');
     window.collListItem = oList.getItems(camlQuery);
-    ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0)');
+    ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0, Bench)');
     ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryLookupSucceeded),
     Function.createDelegate(this, window.onQueryFailed));
     
@@ -171,16 +174,30 @@ function onQueryFailed(sender, args) {
  */
 function onQueryLookupSucceeded(sender, args) {
     var listEnumerator = collListItem.getEnumerator();
-    var listInfo = "";
+    //var listInfo = "";
+    var countProjects = 0;
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
-        listInfo += "<option value='" + oListItem.get_id() + "' label='" + oListItem.get_item('Final_x0020_Client').Label + " " + oListItem.get_item('Title') + " " + oListItem.get_item('PNum') + "-" + oListItem.get_item('Amdt0') + "'>" + oListItem.get_id() + "</option>";
-    }
-    $(".results").html(listInfo);
-    updateProjects();
-    holiday();
-    //$.getScript(hostweburl + "/_layouts/15/" + "SP.RequestExecutor.js", holiday);
+        //listInfo += "<option value='" + oListItem.get_id() + "' label='" + oListItem.get_item('Final_x0020_Client').Label + " " + oListItem.get_item('Title') + " " + oListItem.get_item('PNum') + "-" + oListItem.get_item('Amdt0') + "'>" + oListItem.get_id() + "</option>";
+        listInfo[countProjects] = "<option value='" + oListItem.get_id() + "' label='" + oListItem.get_item('Final_x0020_Client').Label + " " + oListItem.get_item('Title') + " " + oListItem.get_item('PNum') + "-" + oListItem.get_item('Amdt0') + "'>" + oListItem.get_id() + "</option>";
 
+        //projectArray[countProjects] = new Array();
+        //projectArray[countProjects][0] = "<option value='" + oListItem.get_id() + "' label='" + oListItem.get_item('Final_x0020_Client').Label + " " + oListItem.get_item('Title') + " " + oListItem.get_item('PNum') + "-" + oListItem.get_item('Amdt0') + "'>" + oListItem.get_id() + "</option>";
+        //projectArray[countProjects][1] = oListItem.get_id();
+        //projectArray[countProjects][2] = oListItem.get_item('Title');
+        //projectArray[countProjects][3] = oListItem.get_item('Cat');
+        //projectArray[countProjects][4] = oListItem.get_item('Final_x0020_Client').Label;
+        //projectArray[countProjects][5] = oListItem.get_item('Details');
+        //projectArray[countProjects][6] = oListItem.get_item('PNum');
+        //projectArray[countProjects][7] = oListItem.get_item('Amdt0');
+        //projectArray[countProjects][8] = oListItem.get_item('Bench');
+        countProjects++;
+        }
+    //$(".results").html(listInfo);
+    //updateProjects();
+    //holiday();
+    //$.getScript(hostweburl + "/_layouts/15/" + "SP.RequestExecutor.js", holiday);
+    //console.log(projectArray);
 }
 
 function numberOfDaysInMonth() {
@@ -204,7 +221,7 @@ function numberOfDaysInMonth() {
         $(".month30Days").hide();
         //Delete day 31 from array
         for (var i = 0; i < count; i++) {
-            $('#col' + i + '34').val(0);
+            $('#col' + i + '35').val(0);
         }
     } else if (numberOfDays == 29) {
         $(".month28Days").show();
@@ -212,8 +229,8 @@ function numberOfDaysInMonth() {
         $(".month30Days").hide();
         //Delete day 31 and 30 from array
         for (var i = 0; i < count; i++) {
-            $('#col' + i + '33').val(0);
             $('#col' + i + '34').val(0);
+            $('#col' + i + '35').val(0);
         }
     } else if (numberOfDays == 28) {
         $(".month28Days").hide();
@@ -221,9 +238,9 @@ function numberOfDaysInMonth() {
         $(".month30Days").hide();
         //Delete day 31, 30 and 29 from array
         for (var i = 0; i < count; i++) {
-            $('#col' + i + '32').val(0);
             $('#col' + i + '33').val(0);
             $('#col' + i + '34').val(0);
+            $('#col' + i + '35').val(0);
         }
 
     } else {
@@ -236,10 +253,21 @@ function numberOfDaysInMonth() {
 function newLineOfProject() {
     var newLine="";
     for (var i = 0; i < count; i++) {
-        newLine += '<tr id="row'+i+'">' +
+        newLine += '<tr id="row' + i + '">' +
                     '<td><input type="checkbox" id="col' + i + '0"></td>' +
                     '<td><select class="form-control results" id="col' + i + '1"></select></td>' +
                     '<td><select class="form-control" id="col' + i + '2">' +
+                            '<option selected="selected">Normal</option>' +
+                            '<option>Public Holiday</option>' +
+                            '<option>Paid leave</option>' +
+                            '<option>Paid Sick leave</option>' +
+                            '<option>Unpaid leave</option>' +
+                            '<option>Unpaid Sick leave</option>' +
+                            '<option>Compensation leave</option>' +
+                            '<option>Contract pause</option>' +
+                        '</select>' +
+                    '</td>' +
+                    '<td><select class="form-control" id="col' + i + '3">' +
                             '<option value="N" label="Normal" selected="selected">N</option>' +
                             '<option value="S" label="Supplemental">S</option>' +
                             '<option value="O" label="Overtime">O</option>' +
@@ -248,9 +276,8 @@ function newLineOfProject() {
                             '<option value="OP" label="Opportunity">OP</option>' +
                         '</select>' +
                     '</td>' +
-                    '<td><input type="text" value="" id="col' + i + '3" class="form-control" readonly/></td>' +
-                    '<td><input type="text"  id="col' + i + '4" class="form-control" pattern = "[1-9][0-4]?"/></td>' +
-                    '<td><input type="text"  id="col' + i + '5" class="form-control"/></td>' +
+                    '<td><input type="text" value="" id="col' + i + '4" class="form-control" readonly/></td>' +
+                    '<td><input type="text"  id="col' + i + '5" class="form-control" pattern = "[1-9][0-4]?"/></td>' +
                     '<td><input type="text"  id="col' + i + '6" class="form-control"/></td>' +
                     '<td><input type="text"  id="col' + i + '7" class="form-control"/></td>' +
                     '<td><input type="text"  id="col' + i + '8" class="form-control"/></td>' +
@@ -277,16 +304,21 @@ function newLineOfProject() {
                     '<td><input type="text"  id="col' + i + '29" class="form-control"/></td>' +
                     '<td><input type="text"  id="col' + i + '30" class="form-control"/></td>' +
                     '<td><input type="text"  id="col' + i + '31" class="form-control"/></td>' +
-                    '<td class="month28Days"><input type="text"  id="col' + i + '32" class="form-control"/></td>' +
-                    '<td class="month29Days"><input type="text"  id="col' + i + '33" class="form-control"/></td>' +
-                    '<td class="month30Days"><input type="text"  id="col' + i + '34" class="form-control"/></td>' +
-                    '<td><input type="hidden" id="col' + i + '35"></td>' +
+                    '<td><input type="text"  id="col' + i + '32" class="form-control"/></td>' +
+                    '<td class="month28Days"><input type="text"  id="col' + i + '33" class="form-control"/></td>' +
+                    '<td class="month29Days"><input type="text"  id="col' + i + '34" class="form-control"/></td>' +
+                    '<td class="month30Days"><input type="text"  id="col' + i + '35" class="form-control"/></td>' +
+                    '<td><input type="hidden" id="col' + i + '36"></td>' +
                   '</tr>';
     }
     fillArray();
     count++;
     $("#newLine").html(newLine);
-    
+    var listProjectsName = "";
+    for (var i = 0; i < listInfo.lenght; i++) {
+        listProjectsName += listInfo[i];
+    }
+    $(".results").html(listProjectsName);
     
     //Update the total
     $(".form-control").focusout(function () {
@@ -294,7 +326,10 @@ function newLineOfProject() {
 
     });
     
-    lookupProject();
+    //lookupProject();
+    updateProjects();
+    holiday();
+
     numberOfDaysInMonth();
     weekendDay();
     
@@ -304,7 +339,7 @@ function deleteLineOfProject() {
     for (var i = 0; i < count; i++) {
         if ($('#col' + i + '0').is(':checked')) {
             $("#row" + i).hide();
-            array[i][35] = "Deleted";
+            array[i][36] = "Deleted";
             updateLineTotal();
         }
     }
@@ -313,9 +348,9 @@ function deleteLineOfProject() {
 function fillArray() {
     if (count != 0) {
         var temp = count - 1;
-        array[temp] = new Array(35);
+        array[temp] = new Array(36);
         for (var i = 0; i < count;i++){
-            for (var j = 0; j < 35; j++) {
+            for (var j = 0; j < 36; j++) {
                 array[i][j] = $('#col'+i+''+ j).val();
             }
         }  
@@ -326,16 +361,16 @@ function updateProjects() {
     if (count > 1) {
         var temp = count - 2;
         for (var i = 0; i < (count - 1); i++) {
-            for (var j = 0; j < 36; j++) {
+            for (var j = 0; j < 37; j++) {
                 $('#col' + i + '' + j).val(array[i][j]);
             }
         }
         //HOUR TYPE AND PROJECT DEFAULT 
         for (var i = 0; i < (count-1); i++) {
             if (!$('#col' + i + '2').val()) {
-               $('#col' + i + '2').val("N");
+                $('#col' + i + '2').val("N");
             }
-            if (array[i][35] == "Deleted") {
+            if (array[i][36] == "Deleted") {
                 $('#row' + i).hide();
             }
             document.getElementById('col' + i + '1').value = array[i][1];
@@ -350,7 +385,7 @@ function updateLineTotal() {
         for (var i = 0; i < (count - 1) ; i++) {
             var sumLine = 0;
            
-            for (var j = 4; j < 36; j++) {
+            for (var j = 5; j < 37; j++) {
                 var temp = Number($('#col' + i + ''+j).val());
                 if (temp >= 0 && temp < 25) {
                     sumLine += temp;
@@ -359,7 +394,7 @@ function updateLineTotal() {
                     $('#col' + i + '' + j).val(0);
                 }
             }
-            if(array[i][35]!="Deleted"){
+            if(array[i][36]!="Deleted"){
                 sumCol += sumLine;
             }
         }
@@ -375,7 +410,7 @@ function updateTimesheetList(user) {
     
 
     while (colCreated < (count - 1)) {
-        if (array[colCreated][35] != "Deleted") {
+        if (array[colCreated][36] != "Deleted") {
             
             var clientContext = new SP.ClientContext.get_current();
 
@@ -386,32 +421,33 @@ function updateTimesheetList(user) {
             this.oListItem = oList.addItem(itemCreateInfo);
             
             //verify if the line is well filled
-                oListItem.set_item('PNum', projectInfo[colCreated][0]);
-                oListItem.set_item('Amdt', projectInfo[colCreated][1]);
-                oListItem.set_item('ProjectTitle', projectInfo[colCreated][2]);
-                oListItem.set_item('Cat', projectInfo[colCreated][3]);
-                oListItem.set_item('FinalClient', projectInfo[colCreated][4]);
-                oListItem.set_item('ProjectDetails', projectInfo[colCreated][5]);
-                oListItem.set_item('Bench', projectInfo[colCreated][6]);
+            oListItem.set_item('PNum', projectInfo[colCreated][0]);
+            oListItem.set_item('Amdt', projectInfo[colCreated][1]);
+            oListItem.set_item('ProjectTitle', projectInfo[colCreated][2]);
+            oListItem.set_item('Cat', projectInfo[colCreated][3]);
+            oListItem.set_item('FinalClient', projectInfo[colCreated][4]);
+            oListItem.set_item('ProjectDetails', projectInfo[colCreated][5]);
+            oListItem.set_item('Bench', projectInfo[colCreated][6]);
 
-                oListItem.set_item('Project', array[colCreated][1]);
-                oListItem.set_item('HourType', array[colCreated][2]);
-                oListItem.set_item('Month', monthSubmit);
-                oListItem.set_item('Year', yearSubmit);
-                oListItem.set_item('Total', array[colCreated][3]);
-                oListItem.set_item('AssignedTo', assignedToVal);
+            oListItem.set_item('Project', array[colCreated][1]);
+            oListItem.set_item('DayType', array[colCreated][2]);
+            oListItem.set_item('HourType', array[colCreated][3]);
+            oListItem.set_item('Month', monthSubmit);
+            oListItem.set_item('Year', yearSubmit);
+            oListItem.set_item('Total', array[colCreated][4]);
+            oListItem.set_item('AssignedTo', assignedToVal);
             
             
-                for (var i = 0; i < 31; i++) {
-                    var x = i + 1;
-                    oListItem.set_item('_x00'+x+'_', array[colCreated][i+4]);
-                }
+            for (var i = 0; i < 31; i++) {
+                var x = i + 1;
+                oListItem.set_item('_x00'+x+'_', array[colCreated][i+5]);
+            }
 
-                oListItem.update();
+            oListItem.update();
 
-                clientContext.load(oListItem);
+            clientContext.load(oListItem);
             
-                clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryCreateSucceeded), Function.createDelegate(this, this.onQueryCreateFailed));
+            clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryCreateSucceeded), Function.createDelegate(this, this.onQueryCreateFailed));
 
             colCreated++;
             
@@ -435,34 +471,34 @@ function onQueryCreateSucceeded() {
 }
 
 function updateListMyTimesheet(user) {
-        var assignedToVal = new SP.FieldUserValue();
-        assignedToVal.set_lookupId(user);
+    var assignedToVal = new SP.FieldUserValue();
+    assignedToVal.set_lookupId(user);
 
-        //update My Timesheet list
-        var clientContext = new SP.ClientContext.get_current(); 
+    //update My Timesheet list
+    var clientContext = new SP.ClientContext.get_current(); 
 
-        var oList = clientContext.get_web().get_lists().getByTitle('MyTimesheet');
+    var oList = clientContext.get_web().get_lists().getByTitle('MyTimesheet');
 
-        var itemCreateInfo = new SP.ListItemCreationInformation();
-        this.oListItem = oList.addItem(itemCreateInfo);
+    var itemCreateInfo = new SP.ListItemCreationInformation();
+    this.oListItem = oList.addItem(itemCreateInfo);
 
-        oListItem.set_item('Title', monthSubmit);
-        oListItem.set_item('Year', yearSubmit);
-        oListItem.set_item('Total', sumCol);
-        oListItem.set_item('Status', "In Progress");
-        oListItem.set_item('ReportOwner', assignedToVal);
+    oListItem.set_item('Title', monthSubmit);
+    oListItem.set_item('Year', yearSubmit);
+    oListItem.set_item('Total', sumCol);
+    oListItem.set_item('Status', "In Progress");
+    oListItem.set_item('ReportOwner', assignedToVal);
         
-        for (var i = 0; i < monthsInNumber.length; i++) {
-            if (monthsInNumber[i][0] == monthSubmit) {
-                oListItem.set_item('MonthNumber', monthsInNumber[i][1]);
-            }
+    for (var i = 0; i < monthsInNumber.length; i++) {
+        if (monthsInNumber[i][0] == monthSubmit) {
+            oListItem.set_item('MonthNumber', monthsInNumber[i][1]);
         }
+    }
 
-        oListItem.update();
+    oListItem.update();
 
-        clientContext.load(oListItem);
+    clientContext.load(oListItem);
 
-        clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryCreateMyTimesheet), Function.createDelegate(this, this.onQueryCreateFailed));
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.onQueryCreateMyTimesheet), Function.createDelegate(this, this.onQueryCreateFailed));
 
 }
 
@@ -603,8 +639,8 @@ function weekendDay() {
             var d = new Date(year, m, j);
             var day = d.getDay();
             if ((day == 6) || (day == 0)) {
-                $("#col" + i + "" + (j + 3)).css("background-color", "#D3D3D3");
-            } else $("#col" + i + "" + (j + 3)).css("background-color", "#FFF");
+                $("#col" + i + "" + (j + 4)).css("background-color", "#D3D3D3");
+            } else $("#col" + i + "" + (j + 4)).css("background-color", "#FFF");
         }
     }
 
@@ -652,8 +688,8 @@ function onQueryHolidaySucceeded(sender, args) {
         holidayDate = new Date(holidayYear, holidayMonth, holidayDay);
         var m = getMonthFromString(month);
         for (i = 0; i < (count - 1) ; i++) {
-            for (j = 4; j < 35; j++) {
-                var d = new Date(year, m, (j - 3));
+            for (j = 5; j < 36; j++) {
+                var d = new Date(year, m, (j - 4));
                 if ((holidayYear == d.getFullYear())&&(holidayMonth == d.getMonth())&&(holidayDay == d.getDate()) ) {
                     $("#col" + i + "" + j).css("background-color", "#F5F5DC");
                 }
@@ -696,72 +732,72 @@ function sendEmail(from, to, body, subject) {
 
 function IsCurrentUserMemberOfGroup(groupName, OnComplete) {
 
-        var currentContext = new SP.ClientContext.get_current();
-        var currentWeb = currentContext.get_web();
+    var currentContext = new SP.ClientContext.get_current();
+    var currentWeb = currentContext.get_web();
 
-        var currentUser = currentContext.get_web().get_currentUser();
-        currentContext.load(currentUser);
+    var currentUser = currentContext.get_web().get_currentUser();
+    currentContext.load(currentUser);
 
-        var allGroups = currentWeb.get_siteGroups();
-        currentContext.load(allGroups);
+    var allGroups = currentWeb.get_siteGroups();
+    currentContext.load(allGroups);
 
-        var group = allGroups.getByName(groupName);
-        currentContext.load(group);
+    var group = allGroups.getByName(groupName);
+    currentContext.load(group);
 
-        var groupUsers = group.get_users();
-        currentContext.load(groupUsers);
+    var groupUsers = group.get_users();
+    currentContext.load(groupUsers);
 
-        currentContext.executeQueryAsync(OnSuccess,OnFailure);
+    currentContext.executeQueryAsync(OnSuccess,OnFailure);
 
-        function OnSuccess(sender, args) {
-            var userInGroup = false;
-            var groupUserEnumerator = groupUsers.getEnumerator();
-            while (groupUserEnumerator.moveNext()) {
-                var groupUser = groupUserEnumerator.get_current();
-                if (groupUser.get_id() == currentUser.get_id()) {
-                    userInGroup = true;
-                    break;
-                }
-            }  
-            OnComplete(userInGroup);
-        }
+    function OnSuccess(sender, args) {
+        var userInGroup = false;
+        var groupUserEnumerator = groupUsers.getEnumerator();
+        while (groupUserEnumerator.moveNext()) {
+            var groupUser = groupUserEnumerator.get_current();
+            if (groupUser.get_id() == currentUser.get_id()) {
+                userInGroup = true;
+                break;
+            }
+        }  
+        OnComplete(userInGroup);
+    }
 
-        function OnFailure(sender, args) {
-            OnComplete(false);
-        }    
+    function OnFailure(sender, args) {
+        OnComplete(false);
+    }    
 }
 
 function getProjectInfo() {
-        var ctx = new SP.ClientContext.get_current();
-        var siteUrl = 'https://siicanada.sharepoint.com/agency/direction/';
-        var context = new SP.AppContextSite(ctx, siteUrl);
-        ctx.load(context.get_web());
-        var oList = context.get_web().get_lists().getByTitle('Project-List');
-        var camlQuery = new SP.CamlQuery();
-        camlQuery.set_viewXml('<View>' +
-                                '<Query>' +
-                                    '<Where>' +
-                                                '<Eq>' +
-                                                    '<FieldRef Name=\'ID\'/>' +
-                                                    '<Value Type=\'Number\'>' + array[projectCount][1] + '</Value>' +
-                                                '</Eq>' +
-                                    '</Where>' +
-                                '</Query>' +
-                                '<ViewFields>' +
-                                    '<FieldRef Name=\'Id\' />' +
-                                    '<FieldRef Name=\'Title\' />' +
-                                    '<FieldRef Name=\'Cat\' />' +
-                                    '<FieldRef Name=\'Final_x0020_Client\' />' +
-                                    '<FieldRef Name=\'Details\' />' +
-                                    '<FieldRef Name=\'PNum\' />' +
-                                    '<FieldRef Name=\'Amdt0\' />' +
-                                    '<FieldRef Name=\'Bench\' />' +
-                                '</ViewFields>' +
-                              '</View>');
-        window.collListItem = oList.getItems(camlQuery);
-        ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0, Bench)');
-        ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryGetProjectInfo),
-        Function.createDelegate(this, window.onQueryFailed));
+    var ctx = new SP.ClientContext.get_current();
+    var siteUrl = 'https://siicanada.sharepoint.com/agency/direction/';
+    var context = new SP.AppContextSite(ctx, siteUrl);
+    ctx.load(context.get_web());
+    var oList = context.get_web().get_lists().getByTitle('Project-List');
+    var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml('<View>' +
+                            '<Query>' +
+                                '<Where>' +
+                                            '<Eq>' +
+                                                '<FieldRef Name=\'ID\'/>' +
+                                                '<Value Type=\'Number\'>' + array[projectCount][1] + '</Value>' +
+                                            '</Eq>' +
+                                '</Where>' +
+                            '</Query>' +
+                            '<ViewFields>' +
+                                '<FieldRef Name=\'Id\' />' +
+                                '<FieldRef Name=\'Title\' />' +
+                                '<FieldRef Name=\'Cat\' />' +
+                                '<FieldRef Name=\'Final_x0020_Client\' />' +
+                                '<FieldRef Name=\'Details\' />' +
+                                '<FieldRef Name=\'PNum\' />' +
+                                '<FieldRef Name=\'Amdt0\' />' +
+                                '<FieldRef Name=\'Bench\' />' +
+                            '</ViewFields>' +
+                          '</View>');
+    window.collListItem = oList.getItems(camlQuery);
+    ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0, Bench)');
+    ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryGetProjectInfo),
+    Function.createDelegate(this, window.onQueryFailed));
 
     
     

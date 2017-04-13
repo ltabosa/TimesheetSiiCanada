@@ -95,7 +95,8 @@
               <tr>
                 <th></th>
                 <th class="col-xs-4"><label for="results">Project</label></th>
-                <th class="col-xs-1"><label for="hourType">Hour Type</label></th>
+                <th ><label for="dayType">Day Type</label></th>
+                <th ><label for="hourType">Hour Type</label></th>
                 <th class="projectTotal">Total</th>
                 <th>01</th>
                 <th>02</th>
