@@ -227,12 +227,10 @@ function newLineOfProject(rows) {
                     '<td><input type="checkbox" id="col' + i + '0"></td>' +
                     '<td><select class="form-control results" id="col' + i + '1"></select></td>' +
                     '<td><select class="form-control" id="col' + i + '2">' +
-                            '<option value="N" label="Normal" selected="selected">N</option>' +
-                            '<option value="S" label="Supplemental">S</option>' +
-                            '<option value="O" label="Overtime">O</option>' +
-                            '<option value="NI" label="Non-Invoiced">NI</option>' +
-                            '<option value="G" label="Gratuity">G</option>' +
-                            '<option value="OP" label="Opportunity">OP</option>' +
+                            '<option value="N" label="Normal Hour" selected="selected">N</option>' +
+                            '<option value="S" label="Supplemental Hour">S</option>' +
+                            '<option value="O" label="Overtime Hour">O</option>' +
+                            '<option value="G" label="Gratuity Hour">G</option>' +
                         '</select>' +
                     '</td>' +
                     '<td><input type="text" value="" id="col' + i + '3" class="form-control" readonly/></td>' +
@@ -532,12 +530,10 @@ function newLineOfProject1() {
                     '<td><input type="checkbox" id="col' + i + '0"></td>' +
                     '<td><select class="form-control results" id="col' + i + '1"></select></td>' +
                     '<td><select class="form-control" id="col' + i + '2">' +
-                            '<option value="N" label="Normal" selected="selected">N</option>' +
-                            '<option value="S" label="Supplemental">S</option>' +
-                            '<option value="O" label="Overtime">O</option>' +
-                            '<option value="NI" label="Non-Invoiced">NI</option>' +
-                            '<option value="G" label="Gratuity">G</option>' +
-                            '<option value="OP" label="Opportunity">OP</option>' +
+                            '<option value="N" label="Normal Hour" selected="selected">N</option>' +
+                            '<option value="S" label="Supplemental Hour">S</option>' +
+                            '<option value="O" label="Overtime Hour">O</option>' +
+                            '<option value="G" label="Gratuity Hour">G</option>' +
                         '</select>' +
                     '</td>' +
                     '<td><input type="text" value="" id="col' + i + '3" class="form-control" readonly/></td>' +
