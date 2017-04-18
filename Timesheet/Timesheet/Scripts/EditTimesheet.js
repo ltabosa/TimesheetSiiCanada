@@ -234,48 +234,48 @@ function newLineOfProject(rows) {
     var newLine = "";
     for (var i = 0; i < rows; i++) {
         newLine += '<tr id="row' + i + '">' +
-                    '<td><input type="checkbox" id="col' + i + '0"></td>' +
-                    '<td><select class="form-control results" id="col' + i + '1"></select></td>' +
-                    '<td><select class="form-control" id="col' + i + '2">' +
+                    '<td><input type="checkbox" id="col' + i + '-0"></td>' +
+                    '<td><select class="form-control results" id="col' + i + '-1"></select></td>' +
+                    '<td><select class="form-control" id="col' + i + '-2">' +
                             '<option value="N" label="Normal Hour" selected="selected">N</option>' +
                             '<option value="S" label="Supplemental Hour">S</option>' +
                             '<option value="O" label="Overtime Hour">O</option>' +
                             '<option value="G" label="Gratuity Hour">G</option>' +
                         '</select>' +
                     '</td>' +
-                    '<td><input type="text" value="" id="col' + i + '3" class="form-control" readonly/></td>' +
-                    '<td><input type="text"  id="col' + i + '4" class="form-control" pattern = "[1-9][0-4]?"/></td>' +
-                    '<td><input type="text"  id="col' + i + '5" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '6" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '7" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '8" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '9" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '10" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '11" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '12" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '13" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '14" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '15" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '16" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '17" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '18" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '19" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '20" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '21" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '22" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '23" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '24" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '25" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '26" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '27" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '28" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '29" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '30" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '31" class="form-control"/></td>' +
-                    '<td class="month28Days"><input type="text"  id="col' + i + '32" class="form-control"/></td>' +
-                    '<td class="month29Days"><input type="text"  id="col' + i + '33" class="form-control"/></td>' +
-                    '<td class="month30Days"><input type="text"  id="col' + i + '34" class="form-control"/></td>' +
-                    '<td><input type="hidden" id="col' + i + '35"></td>' +
+                    '<td><input type="text" value="" id="col' + i + '-3" class="form-control" readonly/></td>' +
+                    '<td><input type="text"  id="col' + i + '-4" class="form-control" pattern = "[1-9][0-4]?"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-5" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-6" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-7" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-8" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-9" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-10" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-11" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-12" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-13" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-14" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-15" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-16" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-17" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-18" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-19" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-20" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-21" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-22" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-23" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-24" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-25" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-26" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-27" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-28" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-29" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-30" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-31" class="form-control"/></td>' +
+                    '<td class="month28Days"><input type="text"  id="col' + i + '-32" class="form-control"/></td>' +
+                    '<td class="month29Days"><input type="text"  id="col' + i + '-33" class="form-control"/></td>' +
+                    '<td class="month30Days"><input type="text"  id="col' + i + '-34" class="form-control"/></td>' +
+                    '<td><input type="hidden" id="col' + i + '-35"></td>' +
                   '</tr>';
     }
     $("#newLine").html(newLine);
@@ -306,48 +306,48 @@ function newLineOfProject1() {
     var newLine = "";
     for (var i = 0; i < count; i++) {
         newLine += '<tr id="row' + i + '">' +
-                    '<td><input type="checkbox" id="col' + i + '0"></td>' +
-                    '<td><select class="form-control results" id="col' + i + '1"></select></td>' +
-                    '<td><select class="form-control" id="col' + i + '2">' +
+                    '<td><input type="checkbox" id="col' + i + '-0"></td>' +
+                    '<td><select class="form-control results" id="col' + i + '-1"></select></td>' +
+                    '<td><select class="form-control" id="col' + i + '-2">' +
                             '<option value="N" label="Normal Hour" selected="selected">N</option>' +
                             '<option value="S" label="Supplemental Hour">S</option>' +
                             '<option value="O" label="Overtime Hour">O</option>' +
                             '<option value="G" label="Gratuity Hour">G</option>' +
                         '</select>' +
                     '</td>' +
-                    '<td><input type="text" value="" id="col' + i + '3" class="form-control" readonly/></td>' +
-                    '<td><input type="text"  id="col' + i + '4" class="form-control" pattern = "[1-9][0-4]?"/></td>' +
-                    '<td><input type="text"  id="col' + i + '5" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '6" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '7" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '8" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '9" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '10" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '11" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '12" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '13" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '14" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '15" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '16" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '17" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '18" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '19" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '20" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '21" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '22" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '23" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '24" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '25" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '26" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '27" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '28" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '29" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '30" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '31" class="form-control"/></td>' +
-                    '<td class="month28Days"><input type="text"  id="col' + i + '32" class="form-control"/></td>' +
-                    '<td class="month29Days"><input type="text"  id="col' + i + '33" class="form-control"/></td>' +
-                    '<td class="month30Days"><input type="text"  id="col' + i + '34" class="form-control"/></td>' +
-                    '<td><input type="hidden" id="col' + i + '35"></td>' +
+                    '<td><input type="text" value="" id="col' + i + '-3" class="form-control" readonly/></td>' +
+                    '<td><input type="text"  id="col' + i + '-4" class="form-control" pattern = "[1-9][0-4]?"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-5" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-6" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-7" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-8" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-9" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-10" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-11" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-12" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-13" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-14" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-15" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-16" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-17" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-18" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-19" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-20" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-21" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-22" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-23" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-24" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-25" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-26" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-27" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-28" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-29" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-30" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-31" class="form-control"/></td>' +
+                    '<td class="month28Days"><input type="text"  id="col' + i + '-32" class="form-control"/></td>' +
+                    '<td class="month29Days"><input type="text"  id="col' + i + '-33" class="form-control"/></td>' +
+                    '<td class="month30Days"><input type="text"  id="col' + i + '-34" class="form-control"/></td>' +
+                    '<td><input type="hidden" id="col' + i + '-35"></td>' +
                   '</tr>';
     }
     fillArray();
@@ -382,7 +382,7 @@ function fillArray() {
         array[temp] = new Array(36);
         for (var i = 0; i < count; i++) {
             for (var j = 0; j < 36; j++) {
-                array[i][j] = $('#col' + i + '' + j).val();
+                array[i][j] = $('#col' + i + '-' + j).val();
             }
         }
     }
@@ -411,7 +411,7 @@ function numberOfDaysInMonth() {
         $(".month30Days").hide();
         //Delete day 31 from array
         for (var i = 0; i < count; i++) {
-            $('#col' + i + '34').val(0);
+            $('#col' + i + '-34').val(0);
         }
     } else if (numberOfDays == 29) {
         $(".month28Days").show();
@@ -419,8 +419,8 @@ function numberOfDaysInMonth() {
         $(".month30Days").hide();
         //Delete day 31 and 30 from array
         for (var i = 0; i < count; i++) {
-            $('#col' + i + '33').val(0);
-            $('#col' + i + '34').val(0);
+            $('#col' + i + '-33').val(0);
+            $('#col' + i + '-34').val(0);
         }
     } else if (numberOfDays == 28) {
         $(".month28Days").hide();
@@ -428,9 +428,9 @@ function numberOfDaysInMonth() {
         $(".month30Days").hide();
         //Delete day 31, 30 and 29 from array
         for (var i = 0; i < count; i++) {
-            $('#col' + i + '32').val(0);
-            $('#col' + i + '33').val(0);
-            $('#col' + i + '34').val(0);
+            $('#col' + i + '-32').val(0);
+            $('#col' + i + '-33').val(0);
+            $('#col' + i + '-34').val(0);
         }
 
     } else {
@@ -449,12 +449,12 @@ function updateLineTotal() {
             var sumLine = 0;
 
             for (var j = 4; j < 35; j++) {
-                var temp = Number($('#col' + i + '' + j).val());
+                var temp = Number($('#col' + i + '-' + j).val());
                 if (temp >= 0 && temp < 25) {
                     sumLine += temp;
-                    $('#col' + i + '3').val(sumLine);
-                } else if (!$('#col' + i + '' + j).val() == "") {
-                    $('#col' + i + '' + j).val(0);
+                    $('#col' + i + '-3').val(sumLine);
+                } else if (!$('#col' + i + '-' + j).val() == "") {
+                    $('#col' + i + '-' + j).val(0);
                 }
             }
             if (array[i][35] != "Deleted") {
@@ -523,18 +523,18 @@ function updateProjects() {
 
     for (var i = 0; i < count ; i++) {
         for (var j = 0; j < 36; j++) {
-            $('#col' + i + '' + j).val(array[i][j]);
+            $('#col' + i + '-' + j).val(array[i][j]);
         }
     }
     //HOUR TYPE AND PROJECT DEFAULT 
     for (var i = 0; i < count ; i++) {
-        if (!$('#col' + i + '2').val()) {
-            $('#col' + i + '2').val("N");
+        if (!$('#col' + i + '-2').val()) {
+            $('#col' + i + '-2').val("N");
         }
         if (array[i][35] == "Deleted") {
             $('#row' + i).hide();
         }
-        document.getElementById('col' + i + '1').value = array[i][1];
+        document.getElementById('col' + i + '-1').value = array[i][1];
     }
     if (status == "Approved") {
         $("input").prop("readonly", true);
@@ -544,10 +544,10 @@ function updateProjects() {
 //same
 function deleteLineOfProject() {
     for (var i = 0; i < count; i++) {
-        if ($('#col' + i + '0').is(':checked')) {
+        if ($('#col' + i + '-0').is(':checked')) {
             $("#row" + i).hide();
             array[i][35] = "Deleted";
-            $('#col' + i + '35').val(array[i][35]);
+            $('#col' + i + '-35').val(array[i][35]);
             updateLineTotal();
         }
     }
@@ -672,7 +672,7 @@ function weekendDay() {
             var d = new Date(year, m, j);
             var day = d.getDay();
             if ((day == 6) || (day == 0)) {
-                $("#col" + i + "" + (j + 3)).css("background-color", "#D3D3D3");
+                $("#col" + i + "-" + (j + 3)).css("background-color", "#D3D3D3");
             }
         }
     }
@@ -726,7 +726,7 @@ function onQueryHolidaySucceeded(sender, args) {
             for (j = 4; j < 35; j++) {
                 var d = new Date(year, m, (j - 3));
                 if ((holidayYear == d.getFullYear()) && (holidayMonth == d.getMonth()) && (holidayDay == d.getDate())) {
-                    $("#col" + i + "" + j).css("background-color", "#F5F5DC");
+                    $("#col" + i + "-" + j).css("background-color", "#F5F5DC");
                 }
             }
         }
