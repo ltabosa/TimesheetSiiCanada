@@ -43,6 +43,7 @@
     <br />
     
     <div id="errorMsg"></div>
+    <div id="sucessMsg"></div>
 
     <form autocomplete="off">
 
@@ -71,6 +72,7 @@
          <div class="form-group row">
             <div class="col-xs-2">
                 <label for="txtUser">User</label>
+                <!--<div id="peoplePickerDivLinMan" title="User_"></div>-->
                 <input type="text" readonly name="txtFromUser" id="txtUser" class="date-picker-year form-control changeDate" />
             
             </div>

@@ -16,17 +16,22 @@
     if (status == "Approved") {
         $("#Submit").hide();
         $("#newDeleteButtons").hide();
-        
+
         var errorMes = '<div class="alert alert-success">' +
                             '<strong>Sucess!</strong> Your Timesheet for ' + month + ' ' + year + ' is approved.' +
                         '</div>';
         $("#errorMsg").html(errorMes);
+    } else if (status == "InProgress") {
+        var sucess = '<div class="alert alert-success">' +
+                            '<strong>Sucess!</strong> Your Timesheet for ' + month + ' ' + year + ' is saved.' +
+                        '</div>';
+        $("#sucessMsg").html(sucess);
     }
     //go back to beginning if take url without month and year 
-    if (!month || !year ) {
+    if (!month || !year) {
         window.location.href = 'Default.aspx';
     }
-    
+
     //Show Month and Year In the Input
     $('#txtMonth').val(month);
     $('#txtYear').val(year);
@@ -38,7 +43,7 @@
     $("#otherProject").click(function () {
         newLineOfProject1();
     });
-    
+
     //Delete Selected Lines
     $("#deleteLine").click(function () {
         deleteLineOfProject();
@@ -47,11 +52,11 @@
     $("#Submit").click(function () {
         addFileToListMyTimesheet(timesheetId);
         //prevent clicks
-        if (submitClicked){
+        if (submitClicked) {
             submitClicked = false;
             //update array with the newest info
             fillArray();
-            
+
             var errorMes = "";
 
             for (var i = 0; i < count ; i++) {
@@ -86,9 +91,9 @@
             }
             $("#errorMsg").html(errorMes);
             if (errorMes == "") {
-                    //save info in list
-                    getProjectInfo();
-                    colCreated = 0;
+                //save info in list
+                getProjectInfo();
+                colCreated = 0;
             }
         }
     });
@@ -99,12 +104,12 @@ function takeCurrentUser() {
     var website = clientContext.get_web();
     clientContext.load(website);
     currentUser = website.get_currentUser();
-    
+
     clientContext.load(currentUser);
     clientContext.executeQueryAsync(onRequestSucceeded, onRequestFailed);
 
     function onRequestSucceeded() {
-        
+
     }
 
     function onRequestFailed(sender, args) {
@@ -198,7 +203,7 @@ function onQueryFailed(sender, args) {
 function onQuerySucceeded(sender, args) {
     var listEnumerator = collListItem.getEnumerator();
     while (listEnumerator.moveNext()) {
-        
+
         //update array
         var oListItem = listEnumerator.get_current();
         //save the number of lines to be deleted
@@ -206,22 +211,19 @@ function onQuerySucceeded(sender, args) {
         //count number of rows in list
         count++;
         var temp = count - 1;
-        var total=0;
+        var total = 0;
         array[temp] = new Array(36);
         array[temp][1] = oListItem.get_item('Project');
         array[temp][2] = oListItem.get_item('HourType');
 
         for (var j = 4; j < 35; j++) {
-                array[temp][j] = oListItem.get_item('_x00'+(j-3)+'_');
-                total+=array[temp][j];
+            array[temp][j] = oListItem.get_item('_x00' + (j - 3) + '_');
+            total += array[temp][j];
         }
         array[temp][3] = total;
         sumCol += total;
 
     }
-    //console.log(array);
-    //console.log("Lines to be deleted:");
-    //console.log(deleteLineArray);
 
     //Call this function to build the empty table.
     newLineOfProject(count);
@@ -278,7 +280,7 @@ function newLineOfProject(rows) {
     }
     $("#newLine").html(newLine);
 
-    
+
     //Update number of columns in table
     numberOfDaysInMonth();
 
@@ -293,14 +295,14 @@ function newLineOfProject(rows) {
         updateLineTotal();
 
     });
-    
+
     weekendDay();
 }
 
 
 function newLineOfProject1() {
     count++;
- 
+
     var newLine = "";
     for (var i = 0; i < count; i++) {
         newLine += '<tr id="row' + i + '">' +
@@ -353,7 +355,7 @@ function newLineOfProject1() {
     //Delete old table and create new one empty
     $("#newLine").html(newLine);
 
-    
+
 
 
     //Update the total
@@ -368,8 +370,8 @@ function newLineOfProject1() {
 
     weekendDay();
 
-   
-    
+
+
 }
 
 
@@ -398,11 +400,11 @@ function numberOfDaysInMonth() {
     }
 
     var numberOfDays = daysInMonth(txtMonth, txtYear);
-    
-    function daysInMonth(m,y) {
+
+    function daysInMonth(m, y) {
         return new Date(y, m, 0).getDate();
     }
-    
+
     if (numberOfDays == 30) {
         $(".month28Days").show();
         $(".month29Days").show();
@@ -434,28 +436,28 @@ function numberOfDaysInMonth() {
     } else {
         $(".month28Days").show();
         $(".month29Days").show();
-        $(".month30Days").show(); 
-    }   
+        $(".month30Days").show();
+    }
 }
 
 function updateLineTotal() {
- 
+
     if (count > 0) {
         sumCol = 0;
         var error = "";
         for (var i = 0; i < (count) ; i++) {
             var sumLine = 0;
-           
+
             for (var j = 4; j < 35; j++) {
-                var temp = Number($('#col' + i + ''+j).val());
+                var temp = Number($('#col' + i + '' + j).val());
                 if (temp >= 0 && temp < 25) {
                     sumLine += temp;
                     $('#col' + i + '3').val(sumLine);
-                } else if (!$('#col' + i + ''+j).val()==""){
+                } else if (!$('#col' + i + '' + j).val() == "") {
                     $('#col' + i + '' + j).val(0);
                 }
             }
-            if(array[i][35]!="Deleted"){
+            if (array[i][35] != "Deleted") {
                 sumCol += sumLine;
             }
         }
@@ -507,9 +509,9 @@ function onQueryLookupSucceeded(sender, args) {
     var listInfo = "";
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
-        
+
         listInfo += "<option value='" + oListItem.get_id() + "' label='" + oListItem.get_item('Final_x0020_Client').Label + " " + oListItem.get_item('Title') + " " + oListItem.get_item('PNum') + "-" + oListItem.get_item('Amdt0') + "'>" + oListItem.get_id() + "</option>";
-        
+
     }
     $(".results").html(listInfo);
     updateProjects();
@@ -519,24 +521,24 @@ function onQueryLookupSucceeded(sender, args) {
 
 function updateProjects() {
 
-        for (var i = 0; i < count ; i++) {
-            for (var j = 0; j < 36; j++) {
-                $('#col' + i + '' + j).val(array[i][j]);
-            }
+    for (var i = 0; i < count ; i++) {
+        for (var j = 0; j < 36; j++) {
+            $('#col' + i + '' + j).val(array[i][j]);
         }
-        //HOUR TYPE AND PROJECT DEFAULT 
-        for (var i = 0; i < count ; i++) {
-            if (!$('#col' + i + '2').val()) {
-                $('#col' + i + '2').val("N");
-            }
-            if (array[i][35] == "Deleted") {
-                $('#row' + i).hide();
-            }
-            document.getElementById('col' + i + '1').value = array[i][1];
+    }
+    //HOUR TYPE AND PROJECT DEFAULT 
+    for (var i = 0; i < count ; i++) {
+        if (!$('#col' + i + '2').val()) {
+            $('#col' + i + '2').val("N");
         }
-        if (status == "Approved") {
-            $("input").prop("readonly", true);
+        if (array[i][35] == "Deleted") {
+            $('#row' + i).hide();
         }
+        document.getElementById('col' + i + '1').value = array[i][1];
+    }
+    if (status == "Approved") {
+        $("input").prop("readonly", true);
+    }
 }
 
 //same
@@ -546,8 +548,6 @@ function deleteLineOfProject() {
             $("#row" + i).hide();
             array[i][35] = "Deleted";
             $('#col' + i + '35').val(array[i][35]);
-            console.log(array);
-            console.log($('#col' + i + '35').val());
             updateLineTotal();
         }
     }
@@ -643,14 +643,14 @@ function onQueryCreateSucceeded() {
 
 
 
-function deleteOldListItems(){
+function deleteOldListItems() {
     deleteLineArray.forEach(function (val) {
-        
+
         this.itemId = val;
 
         var clientContext = new SP.ClientContext.get_current();
         var oList = clientContext.get_web().get_lists().getByTitle('Timesheet');
-    
+
         this.oListItem = oList.getItemById(itemId);
 
         oListItem.deleteObject();
@@ -660,23 +660,23 @@ function deleteOldListItems(){
 }
 
 function onQuerySucceededDeleted() {
-   
+
 }
 
 function weekendDay() {
 
     var m = getMonthFromString(month);
-    
-    for(i=0;i<count;i++){
+
+    for (i = 0; i < count; i++) {
         for (j = 1; j < 32; j++) {
             var d = new Date(year, m, j);
             var day = d.getDay();
-            if (( day==6) || (day==0 )){
+            if ((day == 6) || (day == 0)) {
                 $("#col" + i + "" + (j + 3)).css("background-color", "#D3D3D3");
             }
         }
     }
-    
+
 
 }
 
@@ -721,7 +721,7 @@ function onQueryHolidaySucceeded(sender, args) {
         holidayDate = new Date(holidayYear, holidayMonth, holidayDay);
 
         var m = getMonthFromString(month);
-       
+
         for (i = 0; i < count ; i++) {
             for (j = 4; j < 35; j++) {
                 var d = new Date(year, m, (j - 3));
@@ -735,7 +735,6 @@ function onQueryHolidaySucceeded(sender, args) {
 }
 
 function getProjectInfo() {
-    console.log(count);
     var ctx = new SP.ClientContext.get_current();
     var siteUrl = 'https://siicanada.sharepoint.com/agency/direction/';
     var context = new SP.AppContextSite(ctx, siteUrl);
@@ -777,22 +776,18 @@ function onQueryGetProjectInfo() {
 
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
-        console.log(oListItem);
         projectInfo[projectCount] = new Array();
         projectInfo[projectCount][0] = oListItem.get_item('PNum');
         projectInfo[projectCount][1] = oListItem.get_item('Amdt0');
         projectInfo[projectCount][2] = oListItem.get_item('Title');
         projectInfo[projectCount][3] = oListItem.get_item('Cat');
-        
+
         projectInfo[projectCount][4] = oListItem.get_item('Final_x0020_Client').Label;
         projectInfo[projectCount][5] = oListItem.get_item('Details');
         projectInfo[projectCount][6] = oListItem.get_item('Bench');
         projectCount++;
-   
-        console.log(projectInfo);
+
     }
-    console.log(count);
-    console.log(projectCount);
     if (projectCount != count) {
         getProjectInfo();
     } else {
@@ -801,5 +796,3 @@ function onQueryGetProjectInfo() {
     }
 
 }
-
-

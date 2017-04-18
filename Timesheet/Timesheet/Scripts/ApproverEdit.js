@@ -6,6 +6,7 @@
     year = GetUrlKeyValue('Year', false);
     status = GetUrlKeyValue('Status', false);
     user = GetUrlKeyValue('User', false);
+    userNameForUrl = user;
     projectInfo = new Array();
     projectCount = 0;
     sumCol = 0;
@@ -17,6 +18,12 @@
     //go back to beginning if take url without month and year 
     if (!month || !year) {
         window.location.href = 'ApproverView.aspx';
+    }
+    if (status == "InProgress") {
+        var sucess = '<div class="alert alert-success">' +
+                            '<strong>Sucess!</strong> The Timesheet for ' + userNameForUrl + ' in ' + month + ' ' + year + ' is approved.' +
+                        '</div>';
+        $("#sucessMsg").html(sucess);
     }
 
     //Show Month and Year In the Input
@@ -36,7 +43,7 @@
         deleteLineOfProject();
     });
 
-    
+
     $("#Reject").click(function () {
         myTimesheetReject();
     });
@@ -102,7 +109,7 @@ function retrieveUserData() {
     //take user Id
     getUserId(user);
 }
-function fillArrayAndTakeCount(userId){
+function fillArrayAndTakeCount(userId) {
     //Take list info for the selected user
     var context = new SP.ClientContext.get_current();
     var oList = context.get_web().get_lists().getByTitle('Timesheet');
@@ -184,9 +191,9 @@ function onQueryFailed(sender, args) {
 function onQuerySucceeded(sender, args) {
     var listEnumerator = collListItem.getEnumerator();
     while (listEnumerator.moveNext()) {
-        
-        
-        
+
+
+
         //update array
         var oListItem = listEnumerator.get_current();
         //save the number of lines to be deleted
@@ -194,14 +201,14 @@ function onQuerySucceeded(sender, args) {
         //count number of rows in list
         count++;
         var temp = count - 1;
-        var total=0;
+        var total = 0;
         array[temp] = new Array(36);
         array[temp][1] = oListItem.get_item('Project');
         array[temp][2] = oListItem.get_item('HourType');
 
         for (var j = 4; j < 35; j++) {
-                array[temp][j] = oListItem.get_item('_x00'+(j-3)+'_');
-                total+=array[temp][j];
+            array[temp][j] = oListItem.get_item('_x00' + (j - 3) + '_');
+            total += array[temp][j];
         }
         array[temp][3] = total;
         sumCol += total;
@@ -277,7 +284,7 @@ function newLineOfProject(rows) {
 }
 
 function updateLineTotal() {
-    if (count > 0) { 
+    if (count > 0) {
         sumCol = 0;
         var error = "";
         for (var i = 0; i < (count) ; i++) {
@@ -651,7 +658,7 @@ function updateListMyTimesheet() {
 }
 
 function onQueryCreateMyTimesheet() {
-   
+
 }
 
 
@@ -659,7 +666,7 @@ function updateTimesheetList(user) {
 
     var assignedToVal = new SP.FieldUserValue();
     assignedToVal.set_lookupId(user);
-  
+
     while (colCreated < count) {
         if (array[colCreated][35] != "Deleted") {
 
@@ -706,15 +713,9 @@ function updateTimesheetList(user) {
 }
 //same
 function onQueryCreateSucceeded() {
-    console.log("colCreated: " + colCreated);
-    console.log("count: " + count);
-    console.log("tamanho no array= " + array.length);
     if (colCreated == count) {
         deleteOldListItems();
-        location.reload();
-        //window.location.href = '../Pages/ApproverView.aspx';
-        //window.location.href = '../Pages/EditTimesheet.aspx?ID=' + timesheetId + '&Status=' + status + '&Month=' + month + '&Year=' + year + '';
-        //window.location.href = '../Pages/ApproverEdit.aspx?ID=' + oListItem.get_id() + '&Status=" + oListItem.get_item('Status') + "&User=" + oListItem.get_item('ReportOwner').get_lookupValue() + "&Month=" + oListItem.get_item('Title') + "&Year=" + oListItem.get_item('Year') + "'
+        window.location.href = '../Pages/ApproverEdit.aspx?ID=' + timesheetId + '&Status=InProgress&User=' + userNameForUrl + '&Month=' + month + '&Year=' + year;
     }
 }
 
@@ -730,7 +731,7 @@ function myTimesheetReject() {
     var oList = clientContext.get_web().get_lists().getByTitle('MyTimesheet');
 
     this.oListItem = oList.getItemById(timesheetId);
-    
+
     oListItem.set_item('Status', "Rejected");
 
 
@@ -743,13 +744,12 @@ function myTimesheetReject() {
 }
 
 function onQueryMyTimesheetReject() {
-    
+
     window.location.href = '../Pages/ApproverView.aspx';
 }
 
 
 function getProjectInfo() {
-    console.log(count);
     var ctx = new SP.ClientContext.get_current();
     var siteUrl = 'https://siicanada.sharepoint.com/agency/direction/';
     var context = new SP.AppContextSite(ctx, siteUrl);
@@ -796,10 +796,7 @@ function onQueryGetProjectInfo() {
         projectInfo[projectCount][5] = oListItem.get_item('Details');
         projectInfo[projectCount][6] = oListItem.get_item('Bench');
         projectCount++;
-        console.log(projectInfo);
     }
-    console.log(count);
-    console.log(projectCount);
     if (projectCount != count) {
         getProjectInfo();
     } else {
@@ -844,8 +841,3 @@ function sendEmail(from, to, body, subject) {
         }
     });
 }
-
-
-
-
-

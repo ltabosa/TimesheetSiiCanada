@@ -5,42 +5,42 @@ ExecuteOrDelayUntilScriptLoaded(getWebProperties, "SP.js");//adicionar na pagina
 var itCameFromNewTimesheet = false;
 
 function attachFileToMyTimesheet(userId, monthSubmit, yearSubmit) {
-    
-        var context = new SP.ClientContext.get_current();
-        var oList = context.get_web().get_lists().getByTitle('MyTimesheet');
-        var camlQuery = new SP.CamlQuery();
-        camlQuery.set_viewXml('<View>' +
-                                '<Query>' +
-                                    '<Where>' +
+
+    var context = new SP.ClientContext.get_current();
+    var oList = context.get_web().get_lists().getByTitle('MyTimesheet');
+    var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml('<View>' +
+                            '<Query>' +
+                                '<Where>' +
+                                    '<And>' +
                                         '<And>' +
-                                            '<And>' +
-                                                '<Eq>' +
-                                                    '<FieldRef Name=\'Title\'/>' +
-                                                    '<Value Type=\'Text\'>' + monthSubmit + '</Value>' +
-                                                '</Eq>' +
-                                                '<Eq>' +
-                                                    '<FieldRef Name=\'Year\'/>' +
-                                                    '<Value Type=\'Text\'>' + yearSubmit + '</Value>' +
-                                                '</Eq>' +
-                                            '</And>' +
-                                             '<Eq>' +
-                                                 '<FieldRef Name=\'ReportOwner\' LookupId=\'TRUE\'/>' +
-                                                 '<Value Type=\'User\'>' + userId + '</Value>' +
-                                             '</Eq>' +
-                                         '</And>' +
-                                    '</Where>' +
-                                '<OrderBy>' +
-                                    '<FieldRef Name=\'Title\' Ascending=\'TRUE\' />' +
-                                    '</OrderBy>' +
-                                '</Query>' +
-                                '<ViewFields>' +
-                                    '<FieldRef Name=\'Id\' />' +
-                                '</ViewFields>' +
-                              '</View>');
-        window.collListItem = oList.getItems(camlQuery);
-        context.load(collListItem, 'Include(Id)');
-        context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceededAddFileToListMyTimesheet),
-        Function.createDelegate(this, window.onQueryFailedToTakeId));
+                                            '<Eq>' +
+                                                '<FieldRef Name=\'Title\'/>' +
+                                                '<Value Type=\'Text\'>' + monthSubmit + '</Value>' +
+                                            '</Eq>' +
+                                            '<Eq>' +
+                                                '<FieldRef Name=\'Year\'/>' +
+                                                '<Value Type=\'Text\'>' + yearSubmit + '</Value>' +
+                                            '</Eq>' +
+                                        '</And>' +
+                                         '<Eq>' +
+                                             '<FieldRef Name=\'ReportOwner\' LookupId=\'TRUE\'/>' +
+                                             '<Value Type=\'User\'>' + userId + '</Value>' +
+                                         '</Eq>' +
+                                     '</And>' +
+                                '</Where>' +
+                            '<OrderBy>' +
+                                '<FieldRef Name=\'Title\' Ascending=\'TRUE\' />' +
+                                '</OrderBy>' +
+                            '</Query>' +
+                            '<ViewFields>' +
+                                '<FieldRef Name=\'Id\' />' +
+                            '</ViewFields>' +
+                          '</View>');
+    window.collListItem = oList.getItems(camlQuery);
+    context.load(collListItem, 'Include(Id)');
+    context.executeQueryAsync(Function.createDelegate(this, window.onQuerySucceededAddFileToListMyTimesheet),
+    Function.createDelegate(this, window.onQueryFailedToTakeId));
 }
 function onQueryFailedToTakeId(sender, args) {
     //alert('Query failed. Error: ' + args.get_message());
@@ -68,7 +68,7 @@ function addFileToListMyTimesheet(itemId) {
           function () {
               console.log('Attachment file has been uploaded');
               if (itCameFromNewTimesheet) {
-                  window.location.href = '../Pages/EditTimesheet.aspx?ID=' + itemId + '&Status=In Progress&Month=' + monthSubmit + '&Year=' + yearSubmit + '';
+                  window.location.href = '../Pages/EditTimesheet.aspx?ID=' + itemId + '&Status=InProgress&Month=' + monthSubmit + '&Year=' + yearSubmit + '';
               }
               //location.reload();
           },
@@ -77,8 +77,7 @@ function addFileToListMyTimesheet(itemId) {
           });
     } else {
         if (itCameFromNewTimesheet) {
-            alert('come from new timesheet');
-            window.location.href = '../Pages/EditTimesheet.aspx?ID=' + itemId + '&Status="In Progress"&Month=' + monthSubmit + '&Year=' + yearSubmit + '';
+            window.location.href = '../Pages/EditTimesheet.aspx?ID=' + itemId + '&Status=InProgress&Month=' + monthSubmit + '&Year=' + yearSubmit + '';
         }
     }
     function processUpload(fileInput, listTitle, itemId, success, error) {
@@ -119,11 +118,11 @@ function addFileToListMyTimesheet(itemId) {
                   //2)rename a folder from '_<itemid>'' into '<itemid>'
                   //This allow to bypass the limitation of creating attachment folders
                   var request;
-                  if(window.XMLHttpRequest)
+                  if (window.XMLHttpRequest)
                       request = new XMLHttpRequest();
                   else
                       request = new ActiveXObject("Microsoft.XMLHTTP");
-                  request.open('GET', attachmentRootFolderUrl+"/"+itemId, false);
+                  request.open('GET', attachmentRootFolderUrl + "/" + itemId, false);
                   request.send(); // there will be a 'pause' here until the response to come.
                   // the object request will be actually modified
                   if (request.status === 404) {
@@ -166,7 +165,7 @@ function addFileToListMyTimesheet(itemId) {
 }
 
 function getWebProperties() {
-    
+
     var attachmentFiles;
     if (timesheetId) {
         var itemId = timesheetId;
@@ -258,8 +257,6 @@ function getLastItemId(monthSubmit, yearSubmit) {
 
     }, function () {
         //failure handling comes here
-        alert("failed");
+        //alert("failed");
     });
 }
-
-

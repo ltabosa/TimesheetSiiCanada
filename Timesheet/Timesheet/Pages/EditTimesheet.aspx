@@ -43,6 +43,7 @@
     <br />
     
     <div id="errorMsg"></div>
+    <div id="sucessMsg"></div>
 
     <form autocomplete="off">
 
@@ -69,6 +70,14 @@
             </div>
         </div>
 
+        <!--
+         <div class="form-group row">
+            <div class="col-xs-2">
+                <label for="SdfPeoplePicker">User</label>
+                <div id="peoplePickerDivLinMan" title="User_"></div>
+            </div>
+        </div>
+         -->
         <div class="form-group row">
             <div class="col-xs-2">
                 <label for="customFileUploadControl">File input</label>
