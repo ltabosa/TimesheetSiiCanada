@@ -14,7 +14,6 @@ $(document).ready(function () {
     colCreated = 0;
     submitClicked = true;
     array = new Array();
-    monthsInNumber = [["January", 1], ["February", 2], ["March", 3], ["April", 4], ["May", 5], ["June", 6], ["July", 7], ["August", 8], ["September", 9], ["October", 10], ["November", 11], ["December", 12]];
 
     $(".changeDate").focusout(function () {
         numberOfDaysInMonth();
@@ -74,11 +73,7 @@ $(document).ready(function () {
             }
             $("#errorMsg").html(errorMes);
             if (errorMes == "") {
-                var warning = "";
-                warning = '<div class="alert alert-warning">' +
-                               '<strong>Wait!</strong> Your form is being submitted...' +
-                           '</div>';
-                $("#warningMsg").html(warning);
+                   
                     //get user ID
                     var users = $('#peoplePickerDivLinMan_TopSpan_HiddenInput').val();
                     users = users.substring(1, users.length - 1);
@@ -450,12 +445,6 @@ function updateListMyTimesheet(user) {
         oListItem.set_item('Total', sumCol);
         oListItem.set_item('Status', "In Progress");
         oListItem.set_item('ReportOwner', assignedToVal);
-        
-        for (var i = 0; i < monthsInNumber.length; i++) {
-            if (monthsInNumber[i][0] == monthSubmit) {
-                oListItem.set_item('MonthNumber', monthsInNumber[i][1]);
-            }
-        }
 
         oListItem.update();
 

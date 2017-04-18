@@ -21,11 +21,6 @@
                             '<strong>Sucess!</strong> Your Timesheet for ' + month + ' ' + year + ' is approved.' +
                         '</div>';
         $("#errorMsg").html(errorMes);
-    } else if (status == "InProgress") {
-        var sucess = '<div class="alert alert-success">' +
-                            '<strong>Sucess!</strong> Your Timesheet for ' + month + ' ' + year + ' is saved.' +
-                        '</div>';
-        $("#sucessMsg").html(sucess);
     }
     //go back to beginning if take url without month and year 
     if (!month || !year ) {
@@ -224,6 +219,9 @@ function onQuerySucceeded(sender, args) {
         sumCol += total;
 
     }
+    //console.log(array);
+    //console.log("Lines to be deleted:");
+    //console.log(deleteLineArray);
 
     //Call this function to build the empty table.
     newLineOfProject(count);
@@ -548,6 +546,8 @@ function deleteLineOfProject() {
             $("#row" + i).hide();
             array[i][35] = "Deleted";
             $('#col' + i + '35').val(array[i][35]);
+            console.log(array);
+            console.log($('#col' + i + '35').val());
             updateLineTotal();
         }
     }
@@ -735,6 +735,7 @@ function onQueryHolidaySucceeded(sender, args) {
 }
 
 function getProjectInfo() {
+    console.log(count);
     var ctx = new SP.ClientContext.get_current();
     var siteUrl = 'https://siicanada.sharepoint.com/agency/direction/';
     var context = new SP.AppContextSite(ctx, siteUrl);
@@ -776,6 +777,7 @@ function onQueryGetProjectInfo() {
 
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
+        console.log(oListItem);
         projectInfo[projectCount] = new Array();
         projectInfo[projectCount][0] = oListItem.get_item('PNum');
         projectInfo[projectCount][1] = oListItem.get_item('Amdt0');
@@ -787,7 +789,10 @@ function onQueryGetProjectInfo() {
         projectInfo[projectCount][6] = oListItem.get_item('Bench');
         projectCount++;
    
+        console.log(projectInfo);
     }
+    console.log(count);
+    console.log(projectCount);
     if (projectCount != count) {
         getProjectInfo();
     } else {

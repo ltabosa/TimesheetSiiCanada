@@ -6,7 +6,6 @@
     year = GetUrlKeyValue('Year', false);
     status = GetUrlKeyValue('Status', false);
     user = GetUrlKeyValue('User', false);
-    userNameForUrl = user;
     projectInfo = new Array();
     projectCount = 0;
     sumCol = 0;
@@ -18,12 +17,6 @@
     //go back to beginning if take url without month and year 
     if (!month || !year) {
         window.location.href = 'ApproverView.aspx';
-    }
-    if (status == "InProgress") {
-        var sucess = '<div class="alert alert-success">' +
-                            '<strong>Sucess!</strong> The Timesheet for ' + userNameForUrl + ' in ' + month + ' ' + year + ' is approved.' +
-                        '</div>';
-        $("#sucessMsg").html(sucess);
     }
 
     //Show Month and Year In the Input
@@ -713,9 +706,15 @@ function updateTimesheetList(user) {
 }
 //same
 function onQueryCreateSucceeded() {
+    console.log("colCreated: " + colCreated);
+    console.log("count: " + count);
+    console.log("tamanho no array= " + array.length);
     if (colCreated == count) {
         deleteOldListItems();
-        window.location.href = '../Pages/ApproverEdit.aspx?ID=' + timesheetId + '&Status=InProgress&User=' + userNameForUrl + '&Month=' + month + '&Year=' + year;
+        location.reload();
+        //window.location.href = '../Pages/ApproverView.aspx';
+        //window.location.href = '../Pages/EditTimesheet.aspx?ID=' + timesheetId + '&Status=' + status + '&Month=' + month + '&Year=' + year + '';
+        //window.location.href = '../Pages/ApproverEdit.aspx?ID=' + oListItem.get_id() + '&Status=" + oListItem.get_item('Status') + "&User=" + oListItem.get_item('ReportOwner').get_lookupValue() + "&Month=" + oListItem.get_item('Title') + "&Year=" + oListItem.get_item('Year') + "'
     }
 }
 
@@ -750,6 +749,7 @@ function onQueryMyTimesheetReject() {
 
 
 function getProjectInfo() {
+    console.log(count);
     var ctx = new SP.ClientContext.get_current();
     var siteUrl = 'https://siicanada.sharepoint.com/agency/direction/';
     var context = new SP.AppContextSite(ctx, siteUrl);
@@ -796,7 +796,10 @@ function onQueryGetProjectInfo() {
         projectInfo[projectCount][5] = oListItem.get_item('Details');
         projectInfo[projectCount][6] = oListItem.get_item('Bench');
         projectCount++;
+        console.log(projectInfo);
     }
+    console.log(count);
+    console.log(projectCount);
     if (projectCount != count) {
         getProjectInfo();
     } else {

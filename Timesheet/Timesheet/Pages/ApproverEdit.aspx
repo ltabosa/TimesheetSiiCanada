@@ -43,7 +43,6 @@
     <br />
     
     <div id="errorMsg"></div>
-    <div id="sucessMsg"></div>
 
     <form autocomplete="off">
 

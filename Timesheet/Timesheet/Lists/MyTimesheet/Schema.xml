@@ -19,10 +19,7 @@
 
 
 
-      
-      
-      
-    <ContentType ID="0x010040dc78757bf4489aaa170902ac497912" Name="ListFieldsContentType">
+      <ContentType ID="0x010040dc78757bf4489aaa170902ac497912" Name="ListFieldsContentType">
         <FieldRefs>
 
 
@@ -50,16 +47,19 @@
 
 
 
-          
-          
-          
-          
-          
-          
-        <FieldRef ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Name="Title" /><FieldRef ID="{deb3848f-678a-4ef0-bd21-3fdf33624771}" Name="Year" /><FieldRef ID="{13bd4b28-875f-40a6-bd4d-60c460307e17}" Name="Total" /><FieldRef ID="{186eea4b-5675-4c63-a583-0ff0f5596c0b}" Name="Status" /><FieldRef ID="{53101f38-dd2e-458c-b245-0c236cc13d1a}" Name="AssignedTo" /><FieldRef ID="{2E8881DA-0332-4ad9-A565-45B5B8B2702F}" Name="ReportOwner" /><FieldRef ID="{e9f2aee7-55d4-4350-9988-f91c5ec3dc38}" Name="MonthNumber" /></FieldRefs>
-      </ContentType><ContentTypeRef ID="0x01">
+          <FieldRef ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Name="Title" />
+          <FieldRef ID="{deb3848f-678a-4ef0-bd21-3fdf33624771}" Name="Year" />
+          <FieldRef ID="{13bd4b28-875f-40a6-bd4d-60c460307e17}" Name="Total" />
+          <FieldRef ID="{186eea4b-5675-4c63-a583-0ff0f5596c0b}" Name="Status" />
+          <FieldRef ID="{53101f38-dd2e-458c-b245-0c236cc13d1a}" Name="AssignedTo" />
+          <FieldRef ID="{2E8881DA-0332-4ad9-A565-45B5B8B2702F}" Name="ReportOwner" />
+        </FieldRefs>
+      </ContentType>
+      <ContentTypeRef ID="0x01">
         <Folder TargetName="Item" />
-      </ContentTypeRef><ContentTypeRef ID="0x0120" /></ContentTypes>
+      </ContentTypeRef>
+      <ContentTypeRef ID="0x0120" />
+    </ContentTypes>
     <Fields>
 
 
@@ -88,13 +88,13 @@
 
 
 
-      
-      
-      
-      
-      
-      
-    <Field ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Type="Text" Name="Title" DisplayName="Month" Required="FALSE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Title" MaxLength="255" /><Field Name="Year" ID="{deb3848f-678a-4ef0-bd21-3fdf33624771}" DisplayName="Year" Type="Text" /><Field Name="Total" ID="{13bd4b28-875f-40a6-bd4d-60c460307e17}" DisplayName="Total" Type="Number" /><Field Name="Status" ID="{186eea4b-5675-4c63-a583-0ff0f5596c0b}" DisplayName="Status" Type="MultiChoice" /><Field ID="{53101f38-dd2e-458c-b245-0c236cc13d1a}" Name="AssignedTo" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="AssignedTo" Group="$Resources:core,Issue_Task_Columns;" Type="User" List="UserInfo" DisplayName="$Resources:core,Assigned_To;" DelayActivateTemplateBinding="GROUP,SPSPERS" /><Field ID="{2E8881DA-0332-4ad9-A565-45B5B8B2702F}" Name="ReportOwner" StaticName="ReportOwner" Description="$Resources:spscore,BizAppsFields_ReportOwner_Description;" List="UserInfo" DisplayName="$Resources:spscore,BizAppsFields_ReportOwner_Name;" Group="$Resources:spscore,BizAppsFields_ReportGroup;" Type="User" SourceID="http://schemas.microsoft.com/sharepoint/v3" /><Field Name="MonthNumber" ID="{e9f2aee7-55d4-4350-9988-f91c5ec3dc38}" DisplayName="MonthNumber" Type="Number" /></Fields>
+      <Field ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Type="Text" Name="Title" DisplayName="Month" Required="FALSE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Title" MaxLength="255" />
+      <Field Name="Year" ID="{deb3848f-678a-4ef0-bd21-3fdf33624771}" DisplayName="Year" Type="Text" />
+      <Field Name="Total" ID="{13bd4b28-875f-40a6-bd4d-60c460307e17}" DisplayName="Total" Type="Number" />
+      <Field Name="Status" ID="{186eea4b-5675-4c63-a583-0ff0f5596c0b}" DisplayName="Status" Type="MultiChoice" />
+      <Field ID="{53101f38-dd2e-458c-b245-0c236cc13d1a}" Name="AssignedTo" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="AssignedTo" Group="$Resources:core,Issue_Task_Columns;" Type="User" List="UserInfo" DisplayName="$Resources:core,Assigned_To;" DelayActivateTemplateBinding="GROUP,SPSPERS" />
+      <Field ID="{2E8881DA-0332-4ad9-A565-45B5B8B2702F}" Name="ReportOwner" StaticName="ReportOwner" Description="$Resources:spscore,BizAppsFields_ReportOwner_Description;" List="UserInfo" DisplayName="$Resources:spscore,BizAppsFields_ReportOwner_Name;" Group="$Resources:spscore,BizAppsFields_ReportGroup;" Type="User" SourceID="http://schemas.microsoft.com/sharepoint/v3" />
+    </Fields>
     <Views>
 
 
@@ -108,9 +108,7 @@
 
 
 
-      
-      
-    <View BaseViewID="0" Type="HTML" MobileView="TRUE" TabularView="FALSE">
+      <View BaseViewID="0" Type="HTML" MobileView="TRUE" TabularView="FALSE">
         <Toolbar Type="Standard" />
         <XslLink Default="TRUE">main.xsl</XslLink>
         <RowLimit Paged="TRUE">30</RowLimit>
@@ -121,8 +119,8 @@
 
 
 
-          
-        <FieldRef Name="LinkTitleNoMenu"></FieldRef></ViewFields>
+          <FieldRef Name="LinkTitleNoMenu"></FieldRef>
+        </ViewFields>
         <Query>
           <OrderBy>
 
@@ -131,15 +129,16 @@
 
 
 
-            
-          <FieldRef Name="Modified" Ascending="FALSE"></FieldRef></OrderBy>
+            <FieldRef Name="Modified" Ascending="FALSE"></FieldRef>
+          </OrderBy>
         </Query>
         <ParameterBindings>
           <ParameterBinding Name="AddNewAnnouncement" Location="Resource(wss,addnewitem)" />
           <ParameterBinding Name="NoAnnouncements" Location="Resource(wss,noXinviewofY_LIST)" />
           <ParameterBinding Name="NoAnnouncementsHowTo" Location="Resource(wss,noXinviewofY_ONET_HOME)" />
         </ParameterBindings>
-      </View><View BaseViewID="1" Type="HTML" WebPartZoneID="Main" DisplayName="$Resources:core,objectiv_schema_mwsidcamlidC24;" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" SetupPath="pages\viewpage.aspx" ImageUrl="/_layouts/15/images/generic.png?rev=23" Url="AllItems.aspx">
+      </View>
+      <View BaseViewID="1" Type="HTML" WebPartZoneID="Main" DisplayName="$Resources:core,objectiv_schema_mwsidcamlidC24;" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" SetupPath="pages\viewpage.aspx" ImageUrl="/_layouts/15/images/generic.png?rev=23" Url="AllItems.aspx">
         <Toolbar Type="Standard" />
         <XslLink Default="TRUE">main.xsl</XslLink>
         <JSLink>clienttemplates.js</JSLink>
@@ -171,14 +170,14 @@
 
 
 
-          
-          
-          
-          
-          
-          
-          
-        <FieldRef Name="Attachments" /><FieldRef Name="LinkTitle"></FieldRef><FieldRef Name="Year" /><FieldRef Name="Total" /><FieldRef Name="Status" /><FieldRef Name="AssignedTo" /><FieldRef Name="ReportOwner" /><FieldRef Name="MonthNumber" /></ViewFields>
+          <FieldRef Name="Attachments" />
+          <FieldRef Name="LinkTitle"></FieldRef>
+          <FieldRef Name="Year" />
+          <FieldRef Name="Total" />
+          <FieldRef Name="Status" />
+          <FieldRef Name="AssignedTo" />
+          <FieldRef Name="ReportOwner" />
+        </ViewFields>
         <Query>
           <OrderBy>
 
@@ -187,14 +186,15 @@
 
 
 
-            
-          <FieldRef Name="ID"></FieldRef></OrderBy>
+            <FieldRef Name="ID"></FieldRef>
+          </OrderBy>
         </Query>
         <ParameterBindings>
           <ParameterBinding Name="NoAnnouncements" Location="Resource(wss,noXinviewofY_LIST)" />
           <ParameterBinding Name="NoAnnouncementsHowTo" Location="Resource(wss,noXinviewofY_DEFAULT)" />
         </ParameterBindings>
-      </View></Views>
+      </View>
+    </Views>
     <Forms>
       <Form Type="DisplayForm" Url="DispForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
       <Form Type="EditForm" Url="EditForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
