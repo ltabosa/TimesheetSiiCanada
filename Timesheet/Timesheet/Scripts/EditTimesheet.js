@@ -9,6 +9,7 @@
     projectCount = 0;
     sumCol = 0;
     count = 0;
+    countLinesToDelete = 0;
     array = new Array();
     deleteLineArray = new Array();
     submitClicked = true;
@@ -91,6 +92,11 @@
             }
             $("#errorMsg").html(errorMes);
             if (errorMes == "") {
+                var warning = "";
+                warning = '<div class="alert alert-warning">' +
+                               '<strong>Wait!</strong> Your form is being submitted...' +
+                           '</div>';
+                $("#warningMsg").html(warning);
                 //save info in list
                 getProjectInfo();
                 colCreated = 0;
@@ -240,9 +246,9 @@ function newLineOfProject(rows) {
                             '<option value="N" label="Normal" selected="selected">N</option>' +
                             '<option value="S" label="Supplemental">S</option>' +
                             '<option value="O" label="Overtime">O</option>' +
-                            '<option value="NI" label="Non-Invoiced">NI</option>' +
+                            '<option value="NF" label="Non-Invoiced">NF</option>' +
                             '<option value="G" label="Gratuity">G</option>' +
-                            '<option value="OP" label="Opportunity">OP</option>' +
+                            '<option value="BO" label="Opportunity">BO</option>' +
                         '</select>' +
                     '</td>' +
                     '<td><input type="text" value="" id="col' + i + '-3" class="form-control" readonly/></td>' +
@@ -314,9 +320,9 @@ function newLineOfProject1() {
                             '<option value="N" label="Normal" selected="selected">N</option>' +
                             '<option value="S" label="Supplemental">S</option>' +
                             '<option value="O" label="Overtime">O</option>' +
-                            '<option value="NI" label="Non-Invoiced">NI</option>' +
+                            '<option value="NF" label="Non-Invoiced">NF</option>' +
                             '<option value="G" label="Gratuity">G</option>' +
-                            '<option value="OP" label="Opportunity">OP</option>' +
+                            '<option value="BO" label="Opportunity">BO</option>' +
                         '</select>' +
                     '</td>' +
                     '<td><input type="text" value="" id="col' + i + '-3" class="form-control" readonly/></td>' +
@@ -640,7 +646,7 @@ function onQueryCreateSucceeded() {
         deleteOldListItems();
         //window.location.href = '../Pages/Default.aspx';
         //window.location.href = '../Pages/EditTimesheet.aspx?ID=' + timesheetId + '&Status=' + status + '&Month=' + month + '&Year=' + year + '';
-        location.reload();
+        //location.reload();
     }
 
 }
@@ -664,7 +670,11 @@ function deleteOldListItems() {
 }
 
 function onQuerySucceededDeleted() {
-
+    var deleteline = deleteLineArray.length;
+    countLinesToDelete++;
+    if (countLinesToDelete == deleteline) {
+        window.location.href = '../Pages/EditTimesheet.aspx?ID=' + timesheetId + '&Status=InProgress&Month=' + month + '&Year=' + year;
+    }
 }
 
 function weekendDay() {

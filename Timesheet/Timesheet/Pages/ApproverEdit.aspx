@@ -44,6 +44,7 @@
     
     <div id="errorMsg"></div>
     <div id="sucessMsg"></div>
+    <div id="warningMsg"></div>
 
     <form autocomplete="off">
 

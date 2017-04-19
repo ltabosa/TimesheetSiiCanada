@@ -11,6 +11,7 @@
     projectCount = 0;
     sumCol = 0;
     count = 0;
+    countLinesToDelete = 0;
     array = new Array();
     deleteLineArray = new Array();
     submitClicked = true;
@@ -92,6 +93,11 @@
             }
             $("#errorMsg").html(errorMes);
             if (errorMes == "") {
+                var warning = "";
+                warning = '<div class="alert alert-warning">' +
+                               '<strong>Wait!</strong> Your form is being submitted...' +
+                           '</div>';
+                $("#warningMsg").html(warning);
                 colCreated = 0;
                 getProjectInfo();
             }
@@ -230,9 +236,9 @@ function newLineOfProject(rows) {
                             '<option value="N" label="Normal" selected="selected">N</option>' +
                             '<option value="S" label="Supplemental">S</option>' +
                             '<option value="O" label="Overtime">O</option>' +
-                            '<option value="NI" label="Non-Invoiced">NI</option>' +
+                            '<option value="NF" label="Non-Invoiced">NF</option>' +
                             '<option value="G" label="Gratuity">G</option>' +
-                            '<option value="OP" label="Opportunity">OP</option>' +
+                            '<option value="BO" label="Opportunity">BO</option>' +
                         '</select>' +
                     '</td>' +
                     '<td><input type="text" value="" id="col' + i + '-3" class="form-control" readonly/></td>' +
@@ -535,9 +541,9 @@ function newLineOfProject1() {
                             '<option value="N" label="Normal" selected="selected">N</option>' +
                             '<option value="S" label="Supplemental">S</option>' +
                             '<option value="O" label="Overtime">O</option>' +
-                            '<option value="NI" label="Non-Invoiced">NI</option>' +
+                            '<option value="NF" label="Non-Invoiced">NF</option>' +
                             '<option value="G" label="Gratuity">G</option>' +
-                            '<option value="OP" label="Opportunity">OP</option>' +
+                            '<option value="BO" label="Opportunity">BO</option>' +
                         '</select>' +
                     '</td>' +
                     '<td><input type="text" value="" id="col' + i + '-3" class="form-control" readonly/></td>' +
@@ -623,7 +629,7 @@ function deleteLineOfProject() {
 
 function deleteOldListItems() {
     deleteLineArray.forEach(function (val) {
-
+        
         this.itemId = val;
 
         var clientContext = new SP.ClientContext.get_current();
@@ -637,6 +643,11 @@ function deleteOldListItems() {
 }
 
 function onQuerySucceededDeleted() {
+    var deleteline = deleteLineArray.length;
+    countLinesToDelete++;
+    if (countLinesToDelete == deleteline) {
+        window.location.href = '../Pages/ApproverEdit.aspx?ID=' + timesheetId + '&Status=InProgress&User=' + userNameForUrl + '&Month=' + month + '&Year=' + year;
+    }
 }
 
 function updateListMyTimesheet() {
@@ -719,7 +730,7 @@ function updateTimesheetList(user) {
 function onQueryCreateSucceeded() {
     if (colCreated == count) {
         deleteOldListItems();
-        window.location.href = '../Pages/ApproverEdit.aspx?ID=' + timesheetId + '&Status=InProgress&User=' + userNameForUrl + '&Month=' + month + '&Year=' + year;
+        //window.location.href = '../Pages/ApproverEdit.aspx?ID=' + timesheetId + '&Status=InProgress&User=' + userNameForUrl + '&Month=' + month + '&Year=' + year;
     }
 }
 

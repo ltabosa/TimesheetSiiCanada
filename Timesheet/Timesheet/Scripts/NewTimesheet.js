@@ -242,9 +242,9 @@ function newLineOfProject() {
                             '<option value="N" label="Normal" selected="selected">N</option>' +
                             '<option value="S" label="Supplemental">S</option>' +
                             '<option value="O" label="Overtime">O</option>' +
-                            '<option value="NI" label="Non-Invoiced">NI</option>' +
+                            '<option value="NF" label="Non-Invoiced">NF</option>' +
                             '<option value="G" label="Gratuity">G</option>' +
-                            '<option value="OP" label="Opportunity">OP</option>' +
+                            '<option value="BO" label="Opportunity">BO</option>' +
                         '</select>' +
                     '</td>' +
                     '<td><input type="text" value="" id="col' + i + '-3" class="form-control" readonly/></td>' +
