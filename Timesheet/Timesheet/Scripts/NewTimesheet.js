@@ -11,6 +11,7 @@
     sumCol = 0;
     count = 1;
     colCreated = 0;
+    numberOfLinesInArray = 0;
     submitClicked = true;
     array = new Array();
     monthsInNumber = [["January", 1], ["February", 2], ["March", 3], ["April", 4], ["May", 5], ["June", 6], ["July", 7], ["August", 8], ["September", 9], ["October", 10], ["November", 11], ["December", 12]];
@@ -41,13 +42,13 @@
             submitClicked = false;
             var errorMes = "";
             for (var i = 0; i < (count - 1) ; i++) {
-                if (((array[i][1] == null) || (array[i][1] == undefined)) && (array[i][35] !== "Deleted")) {
+                if (((array[i][1] == null) || (array[i][1] == undefined)) && (array[i][36] !== "Deleted")) {
                     errorMes = '<div class="alert alert-danger">' +
                             '<strong>Atention!</strong> Please fill the field <strong>Project</strong>.' +
                         '</div>';
                     submitClicked = true;
 
-                } else if ((array[i][3] == 0) && (array[i][35] !== "Deleted")) {
+                } else if ((array[i][4] == 0) && (array[i][36] !== "Deleted")) {
                     errorMes += '<div class="alert alert-danger">' +
                             '<strong>Atention!</strong> You must have one hour in <strong>' + array[i][1] + '</strong> project.' +
                         '</div>';
@@ -55,7 +56,7 @@
                 }
                 if (i > 0) {
                     for (var k = 0; k < i; k++) {
-                        if (((array[i][1] == array[k][1]) && (array[i][2] == array[k][2])) && (array[i][35] !== "Deleted")) {
+                        if (((array[i][1] == array[k][1]) && (array[i][3] == array[k][3])) && (array[i][36] !== "Deleted")) {
                             errorMes = '<div class="alert alert-danger">' +
                                             '<strong>Atention!</strong> You already have this project and hour type.' +
                                         '</div>';
@@ -203,7 +204,7 @@ function numberOfDaysInMonth() {
         $(".month30Days").hide();
         //Delete day 31 from array
         for (var i = 0; i < count; i++) {
-            $('#col' + i + '-34').val(0);
+            $('#col' + i + '-35').val(0);
         }
     } else if (numberOfDays == 29) {
         $(".month28Days").show();
@@ -211,8 +212,8 @@ function numberOfDaysInMonth() {
         $(".month30Days").hide();
         //Delete day 31 and 30 from array
         for (var i = 0; i < count; i++) {
-            $('#col' + i + '-33').val(0);
             $('#col' + i + '-34').val(0);
+            $('#col' + i + '-35').val(0);
         }
     } else if (numberOfDays == 28) {
         $(".month28Days").hide();
@@ -220,9 +221,9 @@ function numberOfDaysInMonth() {
         $(".month30Days").hide();
         //Delete day 31, 30 and 29 from array
         for (var i = 0; i < count; i++) {
-            $('#col' + i + '-32').val(0);
             $('#col' + i + '-33').val(0);
             $('#col' + i + '-34').val(0);
+            $('#col' + i + '-35').val(0);
         }
 
     } else {
@@ -240,6 +241,17 @@ function newLineOfProject() {
                     '<td><select class="form-control results" id="col' + i + '-1"></select></td>' +
                     '<td><select class="form-control" id="col' + i + '-2">' +
                             '<option value="N" label="Normal" selected="selected">N</option>' +
+                            '<option value="PH" label="Public Holiday">PH</option>' +
+                            '<option value="PL" label="Paid leave">PL</option>' +
+                            '<option value="PSL" label="Paid Sick leave">PSL</option>' +
+                            '<option value="UL" label="Unpaid leave">UL</option>' +
+                            '<option value="USL" label="Unpaid Sick leave">USL</option>' +
+                            '<option value="CL" label="Compensation leave">CL</option>' +
+                            '<option value="STB" label="Contract pause">STB</option>' +
+                        '</select>' +
+                    '</td>' +
+                    '<td><select class="form-control" id="col' + i + '-3">' +
+                            '<option value="N" label="Normal" selected="selected">N</option>' +
                             '<option value="S" label="Supplemental">S</option>' +
                             '<option value="O" label="Overtime">O</option>' +
                             '<option value="NF" label="Non-Invoiced">NF</option>' +
@@ -247,9 +259,8 @@ function newLineOfProject() {
                             '<option value="BO" label="Opportunity">BO</option>' +
                         '</select>' +
                     '</td>' +
-                    '<td><input type="text" value="" id="col' + i + '-3" class="form-control" readonly/></td>' +
-                    '<td><input type="text"  id="col' + i + '-4" class="form-control" pattern = "[1-9][0-4]?"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-5" class="form-control"/></td>' +
+                    '<td><input type="text" value="" id="col' + i + '-4" class="form-control" readonly/></td>' +
+                    '<td><input type="text"  id="col' + i + '-5" class="form-control" pattern = "[1-9][0-4]?"/></td>' +
                     '<td><input type="text"  id="col' + i + '-6" class="form-control"/></td>' +
                     '<td><input type="text"  id="col' + i + '-7" class="form-control"/></td>' +
                     '<td><input type="text"  id="col' + i + '-8" class="form-control"/></td>' +
@@ -276,10 +287,11 @@ function newLineOfProject() {
                     '<td><input type="text"  id="col' + i + '-29" class="form-control"/></td>' +
                     '<td><input type="text"  id="col' + i + '-30" class="form-control"/></td>' +
                     '<td><input type="text"  id="col' + i + '-31" class="form-control"/></td>' +
-                    '<td class="month28Days"><input type="text"  id="col' + i + '-32" class="form-control"/></td>' +
+                    '<td><input type="text"  id="col' + i + '-32" class="form-control"/></td>' +
                     '<td class="month29Days"><input type="text"  id="col' + i + '-33" class="form-control"/></td>' +
                     '<td class="month30Days"><input type="text"  id="col' + i + '-34" class="form-control"/></td>' +
-                    '<td><input type="hidden" id="col' + i + '-35"></td>' +
+                    '<td class="month28Days"><input type="text"  id="col' + i + '-35" class="form-control"/></td>' +
+                    '<td><input type="hidden" id="col' + i + '-36"></td>' +
                   '</tr>';
     }
     fillArray();
@@ -304,7 +316,7 @@ function deleteLineOfProject() {
     for (var i = 0; i < count; i++) {
         if ($('#col' + i + '-0').is(':checked')) {
             $("#row" + i).hide();
-            array[i][35] = "Deleted";
+            array[i][36] = "Deleted";
             updateLineTotal();
         }
     }
@@ -313,9 +325,9 @@ function deleteLineOfProject() {
 function fillArray() {
     if (count != 0) {
         var temp = count - 1;
-        array[temp] = new Array(35);
+        array[temp] = new Array(36);
         for (var i = 0; i < count; i++) {
-            for (var j = 0; j < 35; j++) {
+            for (var j = 0; j < 36; j++) {
                 array[i][j] = $('#col' + i + '-' + j).val();
             }
         }
@@ -326,7 +338,7 @@ function updateProjects() {
     if (count > 1) {
         var temp = count - 2;
         for (var i = 0; i < (count - 1) ; i++) {
-            for (var j = 0; j < 36; j++) {
+            for (var j = 0; j < 37; j++) {
                 $('#col' + i + '-' + j).val(array[i][j]);
             }
         }
@@ -335,7 +347,10 @@ function updateProjects() {
             if (!$('#col' + i + '-2').val()) {
                 $('#col' + i + '-2').val("N");
             }
-            if (array[i][35] == "Deleted") {
+            if (!$('#col' + i + '-3').val()) {
+                $('#col' + i + '-3').val("N");
+            }
+            if (array[i][36] == "Deleted") {
                 $('#row' + i).hide();
             }
             document.getElementById('col' + i + '-1').value = array[i][1];
@@ -350,16 +365,16 @@ function updateLineTotal() {
         for (var i = 0; i < (count - 1) ; i++) {
             var sumLine = 0;
 
-            for (var j = 4; j < 36; j++) {
+            for (var j = 5; j < 37; j++) {
                 var temp = Number($('#col' + i + '-' + j).val());
                 if (temp >= 0 && temp < 25) {
                     sumLine += temp;
-                    $('#col' + i + '-3').val(sumLine);
+                    $('#col' + i + '-4').val(sumLine);
                 } else if (!$('#col' + i + '-' + j).val() == "") {
                     $('#col' + i + '-' + j).val(0);
                 }
             }
-            if (array[i][35] != "Deleted") {
+            if (array[i][36] != "Deleted") {
                 sumCol += sumLine;
             }
         }
@@ -375,7 +390,7 @@ function updateTimesheetList(user) {
 
 
     while (colCreated < (count - 1)) {
-        if (array[colCreated][35] != "Deleted") {
+        if (array[colCreated][36] != "Deleted") {
 
             var clientContext = new SP.ClientContext.get_current();
 
@@ -395,16 +410,17 @@ function updateTimesheetList(user) {
             oListItem.set_item('Bench', projectInfo[colCreated][6]);
 
             oListItem.set_item('Project', array[colCreated][1]);
-            oListItem.set_item('HourType', array[colCreated][2]);
+            oListItem.set_item('DayType', array[colCreated][2]);
+            oListItem.set_item('HourType', array[colCreated][3]);
             oListItem.set_item('Month', monthSubmit);
             oListItem.set_item('Year', yearSubmit);
-            oListItem.set_item('Total', array[colCreated][3]);
+            oListItem.set_item('Total', array[colCreated][4]);
             oListItem.set_item('AssignedTo', assignedToVal);
 
 
             for (var i = 0; i < 31; i++) {
                 var x = i + 1;
-                oListItem.set_item('_x00' + x + '_', array[colCreated][i + 4]);
+                oListItem.set_item('_x00' + x + '_', array[colCreated][i + 5]);
             }
 
             oListItem.update();
@@ -603,8 +619,8 @@ function weekendDay() {
             var d = new Date(year, m, j);
             var day = d.getDay();
             if ((day == 6) || (day == 0)) {
-                $("#col" + i + "-" + (j + 3)).css("background-color", "#D3D3D3");
-            } else $("#col" + i + "-" + (j + 3)).css("background-color", "#FFF");
+                $("#col" + i + "-" + (j + 4)).css("background-color", "#D3D3D3");
+            } else $("#col" + i + "-" + (j + 4)).css("background-color", "#FFF");
         }
     }
 
@@ -652,8 +668,8 @@ function onQueryHolidaySucceeded(sender, args) {
         holidayDate = new Date(holidayYear, holidayMonth, holidayDay);
         var m = getMonthFromString(month);
         for (i = 0; i < (count - 1) ; i++) {
-            for (j = 4; j < 35; j++) {
-                var d = new Date(year, m, (j - 3));
+            for (j = 5; j < 36; j++) {
+                var d = new Date(year, m, (j - 4));
                 if ((holidayYear == d.getFullYear()) && (holidayMonth == d.getMonth()) && (holidayDay == d.getDate())) {
                     $("#col" + i + "-" + j).css("background-color", "#F5F5DC");
                 }
@@ -770,6 +786,10 @@ function getProjectInfo() {
 
 function onQueryGetProjectInfo() {
     var listEnumerator = collListItem.getEnumerator();
+    
+    if ((array[projectCount][36] == "Deleted") && ((array[projectCount][1] == null) || (array[projectCount][1] == undefined))) {
+        numberOfLinesInArray++;
+    }
 
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
@@ -782,8 +802,10 @@ function onQueryGetProjectInfo() {
         projectInfo[projectCount][5] = oListItem.get_item('Details');
         projectInfo[projectCount][6] = oListItem.get_item('Bench');
         projectCount++;
+        numberOfLinesInArray++;
     }
-    if (projectCount != (count - 1)) {
+
+    if ((array.length-1) != numberOfLinesInArray) {
         getProjectInfo();
     } else {
         updateListMyTimesheet(userId);
