@@ -237,6 +237,7 @@ function newLineOfProject(rows) {
                     '<td><select class="form-control results" id="col' + i + '-1"></select></td>' +
                     '<td><select class="form-control" id="col' + i + '-2">' +
                             '<option value="N" label="Normal" selected="selected">N</option>' +
+                            '<option value="B" label="Bench">B</option>' +
                             '<option value="PH" label="Public Holiday">PH</option>' +
                             '<option value="PL" label="Paid leave">PL</option>' +
                             '<option value="PSL" label="Paid Sick leave">PSL</option>' +
@@ -556,6 +557,7 @@ function newLineOfProject1() {
                     '<td><select class="form-control results" id="col' + i + '-1"></select></td>' +
                     '<td><select class="form-control" id="col' + i + '-2">' +
                             '<option value="N" label="Normal" selected="selected">N</option>' +
+                            '<option value="B" label="Bench">B</option>' +
                             '<option value="PH" label="Public Holiday">PH</option>' +
                             '<option value="PL" label="Paid leave">PL</option>' +
                             '<option value="PSL" label="Paid Sick leave">PSL</option>' +
