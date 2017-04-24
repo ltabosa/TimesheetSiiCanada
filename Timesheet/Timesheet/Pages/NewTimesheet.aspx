@@ -132,75 +132,17 @@
                 <th class="notShow"></th>
               </tr>
             </thead>
-            <!--
-              <tbody>
-              <tr>
-                <td><select class="form-control results" id="col0"></select></td>
-                <td><select class="form-control" id="col1">
-                        <option value="N">Normal Hour</option>
-                        <option value="S">Supplemental Hour</option>
-                        <option value="O">Overtime Hour</option>
-                        <option value="G">Gratuity Hour</option>
-                    </select>
-                </td>
-                <td><input type="text"  id="col2" class="form-control "/></td>
-                <td><input type="text"  id="col3" class="form-control"/></td>
-                
-                  <td><input type="text"  id="col4" class="form-control"/></td>
-                  <td><input type="text"  id="col5" class="form-control"/></td>
-                  <td><input type="text"  id="col6" class="form-control"/></td>
-                  <td><input type="text"  id="col7" class="form-control"/></td>
-                  <td><input type="text"  id="col8" class="form-control"/></td>
-                  <td><input type="text"  id="col9" class="form-control"/></td>
-                  <td><input type="text"  id="col10" class="form-control"/></td>
-                  <td><input type="text"  id="col11" class="form-control"/></td>
-                  <td><input type="text"  id="col12" class="form-control"/></td>
-                  <td><input type="text"  id="col13" class="form-control"/></td>
-                  <td><input type="text"  id="col14" class="form-control"/></td>
-                  <td><input type="text"  id="col15" class="form-control"/></td>
-                  <td><input type="text"  id="col16" class="form-control"/></td>
-                  <td><input type="text"  id="col17" class="form-control"/></td>
-                  <td><input type="text"  id="col18" class="form-control"/></td>
-                  <td><input type="text"  id="col19" class="form-control"/></td>
-                  <td><input type="text"  id="col20" class="form-control"/></td>
-                  <td><input type="text"  id="col21" class="form-control"/></td>
-                  <td><input type="text"  id="col22" class="form-control"/></td>
-                  <td><input type="text"  id="col23" class="form-control"/></td>
-                  <td><input type="text"  id="col24" class="form-control"/></td>
-                  <td><input type="text"  id="col25" class="form-control"/></td>
-                  <td><input type="text"  id="col26" class="form-control"/></td>
-                  <td><input type="text"  id="col27" class="form-control"/></td>
-                  <td><input type="text"  id="col28" class="form-control"/></td>
-                  <td><input type="text"  id="col29" class="form-control"/></td>
-                  <td><input type="text"  id="col30" class="form-control"/></td>
-                  <td class="month28Days"><input type="text"  id="col31" class="form-control"/></td>
-                  <td class="month29Days"><input type="text"  id="col32" class="form-control"/></td>
-                  <td class="month30Days"><input type="text"  id="col33" class="form-control"/></td>
-              </tr>
-              
-                
-            </tbody>-->
-            
+           
             <tbody id="newLine"></tbody>
             <tbody id="msg"></tbody> 
           </table>
                 
                 <p class=".col-md-8">New: <a href="#" id="otherProject"><span class="glyphicon glyphicon-plus-sign"></span></a> / Delete Selected Lines: <a href="#" id="deleteLine"><span class="glyphicon glyphicon glyphicon-minus-sign"></span></a> </p>
-                
-            
+               
         </div>
-
-
-
-
         <br />
         <p><strong>Total: <span id="totalHour">0</span></strong></p>
-        
-        
-            
-        
-
-        
+         
     </form>
 
 
