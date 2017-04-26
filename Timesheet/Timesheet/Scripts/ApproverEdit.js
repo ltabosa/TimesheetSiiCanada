@@ -411,10 +411,11 @@ function lookupProject() {
                                 '<FieldRef Name=\'PNum\' />' +
                                 '<FieldRef Name=\'Amdt0\' />' +
                                 '<FieldRef Name=\'Bench\' />' +
+                                '<FieldRef Name=\'Department\' />' +
                             '</ViewFields>' +
                           '</View>');
     window.collListItem = oList.getItems(camlQuery);
-    ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0, Bench)');
+    ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0, Bench, Department)');
     ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryLookupSucceeded),
     Function.createDelegate(this, window.onQueryFailed));
 
@@ -437,6 +438,7 @@ function onQueryLookupSucceeded(sender, args) {
         projectList[countProjects][5] = oListItem.get_item('Details');
         projectList[countProjects][6] = oListItem.get_item('Bench');
         projectList[countProjects][7] = oListItem.get_id();
+        projectList[countProjects][8] = oListItem.get_item('Department');
         countProjects++;
     }
     $(".results").html(listInfo);
@@ -747,6 +749,7 @@ function updateTimesheetList(user) {
                     oListItem.set_item('FinalClient', projectList[i][4]);
                     oListItem.set_item('ProjectDetails', projectList[i][5]);
                     oListItem.set_item('Bench', projectList[i][6]);
+                    oListItem.set_item('Department', projectList[i][8]);
                 }
             }
             oListItem.set_item('Project', array[colCreated][1]);
