@@ -14,6 +14,7 @@
     numberOfLinesInArray = 0;
     submitClicked = true;
     array = new Array();
+    projectList = new Array();
     monthsInNumber = [["January", 1], ["February", 2], ["March", 3], ["April", 4], ["May", 5], ["June", 6], ["July", 7], ["August", 8], ["September", 9], ["October", 10], ["November", 11], ["December", 12]];
 
     $(".changeDate").focusout(function () {
@@ -153,10 +154,11 @@ function lookupProject() {
                                 '<FieldRef Name=\'Details\' />' +
                                 '<FieldRef Name=\'PNum\' />' +
                                 '<FieldRef Name=\'Amdt0\' />' +
+                                '<FieldRef Name=\'Bench\' />' +
                             '</ViewFields>' +
                           '</View>');
     window.collListItem = oList.getItems(camlQuery);
-    ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0)');
+    ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0, Bench)');
     ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryLookupSucceeded),
     Function.createDelegate(this, window.onQueryFailed));
 
@@ -172,9 +174,21 @@ function onQueryFailed(sender, args) {
 function onQueryLookupSucceeded(sender, args) {
     var listEnumerator = collListItem.getEnumerator();
     var listInfo = "";
+    var countProjects = 0;
     while (listEnumerator.moveNext()) {
         var oListItem = listEnumerator.get_current();
         listInfo += "<option value='" + oListItem.get_id() + "' label='" + oListItem.get_item('Final_x0020_Client').Label + " " + oListItem.get_item('Title') + " " + oListItem.get_item('PNum') + "-" + oListItem.get_item('Amdt0') + "'>" + oListItem.get_id() + "</option>";
+        projectList[countProjects] = new Array();
+        projectList[countProjects][0] = oListItem.get_item('PNum');
+        projectList[countProjects][1] = oListItem.get_item('Amdt0');
+        projectList[countProjects][2] = oListItem.get_item('Title');
+        projectList[countProjects][3] = oListItem.get_item('Cat');
+        projectList[countProjects][4] = oListItem.get_item('Final_x0020_Client').Label;
+        projectList[countProjects][5] = oListItem.get_item('Details');
+        projectList[countProjects][6] = oListItem.get_item('Bench');
+        projectList[countProjects][7] = oListItem.get_id();
+        countProjects++;
+        
     }
     $(".results").html(listInfo);
     updateProjects();
@@ -290,9 +304,9 @@ function newLineOfProject() {
                     '<td><input type="text"  id="col' + i + '-30" class="form-control"/></td>' +
                     '<td><input type="text"  id="col' + i + '-31" class="form-control"/></td>' +
                     '<td><input type="text"  id="col' + i + '-32" class="form-control"/></td>' +
-                    '<td class="month29Days"><input type="text"  id="col' + i + '-33" class="form-control"/></td>' +
-                    '<td class="month30Days"><input type="text"  id="col' + i + '-34" class="form-control"/></td>' +
-                    '<td class="month28Days"><input type="text"  id="col' + i + '-35" class="form-control"/></td>' +
+                    '<td class="month28Days"><input type="text"  id="col' + i + '-33" class="form-control"/></td>' +
+                    '<td class="month29Days"><input type="text"  id="col' + i + '-34" class="form-control"/></td>' +
+                    '<td class="month30Days"><input type="text"  id="col' + i + '-35" class="form-control"/></td>' +
                     '<td><input type="hidden" id="col' + i + '-36"></td>' +
                   '</tr>';
     }
@@ -403,14 +417,17 @@ function updateTimesheetList(user) {
             this.oListItem = oList.addItem(itemCreateInfo);
 
             //verify if the line is well filled
-            oListItem.set_item('PNum', projectInfo[colCreated][0]);
-            oListItem.set_item('Amdt', projectInfo[colCreated][1]);
-            oListItem.set_item('ProjectTitle', projectInfo[colCreated][2]);
-            oListItem.set_item('Cat', projectInfo[colCreated][3]);
-            oListItem.set_item('FinalClient', projectInfo[colCreated][4]);
-            oListItem.set_item('ProjectDetails', projectInfo[colCreated][5]);
-            oListItem.set_item('Bench', projectInfo[colCreated][6]);
-
+            for (var i = 0; i < projectList.length; i++) {
+                if (array[colCreated][1] == projectList[i][7]){
+                    oListItem.set_item('PNum', projectList[i][0]);
+                    oListItem.set_item('Amdt', projectList[i][1]);
+                    oListItem.set_item('ProjectTitle', projectList[i][2]);
+                    oListItem.set_item('Cat', projectList[i][3]);
+                    oListItem.set_item('FinalClient', projectList[i][4]);
+                    oListItem.set_item('ProjectDetails', projectList[i][5]);
+                    oListItem.set_item('Bench', projectList[i][6]);
+                }
+            }
             oListItem.set_item('Project', array[colCreated][1]);
             oListItem.set_item('DayType', array[colCreated][2]);
             oListItem.set_item('HourType', array[colCreated][3]);
