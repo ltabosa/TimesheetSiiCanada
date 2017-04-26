@@ -77,9 +77,9 @@
                 }
                 if (i > 0) {
                     for (var k = 0; k < i; k++) {
-                        if (((array[i][1] == array[k][1]) && (array[i][3] == array[k][3])) && (array[i][36] !== "Deleted")) {
+                        if (((array[i][1] == array[k][1]) && (array[i][2] == array[k][2]) && (array[i][3] == array[k][3])) && (array[i][36] !== "Deleted")) {
                             errorMes = '<div class="alert alert-danger">' +
-                                            '<strong>Atention!</strong> You already have this project and hour type.' +
+                                            '<strong>Atention!</strong> You already have this project and day type and hour type.' +
                                         '</div>';
                             submitClicked = true;
                         }
@@ -237,7 +237,7 @@ function newLineOfProject(rows) {
                     '<td><select class="form-control results" id="col' + i + '-1"></select></td>' +
                     '<td><select class="form-control" id="col' + i + '-2">' +
                             '<option value="N" label="Normal" selected="selected">N</option>' +
-                            '<option value="B" label="Bench">B</option>' +
+                            '<option value="T" label="Training">T</option>' +
                             '<option value="PH" label="Public Holiday">PH</option>' +
                             '<option value="PL" label="Paid leave">PL</option>' +
                             '<option value="PSL" label="Paid Sick leave">PSL</option>' +
@@ -253,6 +253,7 @@ function newLineOfProject(rows) {
                             '<option value="O" label="Overtime">O</option>' +
                             '<option value="NF" label="Non-Invoiced">NF</option>' +
                             '<option value="G" label="Gratuity">G</option>' +
+                            '<option value="B" label="Bench">B</option>' +
                             '<option value="BO" label="Opportunity">BO</option>' +
                         '</select>' +
                     '</td>' +
@@ -557,7 +558,7 @@ function newLineOfProject1() {
                     '<td><select class="form-control results" id="col' + i + '-1"></select></td>' +
                     '<td><select class="form-control" id="col' + i + '-2">' +
                             '<option value="N" label="Normal" selected="selected">N</option>' +
-                            '<option value="B" label="Bench">B</option>' +
+                            '<option value="T" label="Training">T</option>' +
                             '<option value="PH" label="Public Holiday">PH</option>' +
                             '<option value="PL" label="Paid leave">PL</option>' +
                             '<option value="PSL" label="Paid Sick leave">PSL</option>' +
@@ -573,6 +574,7 @@ function newLineOfProject1() {
                             '<option value="O" label="Overtime">O</option>' +
                             '<option value="NF" label="Non-Invoiced">NF</option>' +
                             '<option value="G" label="Gratuity">G</option>' +
+                            '<option value="B" label="Bench">B</option>' +
                             '<option value="BO" label="Opportunity">BO</option>' +
                         '</select>' +
                     '</td>' +
