@@ -15,6 +15,9 @@
     deleteLineArray = new Array();
     projectList = new Array();
     submitClicked = true;
+    itCameFromEditTimesheet = false;
+    itCameFromApproverEdit = false;
+    itCameFromNewTimesheet = false;
 
     if (status == "Approved") {
         $("#Submit").hide();
@@ -53,7 +56,8 @@
     });
 
     $("#Submit").click(function () {
-        addFileToListMyTimesheet(timesheetId);
+        itCameFromEditTimesheet = true;
+        //addFileToListMyTimesheet(timesheetId);
         //prevent clicks
         if (submitClicked) {
             submitClicked = false;
@@ -726,7 +730,8 @@ function onQuerySucceededDeleted() {
     var deleteline = deleteLineArray.length;
     countLinesToDelete++;
     if (countLinesToDelete == deleteline) {
-        window.location.href = '../Pages/EditTimesheet.aspx?ID=' + timesheetId + '&Status=InProgress&Month=' + month + '&Year=' + year;
+        addFileToListMyTimesheet(timesheetId);
+       // window.location.href = '../Pages/EditTimesheet.aspx?ID=' + timesheetId + '&Status=InProgress&Month=' + month + '&Year=' + year;
     }
 }
 

@@ -2,7 +2,7 @@
 
 //ExecuteOrDelayUntilScriptLoaded(initializePage, "sp.js");//adicionar na pagina de novo TS e tbm na pagina de edicao de TS
 ExecuteOrDelayUntilScriptLoaded(getWebProperties, "SP.js");//adicionar na pagina de edicao de timesheet
-var itCameFromNewTimesheet = false;
+
 
 function attachFileToMyTimesheet(userId, monthSubmit, yearSubmit) {
 
@@ -69,15 +69,38 @@ function addFileToListMyTimesheet(itemId) {
               console.log('Attachment file has been uploaded');
               if (itCameFromNewTimesheet) {
                   window.location.href = '../Pages/EditTimesheet.aspx?ID=' + itemId + '&Status=InProgress&Month=' + monthSubmit + '&Year=' + yearSubmit + '';
+              } else if (itCameFromApproverEdit) {
+                  window.location.href = '../Pages/ApproverEdit.aspx?ID=' + timesheetId + '&Status=InProgress&User=' + userNameForUrl + '&Month=' + month + '&Year=' + year;
+              } else if (itCameFromEditTimesheet) {
+                  window.location.href = '../Pages/EditTimesheet.aspx?ID=' + timesheetId + '&Status=InProgress&Month=' + month + '&Year=' + year;
               }
               //location.reload();
           },
           function (sender, args) {
               console.log(args.get_message());
+              var errorMes = '<div class="alert alert-danger">' + args.get_message() + '</div>';
+              $("#warningMsg").html(errorMes);
+              if (itCameFromNewTimesheet) {
+                  setTimeout(function () {
+                      window.location.href = '../Pages/EditTimesheet.aspx?ID=' + itemId + '&Status=InProgress&Month=' + monthSubmit + '&Year=' + yearSubmit + '';
+                  }, 5000);
+              } else if (itCameFromApproverEdit) {
+                  setTimeout(function () {
+                      window.location.href = '../Pages/ApproverEdit.aspx?ID=' + timesheetId + '&Status=InProgress&User=' + userNameForUrl + '&Month=' + month + '&Year=' + year;
+                  }, 5000);
+              } else if (itCameFromEditTimesheet) {
+                  setTimeout(function () {
+                      window.location.href = '../Pages/EditTimesheet.aspx?ID=' + timesheetId + '&Status=InProgress&Month=' + month + '&Year=' + year;
+                  }, 5000);
+              }
           });
     } else {
         if (itCameFromNewTimesheet) {
             window.location.href = '../Pages/EditTimesheet.aspx?ID=' + itemId + '&Status=InProgress&Month=' + monthSubmit + '&Year=' + yearSubmit + '';
+        } else if (itCameFromApproverEdit) {
+            window.location.href = '../Pages/ApproverEdit.aspx?ID=' + timesheetId + '&Status=InProgress&User=' + userNameForUrl + '&Month=' + month + '&Year=' + year;
+        } else if (itCameFromEditTimesheet) {
+            window.location.href = '../Pages/EditTimesheet.aspx?ID=' + timesheetId + '&Status=InProgress&Month=' + month + '&Year=' + year;
         }
     }
     function processUpload(fileInput, listTitle, itemId, success, error) {
@@ -189,7 +212,8 @@ function getWebProperties() {
                 relativeUrl = attachmentFiles.itemAt(i).get_serverRelativeUrl();
                 var fileName = String(relativeUrl);
                 fileName = fileName.split("/");
-                fileName = fileName[7];
+                fileName = fileName[fileName.length - 1];
+                //fileName = fileName[9];
                 html += "<p><a href='" + relativeUrl + "'>" + fileName + "</a>";
                 html += "<a onclick='deleteAttach(\"" + fileName + "\")' href='/'> Delete</a></p>";
             }
