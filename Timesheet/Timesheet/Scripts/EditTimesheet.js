@@ -74,14 +74,14 @@
                     submitClicked = true;
 
                 } else if ((array[i][4] == 0) && (array[i][36] !== "Deleted")) {
-                    errorMes += '<div class="alert alert-danger">' +
-                            '<strong>Atention!</strong> You must have one hour in <strong>' + array[i][1] + '</strong> project.' +
+                    errorMes = '<div class="alert alert-danger">' +
+                            '<strong>Atention!</strong> You must have at least one hour in each project.' +
                         '</div>';
                     submitClicked = true;
                 }
                 if (i > 0) {
                     for (var k = 0; k < i; k++) {
-                        if (((array[i][1] == array[k][1]) && (array[i][2] == array[k][2]) && (array[i][3] == array[k][3])) && (array[i][36] !== "Deleted")) {
+                        if (((array[i][1] == array[k][1]) && (array[i][2] == array[k][2]) && (array[i][3] == array[k][3])) && (array[i][36] !== "Deleted") && (array[k][36] !== "Deleted")) {
                             errorMes = '<div class="alert alert-danger">' +
                                             '<strong>Atention!</strong> You already have this project and day type and hour type.' +
                                         '</div>';
@@ -244,375 +244,375 @@ function onQuerySucceeded(sender, args) {
     $('#totalHour').html(sumCol);
 }
 
-function newLineOfProject(rows) {
-    var newLine = "";
-    for (var i = 0; i < rows; i++) {
-        newLine += '<tr id="row' + i + '">' +
-                    '<td><input type="checkbox" id="col' + i + '-0"></td>' +
-                    '<td><select class="form-control results" id="col' + i + '-1"></select></td>' +
-                    '<td><select class="form-control" id="col' + i + '-2">' +
-                            '<option value="N" label="Normal" selected="selected">N</option>' +
-                            '<option value="T" label="Training">T</option>' +
-                            '<option value="PH" label="Public Holiday">PH</option>' +
-                            '<option value="PL" label="Paid leave">PL</option>' +
-                            '<option value="PSL" label="Paid Sick leave">PSL</option>' +
-                            '<option value="UL" label="Unpaid leave">UL</option>' +
-                            '<option value="USL" label="Unpaid Sick leave">USL</option>' +
-                            '<option value="CL" label="Compensation leave">CL</option>' +
-                            '<option value="STB" label="Contract pause">STB</option>' +
-                        '</select>' +
-                    '</td>' +
-                    '<td><select class="form-control" id="col' + i + '-3">' +
-                            '<option value="N" label="Normal" selected="selected">N</option>' +
-                            '<option value="S" label="Supplemental">S</option>' +
-                            '<option value="O" label="Overtime">O</option>' +
-                            '<option value="NF" label="Non-Invoiced">NF</option>' +
-                            '<option value="G" label="Gratuity">G</option>' +
-                            '<option value="B" label="Bench">B</option>' +
-                            '<option value="BO" label="Opportunity">BO</option>' +
-                        '</select>' +
-                    '</td>' +
-                    '<td><input type="text" value="" id="col' + i + '-4" class="form-control" readonly/></td>' +
-                    '<td><input type="text"  id="col' + i + '-5" class="form-control" pattern = "[1-9][0-4]?"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-6" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-7" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-8" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-9" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-10" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-11" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-12" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-13" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-14" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-15" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-16" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-17" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-18" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-19" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-20" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-21" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-22" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-23" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-24" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-25" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-26" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-27" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-28" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-29" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-30" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-31" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-32" class="form-control"/></td>' +
-                    '<td class="month28Days"><input type="text"  id="col' + i + '-33" class="form-control"/></td>' +
-                    '<td class="month29Days"><input type="text"  id="col' + i + '-34" class="form-control"/></td>' +
-                    '<td class="month30Days"><input type="text"  id="col' + i + '-35" class="form-control"/></td>' +
-                    '<td><input type="hidden" id="col' + i + '-36"></td>' +
-                  '</tr>';
-    }
-    $("#newLine").html(newLine);
+//function newLineOfProject(rows) {
+//    var newLine = "";
+//    for (var i = 0; i < rows; i++) {
+//        newLine += '<tr id="row' + i + '">' +
+//                    '<td><input type="checkbox" id="col' + i + '-0"></td>' +
+//                    '<td><select class="form-control results" id="col' + i + '-1"></select></td>' +
+//                    '<td><select class="form-control" id="col' + i + '-2">' +
+//                            '<option value="N" label="Normal" selected="selected">N</option>' +
+//                            '<option value="T" label="Training">T</option>' +
+//                            '<option value="PH" label="Public Holiday">PH</option>' +
+//                            '<option value="PL" label="Paid leave">PL</option>' +
+//                            '<option value="PSL" label="Paid Sick leave">PSL</option>' +
+//                            '<option value="UL" label="Unpaid leave">UL</option>' +
+//                            '<option value="USL" label="Unpaid Sick leave">USL</option>' +
+//                            '<option value="CL" label="Compensation leave">CL</option>' +
+//                            '<option value="STB" label="Contract pause">STB</option>' +
+//                        '</select>' +
+//                    '</td>' +
+//                    '<td><select class="form-control" id="col' + i + '-3">' +
+//                            '<option value="N" label="Normal" selected="selected">N</option>' +
+//                            '<option value="S" label="Supplemental">S</option>' +
+//                            '<option value="O" label="Overtime">O</option>' +
+//                            '<option value="NF" label="Non-Invoiced">NF</option>' +
+//                            '<option value="G" label="Gratuity">G</option>' +
+//                            '<option value="B" label="Bench">B</option>' +
+//                            '<option value="BO" label="Opportunity">BO</option>' +
+//                        '</select>' +
+//                    '</td>' +
+//                    '<td><input type="text" value="" id="col' + i + '-4" class="form-control" readonly/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-5" class="form-control" pattern = "[1-9][0-4]?"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-6" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-7" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-8" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-9" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-10" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-11" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-12" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-13" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-14" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-15" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-16" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-17" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-18" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-19" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-20" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-21" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-22" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-23" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-24" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-25" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-26" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-27" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-28" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-29" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-30" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-31" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-32" class="form-control"/></td>' +
+//                    '<td class="month28Days"><input type="text"  id="col' + i + '-33" class="form-control"/></td>' +
+//                    '<td class="month29Days"><input type="text"  id="col' + i + '-34" class="form-control"/></td>' +
+//                    '<td class="month30Days"><input type="text"  id="col' + i + '-35" class="form-control"/></td>' +
+//                    '<td><input type="hidden" id="col' + i + '-36"></td>' +
+//                  '</tr>';
+//    }
+//    $("#newLine").html(newLine);
 
 
-    //Update number of columns in table
-    numberOfDaysInMonth();
+//    //Update number of columns in table
+//    numberOfDaysInMonth();
 
-    //Update dropdow of project
-    lookupProject();
+//    //Update dropdow of project
+//    lookupProject();
 
-    //Update data in table
-
-
-    //Update the total
-    $(".form-control").focusout(function () {
-        updateLineTotal();
-
-    });
-
-    weekendDay();
-}
+//    //Update data in table
 
 
-function newLineOfProject1() {
-    count++;
+//    //Update the total
+//    $(".form-control").focusout(function () {
+//        updateLineTotal();
 
-    var newLine = "";
-    for (var i = 0; i < count; i++) {
-        newLine += '<tr id="row' + i + '">' +
-                    '<td><input type="checkbox" id="col' + i + '-0"></td>' +
-                    '<td><select class="form-control results" id="col' + i + '-1"></select></td>' +
-                    '<td><select class="form-control" id="col' + i + '-2">' +
-                            '<option value="N" label="Normal" selected="selected">N</option>' +
-                            '<option value="T" label="Training">T</option>' +
-                            '<option value="PH" label="Public Holiday">PH</option>' +
-                            '<option value="PL" label="Paid leave">PL</option>' +
-                            '<option value="PSL" label="Paid Sick leave">PSL</option>' +
-                            '<option value="UL" label="Unpaid leave">UL</option>' +
-                            '<option value="USL" label="Unpaid Sick leave">USL</option>' +
-                            '<option value="CL" label="Compensation leave">CL</option>' +
-                            '<option value="STB" label="Contract pause">STB</option>' +
-                        '</select>' +
-                    '</td>' +
-                    '<td><select class="form-control" id="col' + i + '-3">' +
-                            '<option value="N" label="Normal" selected="selected">N</option>' +
-                            '<option value="S" label="Supplemental">S</option>' +
-                            '<option value="O" label="Overtime">O</option>' +
-                            '<option value="NF" label="Non-Invoiced">NF</option>' +
-                            '<option value="G" label="Gratuity">G</option>' +
-                            '<option value="B" label="Bench">B</option>' +
-                            '<option value="BO" label="Opportunity">BO</option>' +
-                        '</select>' +
-                    '</td>' +
-                    '<td><input type="text" value="" id="col' + i + '-4" class="form-control" readonly/></td>' +
-                    '<td><input type="text"  id="col' + i + '-5" class="form-control" pattern = "[1-9][0-4]?"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-6" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-7" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-8" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-9" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-10" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-11" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-12" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-13" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-14" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-15" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-16" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-17" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-18" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-19" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-20" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-21" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-22" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-23" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-24" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-25" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-26" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-27" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-28" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-29" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-30" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-31" class="form-control"/></td>' +
-                    '<td><input type="text"  id="col' + i + '-32" class="form-control"/></td>' +
-                    '<td class="month28Days"><input type="text"  id="col' + i + '-33" class="form-control"/></td>' +
-                    '<td class="month29Days"><input type="text"  id="col' + i + '-34" class="form-control"/></td>' +
-                    '<td class="month30Days"><input type="text"  id="col' + i + '-35" class="form-control"/></td>' +
-                    '<td><input type="hidden" id="col' + i + '-36"></td>' +
-                  '</tr>';
-    }
-    fillArray();
+//    });
 
-    //Delete old table and create new one empty
-    $("#newLine").html(newLine);
+//    weekendDay();
+//}
 
 
+//function newLineOfProject1() {
+//    count++;
 
+//    var newLine = "";
+//    for (var i = 0; i < count; i++) {
+//        newLine += '<tr id="row' + i + '">' +
+//                    '<td><input type="checkbox" id="col' + i + '-0"></td>' +
+//                    '<td><select class="form-control results" id="col' + i + '-1"></select></td>' +
+//                    '<td><select class="form-control" id="col' + i + '-2">' +
+//                            '<option value="N" label="Normal" selected="selected">N</option>' +
+//                            '<option value="T" label="Training">T</option>' +
+//                            '<option value="PH" label="Public Holiday">PH</option>' +
+//                            '<option value="PL" label="Paid leave">PL</option>' +
+//                            '<option value="PSL" label="Paid Sick leave">PSL</option>' +
+//                            '<option value="UL" label="Unpaid leave">UL</option>' +
+//                            '<option value="USL" label="Unpaid Sick leave">USL</option>' +
+//                            '<option value="CL" label="Compensation leave">CL</option>' +
+//                            '<option value="STB" label="Contract pause">STB</option>' +
+//                        '</select>' +
+//                    '</td>' +
+//                    '<td><select class="form-control" id="col' + i + '-3">' +
+//                            '<option value="N" label="Normal" selected="selected">N</option>' +
+//                            '<option value="S" label="Supplemental">S</option>' +
+//                            '<option value="O" label="Overtime">O</option>' +
+//                            '<option value="NF" label="Non-Invoiced">NF</option>' +
+//                            '<option value="G" label="Gratuity">G</option>' +
+//                            '<option value="B" label="Bench">B</option>' +
+//                            '<option value="BO" label="Opportunity">BO</option>' +
+//                        '</select>' +
+//                    '</td>' +
+//                    '<td><input type="text" value="" id="col' + i + '-4" class="form-control" readonly/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-5" class="form-control" pattern = "[1-9][0-4]?"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-6" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-7" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-8" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-9" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-10" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-11" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-12" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-13" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-14" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-15" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-16" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-17" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-18" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-19" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-20" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-21" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-22" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-23" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-24" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-25" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-26" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-27" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-28" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-29" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-30" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-31" class="form-control"/></td>' +
+//                    '<td><input type="text"  id="col' + i + '-32" class="form-control"/></td>' +
+//                    '<td class="month28Days"><input type="text"  id="col' + i + '-33" class="form-control"/></td>' +
+//                    '<td class="month29Days"><input type="text"  id="col' + i + '-34" class="form-control"/></td>' +
+//                    '<td class="month30Days"><input type="text"  id="col' + i + '-35" class="form-control"/></td>' +
+//                    '<td><input type="hidden" id="col' + i + '-36"></td>' +
+//                  '</tr>';
+//    }
+//    fillArray();
 
-    //Update the total
-    $(".form-control").focusout(function () {
-        updateLineTotal();
-
-    });
-
-    numberOfDaysInMonth();
-
-    lookupProject();
-
-    weekendDay();
+//    //Delete old table and create new one empty
+//    $("#newLine").html(newLine);
 
 
 
-}
+
+//    //Update the total
+//    $(".form-control").focusout(function () {
+//        updateLineTotal();
+
+//    });
+
+//    numberOfDaysInMonth();
+
+//    lookupProject();
+
+//    weekendDay();
 
 
-function fillArray() {
 
-    if (count != 0) {
-        var temp = count - 1;
-        array[temp] = new Array(37);
-        for (var i = 0; i < count; i++) {
-            for (var j = 0; j < 37; j++) {
-                array[i][j] = $('#col' + i + '-' + j).val();
-            }
-        }
-    }
-}
+//}
 
 
-//Same functions in the two filles
-function numberOfDaysInMonth() {
-    var txtMonth = $('#txtMonth').val();
-    var txtYear = $('#txtYear').val();
+//function fillArray() {
 
-    txtMonth = getMonthFromString(txtMonth);
-    function getMonthFromString(txtMonth) {
-        return new Date(Date.parse(txtMonth + " 1, 2012")).getMonth() + 1
-    }
+//    if (count != 0) {
+//        var temp = count - 1;
+//        array[temp] = new Array(37);
+//        for (var i = 0; i < count; i++) {
+//            for (var j = 0; j < 37; j++) {
+//                array[i][j] = $('#col' + i + '-' + j).val();
+//            }
+//        }
+//    }
+//}
 
-    var numberOfDays = daysInMonth(txtMonth, txtYear);
 
-    function daysInMonth(m, y) {
-        return new Date(y, m, 0).getDate();
-    }
+////Same functions in the two filles
+//function numberOfDaysInMonth() {
+//    var txtMonth = $('#txtMonth').val();
+//    var txtYear = $('#txtYear').val();
 
-    if (numberOfDays == 30) {
-        $(".month28Days").show();
-        $(".month29Days").show();
-        $(".month30Days").hide();
-        //Delete day 31 from array
-        for (var i = 0; i < count; i++) {
-            $('#col' + i + '-35').val(0);
-        }
-    } else if (numberOfDays == 29) {
-        $(".month28Days").show();
-        $(".month29Days").hide();
-        $(".month30Days").hide();
-        //Delete day 31 and 30 from array
-        for (var i = 0; i < count; i++) {
-            $('#col' + i + '-34').val(0);
-            $('#col' + i + '-35').val(0);
-        }
-    } else if (numberOfDays == 28) {
-        $(".month28Days").hide();
-        $(".month29Days").hide();
-        $(".month30Days").hide();
-        //Delete day 31, 30 and 29 from array
-        for (var i = 0; i < count; i++) {
-            $('#col' + i + '-33').val(0);
-            $('#col' + i + '-34').val(0);
-            $('#col' + i + '-35').val(0);
-        }
+//    txtMonth = getMonthFromString(txtMonth);
+//    function getMonthFromString(txtMonth) {
+//        return new Date(Date.parse(txtMonth + " 1, 2012")).getMonth() + 1
+//    }
 
-    } else {
-        $(".month28Days").show();
-        $(".month29Days").show();
-        $(".month30Days").show();
-    }
-}
+//    var numberOfDays = daysInMonth(txtMonth, txtYear);
 
-function updateLineTotal() {
+//    function daysInMonth(m, y) {
+//        return new Date(y, m, 0).getDate();
+//    }
 
-    if (count > 0) {
-        sumCol = 0;
-        var error = "";
-        for (var i = 0; i < (count) ; i++) {
-            var sumLine = 0;
+//    if (numberOfDays == 30) {
+//        $(".month28Days").show();
+//        $(".month29Days").show();
+//        $(".month30Days").hide();
+//        //Delete day 31 from array
+//        for (var i = 0; i < count; i++) {
+//            $('#col' + i + '-35').val(0);
+//        }
+//    } else if (numberOfDays == 29) {
+//        $(".month28Days").show();
+//        $(".month29Days").hide();
+//        $(".month30Days").hide();
+//        //Delete day 31 and 30 from array
+//        for (var i = 0; i < count; i++) {
+//            $('#col' + i + '-34').val(0);
+//            $('#col' + i + '-35').val(0);
+//        }
+//    } else if (numberOfDays == 28) {
+//        $(".month28Days").hide();
+//        $(".month29Days").hide();
+//        $(".month30Days").hide();
+//        //Delete day 31, 30 and 29 from array
+//        for (var i = 0; i < count; i++) {
+//            $('#col' + i + '-33').val(0);
+//            $('#col' + i + '-34').val(0);
+//            $('#col' + i + '-35').val(0);
+//        }
 
-            for (var j = 5; j < 36; j++) {
-                var temp = Number($('#col' + i + '-' + j).val());
-                if (temp >= 0 && temp < 25) {
-                    sumLine += temp;
-                    $('#col' + i + '-4').val(sumLine);
-                } else if (!$('#col' + i + '-' + j).val() == "") {
-                    $('#col' + i + '-' + j).val(0);
-                }
-            }
-            if (array[i][36] != "Deleted") {
-                sumCol += sumLine;
-            }
-        }
-    }
-    $('#totalHour').html(sumCol);
-    $('#msg').html(error);
-}
+//    } else {
+//        $(".month28Days").show();
+//        $(".month29Days").show();
+//        $(".month30Days").show();
+//    }
+//}
 
-//Same functions in the two filles
-function lookupProject() {
-    var ctx = new SP.ClientContext.get_current();
-    var siteUrl = 'https://siicanada.sharepoint.com/agency/direction/';
-    var context = new SP.AppContextSite(ctx, siteUrl);
-    ctx.load(context.get_web());
-    var oList = context.get_web().get_lists().getByTitle('Project-List');
-    var camlQuery = new SP.CamlQuery();
-    camlQuery.set_viewXml('<View>' +
-                            '<Query>' +
-                                '<Where>' +
-                                            '<Eq>' +
-                                                '<FieldRef Name=\'Status\'/>' +
-                                                '<Value Type=\'Calculated\'>1-LAUNCHED</Value>' +
-                                            '</Eq>' +
-                                '</Where>' +
-                                '<OrderBy>' +
-                                    '<FieldRef Name=\'Final_x0020_Client\' Ascending=\'TRUE\' />' +
-                                '</OrderBy>' +
-                            '</Query>' +
-                            '<ViewFields>' +
-                                '<FieldRef Name=\'Id\' />' +
-                                '<FieldRef Name=\'Title\' />' +
-                                '<FieldRef Name=\'Cat\' />' +
-                                '<FieldRef Name=\'Final_x0020_Client\' />' +
-                                '<FieldRef Name=\'Details\' />' +
-                                '<FieldRef Name=\'PNum\' />' +
-                                '<FieldRef Name=\'Amdt0\' />' +
-                                '<FieldRef Name=\'Bench\' />' +
-                                '<FieldRef Name=\'Department\' />' +
-                            '</ViewFields>' +
-                          '</View>');
-    window.collListItem = oList.getItems(camlQuery);
-    ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0, Bench, Department)');
-    ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryLookupSucceeded),
-    Function.createDelegate(this, window.onQueryFailed));
+//function updateLineTotal() {
 
-}
+//    if (count > 0) {
+//        sumCol = 0;
+//        var error = "";
+//        for (var i = 0; i < (count) ; i++) {
+//            var sumLine = 0;
+
+//            for (var j = 5; j < 36; j++) {
+//                var temp = Number($('#col' + i + '-' + j).val());
+//                if (temp >= 0 && temp < 25) {
+//                    sumLine += temp;
+//                    $('#col' + i + '-4').val(sumLine);
+//                } else if (!$('#col' + i + '-' + j).val() == "") {
+//                    $('#col' + i + '-' + j).val(0);
+//                }
+//            }
+//            if (array[i][36] != "Deleted") {
+//                sumCol += sumLine;
+//            }
+//        }
+//    }
+//    $('#totalHour').html(sumCol);
+//    $('#msg').html(error);
+//}
 
 //Same functions in the two filles
-function onQueryLookupSucceeded(sender, args) {
-    var listEnumerator = collListItem.getEnumerator();
-    var listInfo = "";
-    var countProjects = 0;
-    while (listEnumerator.moveNext()) {
-        var oListItem = listEnumerator.get_current();
+//function lookupProject() {
+//    var ctx = new SP.ClientContext.get_current();
+//    var siteUrl = 'https://siicanada.sharepoint.com/agency/direction/';
+//    var context = new SP.AppContextSite(ctx, siteUrl);
+//    ctx.load(context.get_web());
+//    var oList = context.get_web().get_lists().getByTitle('Project-List');
+//    var camlQuery = new SP.CamlQuery();
+//    camlQuery.set_viewXml('<View>' +
+//                            '<Query>' +
+//                                '<Where>' +
+//                                            '<Eq>' +
+//                                                '<FieldRef Name=\'Status\'/>' +
+//                                                '<Value Type=\'Calculated\'>1-LAUNCHED</Value>' +
+//                                            '</Eq>' +
+//                                '</Where>' +
+//                                '<OrderBy>' +
+//                                    '<FieldRef Name=\'Final_x0020_Client\' Ascending=\'TRUE\' />' +
+//                                '</OrderBy>' +
+//                            '</Query>' +
+//                            '<ViewFields>' +
+//                                '<FieldRef Name=\'Id\' />' +
+//                                '<FieldRef Name=\'Title\' />' +
+//                                '<FieldRef Name=\'Cat\' />' +
+//                                '<FieldRef Name=\'Final_x0020_Client\' />' +
+//                                '<FieldRef Name=\'Details\' />' +
+//                                '<FieldRef Name=\'PNum\' />' +
+//                                '<FieldRef Name=\'Amdt0\' />' +
+//                                '<FieldRef Name=\'Bench\' />' +
+//                                '<FieldRef Name=\'Department\' />' +
+//                            '</ViewFields>' +
+//                          '</View>');
+//    window.collListItem = oList.getItems(camlQuery);
+//    ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0, Bench, Department)');
+//    ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryLookupSucceeded),
+//    Function.createDelegate(this, window.onQueryFailed));
 
-        listInfo += "<option value='" + oListItem.get_id() + "' label='" + oListItem.get_item('Final_x0020_Client').Label + " " + oListItem.get_item('Title') + " " + oListItem.get_item('PNum') + "-" + oListItem.get_item('Amdt0') + "'>" + oListItem.get_id() + "</option>";
+//}
 
-        projectList[countProjects] = new Array();
-        projectList[countProjects][0] = oListItem.get_item('PNum');
-        projectList[countProjects][1] = oListItem.get_item('Amdt0');
-        projectList[countProjects][2] = oListItem.get_item('Title');
-        projectList[countProjects][3] = oListItem.get_item('Cat');
-        projectList[countProjects][4] = oListItem.get_item('Final_x0020_Client').Label;
-        projectList[countProjects][5] = oListItem.get_item('Details');
-        projectList[countProjects][6] = oListItem.get_item('Bench');
-        projectList[countProjects][7] = oListItem.get_id();
-        projectList[countProjects][8] = oListItem.get_item('Department');
-        countProjects++;
-    }
-    $(".results").html(listInfo);
-    updateProjects();
-    holiday();
-}
+////Same functions in the two filles
+//function onQueryLookupSucceeded(sender, args) {
+//    var listEnumerator = collListItem.getEnumerator();
+//    var listInfo = "";
+//    var countProjects = 0;
+//    while (listEnumerator.moveNext()) {
+//        var oListItem = listEnumerator.get_current();
+
+//        listInfo += "<option value='" + oListItem.get_id() + "' label='" + oListItem.get_item('Final_x0020_Client').Label + " " + oListItem.get_item('Title') + " " + oListItem.get_item('PNum') + "-" + oListItem.get_item('Amdt0') + "'>" + oListItem.get_id() + "</option>";
+
+//        projectList[countProjects] = new Array();
+//        projectList[countProjects][0] = oListItem.get_item('PNum');
+//        projectList[countProjects][1] = oListItem.get_item('Amdt0');
+//        projectList[countProjects][2] = oListItem.get_item('Title');
+//        projectList[countProjects][3] = oListItem.get_item('Cat');
+//        projectList[countProjects][4] = oListItem.get_item('Final_x0020_Client').Label;
+//        projectList[countProjects][5] = oListItem.get_item('Details');
+//        projectList[countProjects][6] = oListItem.get_item('Bench');
+//        projectList[countProjects][7] = oListItem.get_id();
+//        projectList[countProjects][8] = oListItem.get_item('Department');
+//        countProjects++;
+//    }
+//    $(".results").html(listInfo);
+//    updateProjects();
+//    holiday();
+//}
 
 
-function updateProjects() {
+//function updateProjects() {
 
-    for (var i = 0; i < count ; i++) {
-        for (var j = 0; j < 37; j++) {
-            $('#col' + i + '-' + j).val(array[i][j]);
-        }
-    }
-    //HOUR TYPE AND PROJECT DEFAULT 
-    for (var i = 0; i < count ; i++) {
-        if (!$('#col' + i + '-2').val()) {
-            $('#col' + i + '-2').val("N");
-        }
-        if (!$('#col' + i + '-3').val()) {
-            $('#col' + i + '-3').val("N");
-        }
-        if (array[i][36] == "Deleted") {
-            $('#row' + i).hide();
-        }
-        document.getElementById('col' + i + '-1').value = array[i][1];
-    }
-    if (status == "Approved") {
-        $("input").prop("readonly", true);
-    }
-}
+//    for (var i = 0; i < count ; i++) {
+//        for (var j = 0; j < 37; j++) {
+//            $('#col' + i + '-' + j).val(array[i][j]);
+//        }
+//    }
+//    //HOUR TYPE AND PROJECT DEFAULT 
+//    for (var i = 0; i < count ; i++) {
+//        if (!$('#col' + i + '-2').val()) {
+//            $('#col' + i + '-2').val("N");
+//        }
+//        if (!$('#col' + i + '-3').val()) {
+//            $('#col' + i + '-3').val("N");
+//        }
+//        if (array[i][36] == "Deleted") {
+//            $('#row' + i).hide();
+//        }
+//        document.getElementById('col' + i + '-1').value = array[i][1];
+//    }
+//    if (status == "Approved") {
+//        $("input").prop("readonly", true);
+//    }
+//}
 
 //same
-function deleteLineOfProject() {
-    for (var i = 0; i < count; i++) {
-        if ($('#col' + i + '-0').is(':checked')) {
-            $("#row" + i).hide();
-            array[i][36] = "Deleted";
-            $('#col' + i + '-36').val(array[i][36]);
-            updateLineTotal();
-        }
-    }
-}
+//function deleteLineOfProject() {
+//    for (var i = 0; i < count; i++) {
+//        if ($('#col' + i + '-0').is(':checked')) {
+//            $("#row" + i).hide();
+//            array[i][36] = "Deleted";
+//            $('#col' + i + '-36').val(array[i][36]);
+//            updateLineTotal();
+//        }
+//    }
+//}
 
 
 function updateListMyTimesheet() {
@@ -735,113 +735,113 @@ function onQuerySucceededDeleted() {
     }
 }
 
-function weekendDay() {
+//function weekendDay() {
 
-    var m = getMonthFromString(month);
+//    var m = getMonthFromString(month);
 
-    for (i = 0; i < count; i++) {
-        for (j = 1; j < 32; j++) {
-            var d = new Date(year, m, j);
-            var day = d.getDay();
-            if ((day == 6) || (day == 0)) {
-                $("#col" + i + "-" + (j + 4)).css("background-color", "#D3D3D3");
-            }
-        }
-    }
-
-
-}
-
-function getMonthFromString(mon) {
-    return new Date(Date.parse(mon + " 1, 2012")).getMonth()
-}
-
-function holiday() {
-    var ctx = new SP.ClientContext.get_current();
-    var siteUrl = 'https://siicanada.sharepoint.com/agency/direction/mysii/';
-    var context = new SP.AppContextSite(ctx, siteUrl);
-    ctx.load(context.get_web());
-    var oList = context.get_web().get_lists().getByTitle('Holiday List');
-    var camlQuery = new SP.CamlQuery();
-    camlQuery.set_viewXml('<View>' +
-            '<Query>' +
-                '<OrderBy>' +
-                '<FieldRef Name=\'Title\' Ascending=\'TRUE\' />' +
-                '</OrderBy>' +
-            '</Query>' +
-            '<ViewFields>' +
-                '<FieldRef Name=\'Id\' />' +
-                '<FieldRef Name=\'Title\' />' +
-                '<FieldRef Name=\'HolidayDate\' />' +
-            '</ViewFields>' +
-        '</View>');
-    window.collListItem = oList.getItems(camlQuery);
-    ctx.load(collListItem, 'Include(Id, Title, HolidayDate)');
-    ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryHolidaySucceeded),
-    Function.createDelegate(this, window.onQueryFailed));
-}
-
-function onQueryHolidaySucceeded(sender, args) {
-
-    var listEnumerator = collListItem.getEnumerator();
-    while (listEnumerator.moveNext()) {
-        var oListItem = listEnumerator.get_current();
-        var holidayDate = oListItem.get_item('HolidayDate');
-        var holidayDay = holidayDate.getDate();
-        var holidayMonth = holidayDate.getMonth();
-        var holidayYear = holidayDate.getFullYear();
-        holidayDate = new Date(holidayYear, holidayMonth, holidayDay);
-
-        var m = getMonthFromString(month);
-
-        for (i = 0; i < count ; i++) {
-            for (j = 5; j < 36; j++) {
-                var d = new Date(year, m, (j - 4));
-                if ((holidayYear == d.getFullYear()) && (holidayMonth == d.getMonth()) && (holidayDay == d.getDate())) {
-                    $("#col" + i + "-" + j).css("background-color", "#F5F5DC");
-                }
-            }
-        }
-
-    }
-}
-
-function getProjectInfo() {
-    var ctx = new SP.ClientContext.get_current();
-    var siteUrl = 'https://siicanada.sharepoint.com/agency/direction/';
-    var context = new SP.AppContextSite(ctx, siteUrl);
-    ctx.load(context.get_web());
-    var oList = context.get_web().get_lists().getByTitle('Project-List');
-    var camlQuery = new SP.CamlQuery();
-    camlQuery.set_viewXml('<View>' +
-                            '<Query>' +
-                                '<Where>' +
-                                            '<Eq>' +
-                                                '<FieldRef Name=\'ID\'/>' +
-                                                '<Value Type=\'Number\'>' + array[projectCount][1] + '</Value>' +
-                                            '</Eq>' +
-                                '</Where>' +
-                            '</Query>' +
-                            '<ViewFields>' +
-                                '<FieldRef Name=\'Id\' />' +
-                                '<FieldRef Name=\'Title\' />' +
-                                '<FieldRef Name=\'Cat\' />' +
-                                '<FieldRef Name=\'Final_x0020_Client\' />' +
-                                '<FieldRef Name=\'Details\' />' +
-                                '<FieldRef Name=\'PNum\' />' +
-                                '<FieldRef Name=\'Amdt0\' />' +
-                                '<FieldRef Name=\'Bench\' />' +
-                            '</ViewFields>' +
-                          '</View>');
-    window.collListItem = oList.getItems(camlQuery);
-    ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0, Bench)');
-    ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryGetProjectInfo),
-    Function.createDelegate(this, window.onQueryFailed));
+//    for (i = 0; i < count; i++) {
+//        for (j = 1; j < 32; j++) {
+//            var d = new Date(year, m, j);
+//            var day = d.getDay();
+//            if ((day == 6) || (day == 0)) {
+//                $("#col" + i + "-" + (j + 4)).css("background-color", "#D3D3D3");
+//            }
+//        }
+//    }
 
 
+//}
+
+//function getMonthFromString(mon) {
+//    return new Date(Date.parse(mon + " 1, 2012")).getMonth()
+//}
+
+//function holiday() {
+//    var ctx = new SP.ClientContext.get_current();
+//    var siteUrl = 'https://siicanada.sharepoint.com/agency/direction/mysii/';
+//    var context = new SP.AppContextSite(ctx, siteUrl);
+//    ctx.load(context.get_web());
+//    var oList = context.get_web().get_lists().getByTitle('Holiday List');
+//    var camlQuery = new SP.CamlQuery();
+//    camlQuery.set_viewXml('<View>' +
+//            '<Query>' +
+//                '<OrderBy>' +
+//                '<FieldRef Name=\'Title\' Ascending=\'TRUE\' />' +
+//                '</OrderBy>' +
+//            '</Query>' +
+//            '<ViewFields>' +
+//                '<FieldRef Name=\'Id\' />' +
+//                '<FieldRef Name=\'Title\' />' +
+//                '<FieldRef Name=\'HolidayDate\' />' +
+//            '</ViewFields>' +
+//        '</View>');
+//    window.collListItem = oList.getItems(camlQuery);
+//    ctx.load(collListItem, 'Include(Id, Title, HolidayDate)');
+//    ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryHolidaySucceeded),
+//    Function.createDelegate(this, window.onQueryFailed));
+//}
+
+//function onQueryHolidaySucceeded(sender, args) {
+
+//    var listEnumerator = collListItem.getEnumerator();
+//    while (listEnumerator.moveNext()) {
+//        var oListItem = listEnumerator.get_current();
+//        var holidayDate = oListItem.get_item('HolidayDate');
+//        var holidayDay = holidayDate.getDate();
+//        var holidayMonth = holidayDate.getMonth();
+//        var holidayYear = holidayDate.getFullYear();
+//        holidayDate = new Date(holidayYear, holidayMonth, holidayDay);
+
+//        var m = getMonthFromString(month);
+
+//        for (i = 0; i < count ; i++) {
+//            for (j = 5; j < 36; j++) {
+//                var d = new Date(year, m, (j - 4));
+//                if ((holidayYear == d.getFullYear()) && (holidayMonth == d.getMonth()) && (holidayDay == d.getDate())) {
+//                    $("#col" + i + "-" + j).css("background-color", "#F5F5DC");
+//                }
+//            }
+//        }
+
+//    }
+//}
+
+//function getProjectInfo() {
+//    var ctx = new SP.ClientContext.get_current();
+//    var siteUrl = 'https://siicanada.sharepoint.com/agency/direction/';
+//    var context = new SP.AppContextSite(ctx, siteUrl);
+//    ctx.load(context.get_web());
+//    var oList = context.get_web().get_lists().getByTitle('Project-List');
+//    var camlQuery = new SP.CamlQuery();
+//    camlQuery.set_viewXml('<View>' +
+//                            '<Query>' +
+//                                '<Where>' +
+//                                            '<Eq>' +
+//                                                '<FieldRef Name=\'ID\'/>' +
+//                                                '<Value Type=\'Number\'>' + array[projectCount][1] + '</Value>' +
+//                                            '</Eq>' +
+//                                '</Where>' +
+//                            '</Query>' +
+//                            '<ViewFields>' +
+//                                '<FieldRef Name=\'Id\' />' +
+//                                '<FieldRef Name=\'Title\' />' +
+//                                '<FieldRef Name=\'Cat\' />' +
+//                                '<FieldRef Name=\'Final_x0020_Client\' />' +
+//                                '<FieldRef Name=\'Details\' />' +
+//                                '<FieldRef Name=\'PNum\' />' +
+//                                '<FieldRef Name=\'Amdt0\' />' +
+//                                '<FieldRef Name=\'Bench\' />' +
+//                            '</ViewFields>' +
+//                          '</View>');
+//    window.collListItem = oList.getItems(camlQuery);
+//    ctx.load(collListItem, 'Include(Id, Title, Cat, Final_x0020_Client, Details, PNum, Amdt0, Bench)');
+//    ctx.executeQueryAsync(Function.createDelegate(this, window.onQueryGetProjectInfo),
+//    Function.createDelegate(this, window.onQueryFailed));
 
 
-}
+
+
+//}
 
 function onQueryGetProjectInfo() {
     var listEnumerator = collListItem.getEnumerator();

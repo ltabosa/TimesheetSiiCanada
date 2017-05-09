@@ -35,10 +35,11 @@
 a:visited{
     color:#333;
 }
-#approverMember{
+#approverMember,#newDeleteButtons{
     display:none;
 }
 #suiteLinksBox{
     display:none;
 }
+
 

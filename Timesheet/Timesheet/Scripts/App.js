@@ -22,8 +22,8 @@ function retrieve() {
                                         '</Eq>' +
                                 '</Where>' +
                             '<OrderBy>' +
-                                 '<FieldRef Name=\'Year\' Ascending=\'TRUE\' />' +
-                                   '<FieldRef Name=\'MonthNumber\' Ascending=\'TRUE\' />' +
+                                 '<FieldRef Name=\'Year\' Ascending=\'FALSE\' />' +
+                                   '<FieldRef Name=\'MonthNumber\' Ascending=\'FALSE\' />' +
                                    '<FieldRef Name=\'Title\' Ascending=\'TRUE\' />' +
                                     '<FieldRef Name=\'ReportOwner\' Ascending=\'TRUE\' />' +
                                 '</OrderBy>' +

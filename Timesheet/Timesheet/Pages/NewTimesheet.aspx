@@ -138,7 +138,7 @@
             <tbody id="msg"></tbody> 
           </table>
                 
-                <p class=".col-md-8">New: <a href="#" id="otherProject"><span class="glyphicon glyphicon-plus-sign"></span></a> / Delete Selected Lines: <a href="#" id="deleteLine"><span class="glyphicon glyphicon glyphicon-minus-sign"></span></a> </p>
+                <p class=".col-md-8" id="newDeleteButtons">New: <a href="#" id="otherProject"><span class="glyphicon glyphicon-plus-sign"></span></a> / Delete Selected Lines: <a href="#" id="deleteLine"><span class="glyphicon glyphicon glyphicon-minus-sign"></span></a> </p>
                
         </div>
         <br />
