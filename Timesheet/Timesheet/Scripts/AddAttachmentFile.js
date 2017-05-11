@@ -706,7 +706,7 @@ function updateProjects() {
         }
         document.getElementById('col' + i + '-1').value = array[i][1];
     }
-    if (status == "Approved") {
+    if ((status == "Approved")&&itCameFromEditTimesheet) {
         $("input").prop("readonly", true);
     }
 }

@@ -18,7 +18,7 @@
     submitClicked = true;
     projectList = new Array();
     itCameFromEditTimesheet = false;
-    itCameFromApproverEdit = false;
+    itCameFromApproverEdit = true;
     itCameFromNewTimesheet = false;
 
     //go back to beginning if take url without month and year 

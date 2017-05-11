@@ -20,5 +20,7 @@
     <ProjectItemFile Source="ApproverView.js" Target="Scripts\" Type="ElementFile" />
     <ProjectItemFile Source="ApproverEdit.js" Target="Scripts\" Type="ElementFile" />
     <ProjectItemFile Source="AddAttachmentFile.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="jszip.min.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="FileSaver.js" Target="Scripts\" Type="ElementFile" />
   </Files>
 </ProjectItem>

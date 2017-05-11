@@ -162,6 +162,7 @@
     <Content Include="Scripts\EditTimesheet.js" />
     <Content Include="Scripts\Elements.xml" />
     <Content Include="Scripts\App.js" />
+    <Content Include="Scripts\FileSaver.js" />
     <Content Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -170,6 +171,7 @@
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\jquery.SPServices-2014.02.min.js" />
+    <Content Include="Scripts\jszip.min.js" />
     <Content Include="Scripts\NewTimesheet.js" />
     <Content Include="Scripts\_references.js" />
   </ItemGroup>

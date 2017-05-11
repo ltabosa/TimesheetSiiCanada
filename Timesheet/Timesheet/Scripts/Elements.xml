@@ -19,5 +19,7 @@
     <File Path="Scripts\ApproverView.js" Url="Scripts/ApproverView.js" ReplaceContent="TRUE" />
     <File Path="Scripts\ApproverEdit.js" Url="Scripts/ApproverEdit.js" ReplaceContent="TRUE" />
     <File Path="Scripts\AddAttachmentFile.js" Url="Scripts/AddAttachmentFile.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\jszip.min.js" Url="Scripts/jszip.min.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\FileSaver.js" Url="Scripts/FileSaver.js" ReplaceContent="TRUE" />
   </Module>
 </Elements>

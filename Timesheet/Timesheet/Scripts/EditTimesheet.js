@@ -15,7 +15,7 @@
     deleteLineArray = new Array();
     projectList = new Array();
     submitClicked = true;
-    itCameFromEditTimesheet = false;
+    itCameFromEditTimesheet = true;
     itCameFromApproverEdit = false;
     itCameFromNewTimesheet = false;
 
